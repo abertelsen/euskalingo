@@ -4,3 +4,4 @@
 .streamlit/secrets.toml
 
 /.venv
+__pycache__/puzzle.cpython-39.pyc

@@ -1,0 +1,16 @@
+{
+    "exercises": [
+        {
+            "text": "Tú no eres mi amigo",
+            "target": "(Zu) ez zaude nire laguna"
+        },
+        {
+            "text": "Yo vivo en Donostia",
+            "target": "(Ni) Donostian bizi naiz"
+        },
+        {
+            "text": "Ellos viven muy bien",
+            "target": "(Haiek) oso ondo bizi dira"
+        }
+    ]
+}

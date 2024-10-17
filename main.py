@@ -1,14 +1,15 @@
+import json
+
 import streamlit as st
 
 from puzzle import puzzle
 
 if __name__ == '__main__':
 
-    st.set_page_config(page_title='Euskalingo')
+    st.set_page_config(page_title='Euskolingo')
 
-    exercises = [['Tú no eres mi amigo', '(Zu) ez zaude nire laguna'],
-         ['Yo vivo en Donostia', '(Ni) Donostian bizi naiz'],
-         ['Ellos viven muy bien', '(Haiek) oso ondo bizi dira']]
+    with open('lesson.json', encoding='utf-8') as f:
+        lesson = json.load(f)
     
     if not 'exercise_index' in st.session_state:
         st.session_state.exercise_index = 0
@@ -16,7 +17,7 @@ if __name__ == '__main__':
     if not 'score' in st.session_state:
         st.session_state.score = 0.0
 
-    pro = st.session_state.exercise_index /len(exercises)
+    pro = st.session_state.exercise_index /len(lesson['exercises'])
 
     # HEADER
     with st.container():
@@ -34,13 +35,14 @@ if __name__ == '__main__':
             st.rerun()
     
     else:
-        result = puzzle(text=exercises[st.session_state.exercise_index][0],
-                        target=exercises[st.session_state.exercise_index][1])
+        exercise = lesson['exercises'][st.session_state.exercise_index]
+
+        result = puzzle(text=exercise['text'], target=exercise['target'])
         
         if result is not None:
             # Update score
             if result == True:
-                st.session_state.score += 1.0/len(exercises)
+                st.session_state.score += 1.0/len(lesson['exercises'])
 
             # Next exercise...
             st.session_state.exercise_index = st.session_state.exercise_index + 1
