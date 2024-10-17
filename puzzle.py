@@ -5,21 +5,14 @@ import streamlit_antd_components as sac
 
 @st.fragment
 def puzzle_widget():
-
-    if st.session_state.checked:
-        items_top = [sac.ButtonsItem(label=x, disabled=st.session_state.checked) for x in st.session_state.puzzle_top]
-        items_bottom = [sac.ButtonsItem(label=x, disabled=st.session_state.checked) for x in st.session_state.puzzle_bottom]
-    else:
-        items_top = st.session_state.puzzle_top
-        items_bottom = st.session_state.puzzle_bottom
-
     with st.container(border=True):
         top_ix = sac.buttons(
-            items=items_top,
+            items=[sac.ButtonsItem(label=x, color='dark', disabled=st.session_state.checked) for x in st.session_state.puzzle_top],
             index=None,
             align='center',
             direction='horizontal',
             return_index=True,
+            variant='dashed'
         )
 
     if top_ix is not None:
@@ -29,11 +22,12 @@ def puzzle_widget():
 
     with st.container(border=True):
         bottom_ix = sac.buttons(
-            items=items_bottom,
+            items=[sac.ButtonsItem(label=x, color='dark', disabled=st.session_state.checked) for x in st.session_state.puzzle_bottom],
             index=None,
             align='center',
             direction='horizontal',
             return_index=True,
+            variant='dashed'
         )
 
     if bottom_ix is not None:
@@ -71,11 +65,17 @@ def puzzle(text, target):
 
         result = sentence == target
 
-        cols = st.columns(2, vertical_alignment='bottom')
+        if result: 
+            st.success('**Correct!**')
+        else:
+            st.error('''
+                     **Wrong!**  
+                     {0}'''.format(target))
+
+        cols = st.columns((2,1), vertical_alignment='bottom')
 
         with cols[0]:
-            if result: st.success('Correct!')
-            else: st.error('Wrong!')
+            st.empty()    
         
         with cols[1]:
             if st.button(label='Next...', use_container_width=True, type='primary'):
