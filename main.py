@@ -6,9 +6,9 @@ if __name__ == '__main__':
 
     st.set_page_config(page_title='Euskalingo')
 
-    exercises = [['Tú no eres mi amigo', 'Zu ez zaude nire laguna'],
-         ['Yo vivo en Donostia', 'Ni Donostian bizi naiz'],
-         ['Ellos viven muy bien', 'Haiek oso ondo bizi dira']]
+    exercises = [['Tú no eres mi amigo', '(Zu) ez zaude nire laguna'],
+         ['Yo vivo en Donostia', '(Ni) Donostian bizi naiz'],
+         ['Ellos viven muy bien', '(Haiek) oso ondo bizi dira']]
     
     if not 'exercise_index' in st.session_state:
         st.session_state.exercise_index = 0

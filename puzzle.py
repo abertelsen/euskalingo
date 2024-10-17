@@ -3,6 +3,8 @@ import random
 import streamlit as st
 import streamlit_antd_components as sac
 
+import utils
+
 @st.fragment
 def puzzle_widget():
     with st.container(border=True):
@@ -53,7 +55,10 @@ def puzzle(text, target):
         st.session_state.puzzle_top = []
 
     if not 'puzzle_bottom' in st.session_state:
-        pieces = target.split()
+        pieces = utils.to_list(target)
+
+        # TODO Add distractors.
+
         random.shuffle(pieces)
         st.session_state.puzzle_bottom = pieces
 
@@ -63,14 +68,14 @@ def puzzle(text, target):
 
         sentence = ' '.join(st.session_state.puzzle_top)
 
-        result = sentence == target
+        result = utils.match(text=sentence, target=target)
 
         if result: 
             st.success('**Correct!**')
         else:
             st.error('''
                      **Wrong!**  
-                     {0}'''.format(target))
+                     {0}'''.format(utils.to_canon(target)))
 
         cols = st.columns((2,1), vertical_alignment='bottom')
 
