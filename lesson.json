@@ -1,16 +1,12 @@
 {
     "exercises": [
-        {
-            "text": "Tú no eres mi amigo",
-            "target": "(Zu) ez zaude nire laguna"
-        },
-        {
-            "text": "Yo vivo en Donostia",
-            "target": "(Ni) Donostian bizi naiz"
-        },
-        {
-            "text": "Ellos viven muy bien",
-            "target": "(Haiek) oso ondo bizi dira"
-        }
+        {"type": "choices", "text": "Yo", "target": ["Ni", "Zu", "Hi"]},
+        {"type": "puzzle", "text": "Tú no eres mi amigo", "target": "(Zu) ez zaude nire laguna"},
+        {"type": "puzzle", "text": "Yo vivo en Donostia", "target": "(Ni) Donostian bizi naiz"},
+        {"type": "puzzle", "text": "Ellos viven muy bien", "target": "(Haiek) oso ondo bizi dira"},
+        {"type": "puzzle", "text": "Ni Gorka naiz", "target": "(Yo) soy Gorka"},
+        {"type": "puzzle", "text": "Zu ikaslea zara", "target": "(Tú) eres estudiante"},
+        {"type": "puzzle", "text": "Gu Bilbokoak gara", "target": "(Nosotros) somos de Bilbao"},
+        {"type": "choices", "text": "Egun on!", "target": ["¡Buenos días!", "¡Adiós!", "¡De nada!"]}
     ]
 }
