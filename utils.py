@@ -47,6 +47,10 @@ def match(text: str, target: str):
             else:
                 i1 += 1
                 continue
+
+    # Have we completed the target, but there are still words on the answer? Then, it is wrong.
+    if i1 < len(split1):
+        return False 
             
     return True
 
