@@ -1,6 +1,8 @@
 import random
 
 import streamlit as st
+import streamlit_antd_components as sac
+from streamlit_extras.bottom_container import bottom
 
 import utils
 
@@ -21,38 +23,45 @@ def puzzle(text, target):
         st.session_state.pieces = utils.to_list(target)
         random.shuffle(st.session_state.pieces)  # Works in place, no return.
 
-    answer_list = st.multiselect(label=text,
-                                 options=st.session_state.pieces,
-                                 disabled=st.session_state.checked)
+    # answer_list = st.multiselect(label=text,
+    #                              options=st.session_state.pieces,
+    #                              disabled=st.session_state.checked)
 
-    st.button(label='Comprobar', use_container_width=True, type='primary', 
-              disabled = st.session_state.checked, on_click=utils.on_check)
+    st.subheader(text, anchor=False)
 
-    if st.session_state.checked:
+    answer_list = sac.chip(items=st.session_state.pieces, label='',
+             align='start', radius='md', variant='outline', multiple=True,
+             color='#82c91e')
 
-        sentence = ' '.join(answer_list)
+    sentence = ' '.join(answer_list)
+    st.subheader(sentence, anchor=False)
 
-        result = utils.match(text=sentence, target=target)
+    with bottom():
+        st.button(label='Comprobar', use_container_width=True, type='primary', 
+                disabled = st.session_state.checked, on_click=utils.on_check)
 
-        if result: 
-            st.success('**Correcto!**')
+        if st.session_state.checked:
+            result = utils.match(text=sentence, target=target)
+
+            if result: 
+                st.success('**Correcto!**')
+            else:
+                st.error('''
+                        **Incorrecto!**  
+                        {0}'''.format(utils.to_canon(target)))
+
+            cols = st.columns((2,1), vertical_alignment='bottom')
+
+            with cols[0]:
+                st.empty()    
+            
+            with cols[1]:
+                if st.button(label='Siguiente...', use_container_width=True, type='primary'):
+                    # CLEANUP
+                    del st.session_state.checked
+                    del st.session_state.pieces
+
+                    return result
+
         else:
-            st.error('''
-                     **Incorrecto!**  
-                     {0}'''.format(utils.to_canon(target)))
-
-        cols = st.columns((2,1), vertical_alignment='bottom')
-
-        with cols[0]:
-            st.empty()    
-        
-        with cols[1]:
-            if st.button(label='Siguiente...', use_container_width=True, type='primary'):
-                # CLEANUP
-                del st.session_state.checked
-                del st.session_state.pieces
-
-                return result
-
-    else:
-        return None
+            return None
