@@ -8,7 +8,7 @@ from puzzle import puzzle
 
 if __name__ == '__main__':
 
-    st.set_page_config(page_title='Euskolingo', page_icon='🦉')
+    st.set_page_config(page_title='Euskolingo', page_icon='🦉', layout='wide')
 
     if 'lesson' not in st.session_state:
         with open('lesson.json', encoding='utf-8') as f:

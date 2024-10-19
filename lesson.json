@@ -1,7 +1,7 @@
 {
     "exercises": [
         {"type": "choices", "text": "Yo", "target": ["Ni", "Zu", "Hi"]},
-        {"type": "puzzle", "text": "Tú no eres mi amigo", "target": "(Zu) ez zaude nire laguna"},
+        {"type": "puzzle", "text": "Tú no eres mi amigo", "target": "(Zu) ez zara nire laguna"},
         {"type": "puzzle", "text": "Yo vivo en Donostia", "target": "(Ni) Donostian bizi naiz"},
         {"type": "puzzle", "text": "Ellos viven muy bien", "target": "(Haiek) oso ondo bizi dira"},
         {"type": "puzzle", "text": "Ni Gorka naiz", "target": "(Yo) soy Gorka"},

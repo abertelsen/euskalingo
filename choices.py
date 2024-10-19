@@ -1,6 +1,7 @@
 import random
 
 import streamlit as st
+import streamlit_antd_components as sac
 
 import utils
 
@@ -19,8 +20,14 @@ def choices(text, target):
         st.session_state.choices = list(target)  # Ensure copy, not reference
         random.shuffle(st.session_state.choices)  # Works in place, no return.
 
-    answer = st.radio(label='...{0}?'.format(text),
-                      options=st.session_state.choices)
+    # answer = st.radio(label='...{0}?'.format(text),
+    #                   options=st.session_state.choices)
+    answer = sac.segmented(items=st.session_state.choices,
+                           label='...«{0}»?'.format(text),
+                           align='center', direction='vertical', use_container_width=True,
+                           color='lime', bg_color=None)
+    
+    # TODO Fix inconsistent colors.
     
     st.button(label='Comprobar', use_container_width=True, type='primary',
               disabled = st.session_state.checked, on_click=utils.on_check)
