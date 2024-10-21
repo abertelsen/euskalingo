@@ -5,8 +5,6 @@ import streamlit as st
 import streamlit_antd_components as sac
 from streamlit_extras.bottom_container import bottom
 
-from choices import choices 
-from puzzle import puzzle
 import utils 
 
 def on_check(answer=None):
