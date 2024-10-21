@@ -15,6 +15,13 @@ credentials:
       - admin
       - editor
       - viewer
+    vicomtech:
+      email: abertelsen@vicomtech.org
+      first_name: Alvaro
+      last_name: Bertelsen
+      logged_in: false
+      password: $2b$12$HWGXTDwT7x0YfvlQXFFGmuBz2b2m947wJy.rzBtwI0KIbSHb.GTtW
+      password_hint: '...'
+      roles: null
 pre-authorized:
-  emails:
-  - abertelsen@vicomtech.org
+  emails: []

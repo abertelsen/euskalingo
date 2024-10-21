@@ -64,6 +64,8 @@ if st.session_state['authentication_status'] in (None, False):
             name_of_registered_user = authenticator.register_user(pre_authorized=config['pre-authorized']['emails'])
             if email_of_registered_user:
                 st.success('User registered successfully')
+            with open('config.yaml', 'w', encoding='utf-8') as file:
+                    yaml.dump(config, file, default_flow_style=False)
         except Exception as e:
             st.error(e)
 
