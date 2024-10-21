@@ -1,8 +1,5 @@
 import streamlit as st
 
-def on_check():
-    st.session_state['checked'] = True 
-
 def match(text: str, target: str):
 
     # Words in parenthesis are optional, one may be present or not.
