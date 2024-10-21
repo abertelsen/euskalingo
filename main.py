@@ -25,8 +25,8 @@ if __name__ == '__main__':
         with open('lesson.json', encoding='utf-8') as f:
             st.session_state.lesson = json.load(f)
 
-            # Shuffle exercise order?
-            random.shuffle(st.session_state.lesson['exercises'])
+            # TODO Shuffle exercise order.
+            # random.shuffle(st.session_state.lesson['exercises'])
     
     if not 'exercise_index' in st.session_state:
         st.session_state.exercise_index = 0
@@ -51,6 +51,7 @@ if __name__ == '__main__':
 
         if st.button(label='¿Otra vez?', use_container_width=True, type='primary'):
 
+            # Randomise exercise order.
             random.shuffle(st.session_state.lesson['exercises'])
 
             st.session_state.exercise_index = 0
@@ -72,21 +73,31 @@ if __name__ == '__main__':
         exercise = st.session_state.lesson['exercises'][st.session_state.exercise_index]
 
         if not 'choices' in st.session_state:
+            if exercise['type'] == 'blankfill':
+                st.session_state.choices = None 
             if exercise['type'] == 'choices':
                 st.session_state.choices = list(exercise['target'])  # Ensure copy, not reference
+                random.shuffle(st.session_state.choices)  # Works in place, no return.
             elif exercise['type'] == 'puzzle':
                 st.session_state.choices = utils.to_list(exercise['target'])
-            # TODO What else? Invalid exercise type?
+                random.shuffle(st.session_state.choices)  # Works in place, no return.
 
-            random.shuffle(st.session_state.choices)  # Works in place, no return.
+        if exercise['type'] == 'blankfill':
+            st.header('Completa la oración')
+            t = exercise['text'].split(sep='_', maxsplit=1)
+            st.subheader(t[0] + '...')
+            answer = st.text_input(label='...', label_visibility='collapsed')
+            st.subheader('...' + t[1])
+            answer = answer.strip()  # Remove trailing and ending whitespaces.
 
-        if exercise['type'] == 'choices':
+        elif exercise['type'] == 'choices':
                 st.header('¿Cómo se dice...')
                 st.subheader('...«{0}»?'.format(exercise['text']), anchor=False)
                 answer = sac.segmented(items=st.session_state.choices, index=None,
                            label='',
                            align='center', direction='vertical', use_container_width=True,
                            color='#82c91e', bg_color=None)
+                
         elif exercise['type'] == 'puzzle':
                 st.header('Traduce esta oración:')
                 # TODO Add distractors.

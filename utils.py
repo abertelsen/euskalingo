@@ -8,8 +8,8 @@ def match(text: str, target: str):
 
     # TODO Should interrogation marks be removed?
 
-    split0 = target.split()
-    split1 = text.split()
+    split0 = target.strip().casefold().split()
+    split1 = text.strip().casefold().split()
 
     i1 = 0
     for t0 in split0:
@@ -18,6 +18,7 @@ def match(text: str, target: str):
             return False
 
         t1 = split1[i1]
+        # TODO to lowercase, etc.
 
         if t0.startswith('('):
             t0 = t0.removeprefix('(').removesuffix(')')
