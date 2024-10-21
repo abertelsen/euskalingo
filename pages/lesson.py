@@ -49,7 +49,7 @@ if __name__ == '__main__':
     if not 'finished' in st.session_state:
         st.session_state.finished = False        
 
-    if 'lesson' not in st.session_state:
+    if 'lesson' not in st.session_state or st.session_state.lesson == True:
         with open('lesson.json', encoding='utf-8') as f:
             st.session_state.lesson = json.load(f)
         on_reset()
@@ -59,7 +59,11 @@ if __name__ == '__main__':
     # HEADER
     cols = st.columns([0.05, 0.95], vertical_alignment='center')
     with cols[0]:
-        if st.button(label=':material/close:', on_click=on_reset): st.rerun()  # TODO Add a warning!
+        if st.button(label=':material/close:', on_click=on_reset):
+            # TODO Add a warning!
+            # TODO Insert advertisment.
+            st.session_state.lesson = None
+            st.switch_page('pages/course.py')
     with cols[1]:
         st.progress(value=pro)
 
@@ -69,7 +73,11 @@ if __name__ == '__main__':
 
         st.metric(label='Puntuación', value='{0} %'.format(int(100 * st.session_state.score)))
 
-        if st.button(label='¿Otra vez?', use_container_width=True, type='primary', on_click=on_reset): st.rerun()
+        if st.button(label='Continuar...', use_container_width=True, type='primary', on_click=on_reset):
+            # st.rerun()
+            # TODO Insert advertisment.
+            st.session_state.lesson = None
+            st.switch_page('pages/course.py')
     
     else:
         # GUI
