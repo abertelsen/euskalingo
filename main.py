@@ -9,11 +9,13 @@ from choices import choices
 from puzzle import puzzle
 import utils 
 
-def on_check():
+def on_check(answer=None):
+    st.session_state.answer = answer
     st.session_state.checked = True 
     st.session_state.finished = False
 
 def on_next():
+    st.session_state.answer = None
     st.session_state.checked = False 
     st.session_state.finished = True 
 
@@ -26,7 +28,7 @@ if __name__ == '__main__':
             st.session_state.lesson = json.load(f)
 
             # TODO Shuffle exercise order.
-            # random.shuffle(st.session_state.lesson['exercises'])
+            random.shuffle(st.session_state.lesson['exercises'])
     
     if not 'exercise_index' in st.session_state:
         st.session_state.exercise_index = 0
@@ -59,6 +61,10 @@ if __name__ == '__main__':
             st.rerun()
     
     else:
+        # SETUP
+        if not 'answer' in st.session_state:
+            st.session_state.answer = None 
+
         if not 'checked' in st.session_state:
             st.session_state.checked = False
 
@@ -68,6 +74,7 @@ if __name__ == '__main__':
         if not 'finished' in st.session_state:
             st.session_state.finished = False        
 
+        # GUI
         st.title(':owl:')
 
         exercise = st.session_state.lesson['exercises'][st.session_state.exercise_index]
@@ -86,7 +93,7 @@ if __name__ == '__main__':
             st.header('Completa la oración')
             t = exercise['text'].split(sep='_', maxsplit=1)
             st.subheader(t[0] + '...')
-            answer = st.text_input(label='...', label_visibility='collapsed')
+            answer = st.text_input(label='...', label_visibility='collapsed', disabled=st.session_state.checked)
             st.subheader('...' + t[1])
             answer = answer.strip()  # Remove trailing and ending whitespaces.
 
@@ -111,7 +118,7 @@ if __name__ == '__main__':
 
         with bottom():
             st.button(label='Comprobar', use_container_width=True, type='primary',
-                disabled = st.session_state.checked, on_click=on_check)
+                disabled = st.session_state.checked, on_click=on_check, kwargs={'answer': answer})
 
             if st.session_state.checked:
 
@@ -121,7 +128,7 @@ if __name__ == '__main__':
                     target = exercise['target']
 
                 try:
-                    st.session_state.result = utils.match(text=answer, target=target)
+                    st.session_state.result = utils.match(text=st.session_state.answer, target=target)
                 except AttributeError:
                     st.session_state.result = False
 
@@ -130,7 +137,7 @@ if __name__ == '__main__':
                 else:
                     st.error('''
                             **¡Incorrecto!**  
-                            {0}'''.format(target))
+                            {0}'''.format(utils.to_canon(target)))
 
                 cols = st.columns((2,1), vertical_alignment='bottom')
 
@@ -148,6 +155,7 @@ if __name__ == '__main__':
             # Next exercise...
             st.session_state.exercise_index = st.session_state.exercise_index + 1
 
+            st.session_state.answer = None 
             st.session_state.checked = False 
             st.session_state.result = None 
             st.session_state.finished = False
