@@ -20,7 +20,7 @@ if __name__ == '__main__':
             st.session_state.course = json.load(f)
 
     # TODO Replace this with user's data.
-    pro = {'n_u': 2, 'n_su': 3, 'n_l': 3}
+    pro = {'n_u': 0, 'n_su': 0, 'n_l': 0}
 
     # GUI
     for (n_u, u) in enumerate(st.session_state.course['units']):
