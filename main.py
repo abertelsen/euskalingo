@@ -17,32 +17,52 @@ def on_check(answer=None):
 def on_next():
     st.session_state.answer = None
     st.session_state.checked = False 
+    st.session_state.choices = None
     st.session_state.finished = True 
+
+def on_reset():
+    st.session_state.answer = None
+    st.session_state.checked = False 
+    st.session_state.choices = None
+    st.session_state.finished = False  
+
+    # Randomise exercise order.
+    random.shuffle(st.session_state.lesson['exercises'])
+    st.session_state.exercise_index = 0
+    st.session_state.score = 0.0
 
 if __name__ == '__main__':
 
     st.set_page_config(page_title='Euskolingo', page_icon='🦉', layout='wide')
 
+    # SETUP
+    if not 'answer' in st.session_state:
+        st.session_state.answer = None 
+
+    if not 'checked' in st.session_state:
+        st.session_state.checked = False
+
+    if not 'choices' in st.session_state:
+        st.session_state.choices = None 
+
+    if not 'result' in st.session_state:
+        st.session_state.result = None
+
+    if not 'finished' in st.session_state:
+        st.session_state.finished = False        
+
     if 'lesson' not in st.session_state:
         with open('lesson.json', encoding='utf-8') as f:
             st.session_state.lesson = json.load(f)
-
-            # TODO Shuffle exercise order.
-            random.shuffle(st.session_state.lesson['exercises'])
+        on_reset()
     
-    if not 'exercise_index' in st.session_state:
-        st.session_state.exercise_index = 0
-
-    if not 'score' in st.session_state:
-        st.session_state.score = 0.0
-
     pro = st.session_state.exercise_index /len(st.session_state.lesson['exercises'])
 
     # HEADER
-    with st.container():
-
-        # TODO Add a cancel button.
-
+    cols = st.columns([0.05, 0.95], vertical_alignment='center')
+    with cols[0]:
+        if st.button(label=':material/close:', on_click=on_reset): st.rerun()  # TODO Add a warning!
+    with cols[1]:
         st.progress(value=pro)
 
     # ACTIVITY
@@ -51,35 +71,16 @@ if __name__ == '__main__':
 
         st.metric(label='Puntuación', value='{0} %'.format(int(100 * st.session_state.score)))
 
-        if st.button(label='¿Otra vez?', use_container_width=True, type='primary'):
-
-            # Randomise exercise order.
-            random.shuffle(st.session_state.lesson['exercises'])
-
-            st.session_state.exercise_index = 0
-            st.session_state.score = 0.0
-            st.rerun()
+        if st.button(label='¿Otra vez?', use_container_width=True, type='primary', on_click=on_reset): st.rerun()
     
     else:
-        # SETUP
-        if not 'answer' in st.session_state:
-            st.session_state.answer = None 
-
-        if not 'checked' in st.session_state:
-            st.session_state.checked = False
-
-        if not 'result' in st.session_state:
-            st.session_state.result = None
-
-        if not 'finished' in st.session_state:
-            st.session_state.finished = False        
-
         # GUI
         st.title(':owl:')
 
         exercise = st.session_state.lesson['exercises'][st.session_state.exercise_index]
 
-        if not 'choices' in st.session_state:
+        # Set choices, if needed.
+        if st.session_state.choices is None:
             if exercise['type'] == 'blankfill':
                 st.session_state.choices = None 
             if exercise['type'] == 'choices':
@@ -157,9 +158,8 @@ if __name__ == '__main__':
 
             st.session_state.answer = None 
             st.session_state.checked = False 
+            st.session_state.choices = None
             st.session_state.result = None 
             st.session_state.finished = False
-
-            del st.session_state.choices
 
             st.rerun()
