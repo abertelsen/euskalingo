@@ -8,7 +8,15 @@
             {"eus": "Gabon!", "es": "¡Buenas noches!"},
             {"eus": "Agur!", "es": "¡Adiós!"},
             {"eus": "Bihar arte!", "es": "¡Hasta mañana!"},
-            {"eus": "Gero arte!", "es": "¡Hasta pronto!"}
+            {"eus": "Gero arte!", "es": "¡Hasta pronto!"},
+            {"eus": "ni", "es": "yo"},
+            {"eus": "zu", "es": "tú"},
+            {"eus": "hura", "es": "él/ella"},
+            {"eus": "gu", "es": "nosotros/nosotras"},
+            {"eus": "zuek", "es": "vosotros/vosotras"},
+            {"eus": "haiek", "es": "ellos/ellas"},
+            {"eus": "eta", "es": "y"},
+            {"eus": "edo", "es": "o"}
         ],
         "keyphrases": [
             {"eus": "(Ni) Gorka <naiz>", "es": "(Yo) soy Gorka"},
@@ -22,12 +30,18 @@
             {"eus": "(Haiek) neskak <dira>", "es": "(Ellas) son chicas"}
         ],
         "subunits":[
-            {"subunit_title": "Parte 1", "lessons": 8},
-            {"subunit_title": "Parte 2", "lessons": 8},
-            {"subunit_title": "Práctica", "lessons": 3},
+            {"subunit_title": "Parte 1", "lessons": [
+                {"exercises": [
+                    {"type": "blankfill", "text": "Zuek emakuneak _ eta gu gizonak gara.", "target": "zarete"},
+                    {"type": "choices", "text": "Yo", "target": ["Ni", "Zu", "Hi"]},
+                    {"type": "puzzle", "text": "Tú no eres mi amigo", "target": "(Zu) ez zara nire laguna"}
+                ]}
+            ]},
+            {"subunit_title": "Parte 2", "lessons": []},
+            {"subunit_title": "Práctica", "lessons": []},
             {"subunit_title": "Premio"},
-            {"subunit_title": "Parte 3", "lessons": 8},
-            {"subunit_title": "Prueba", "lessons": 1}
+            {"subunit_title": "Parte 3", "lessons": []},
+            {"subunit_title": "Prueba", "lessons": []}
         ]},
 
         {"unit_title": "Frases negativas",
@@ -36,12 +50,35 @@
             {"eus": "ez", "es": "no"}
         ],
         "subunits": [
-            {"subunit_title": "Parte 1", "lessons": 8},
-            {"subunit_title": "Parte 2", "lessons": 8},
-            {"subunit_title": "Práctica", "lessons": 3},
+            {"subunit_title": "Parte 1", "lessons": []},
+            {"subunit_title": "Parte 2", "lessons": []},
+            {"subunit_title": "Práctica", "lessons": []},
             {"subunit_title": "Premio"},
-            {"subunit_title": "Parte 3", "lessons": 8},
-            {"subunit_title": "Prueba", "lessons": 1}
+            {"subunit_title": "Parte 3", "lessons": []},
+            {"subunit_title": "Prueba", "lessons": []}
+        ]},
+
+        {"unit_title": "El verbo «egon»",
+        "keywords":[
+            {"eus": "egon", "es": "estar"},
+            {"eus": "hemen", "es": "aquí"},
+            {"eus": "hori", "es": "ahí"},
+            {"eus": "han", "es": "allí"},
+            {"eus": "kalea", "es": "calle"},
+            {"eus": "ondo", "es": "bien"}
+        ],
+        "keyphrases":[
+            {"eus": "(Hura) han <dago>", "es": "(Él,Ella) está allí"},
+            {"eus": "(Ni) ondo <nago>", "es": "(Yo) estoy bien"},
+            {"eus": "(Ni) ez <nago> ondo", "es": "(Yo) no estoy bien"}
+        ],
+        "subunits": [
+            {"subunit_title": "Parte 1", "lessons": []},
+            {"subunit_title": "Parte 2", "lessons": []},
+            {"subunit_title": "Práctica", "lessons": []},
+            {"subunit_title": "Premio"},
+            {"subunit_title": "Parte 3", "lessons": []},
+            {"subunit_title": "Prueba", "lessons": []}
         ]},
 
         {"unit_title": "Haciendo preguntas",
@@ -50,22 +87,20 @@
             {"eus": "nor", "es": "quien"},
             {"eus": "zer", "es": "que"}
         ],
+        "keyphrases":[
+            {"eus": "<Non> gaude?", "es": "¿Dónde estamos?"},
+            {"eus": "<Non> zaude?", "es": "¿Dónde estás?"},
+            {"eus": "<Nor> zara?", "es": "¿Quién eres?"},
+            {"eus": "<Zer> moduz zaude?", "es": "¿Cómo estás?"},
+            {"eus": "<Zer> moduz zaudete?", "es": "¿Cómo estáis?"}
+        ],
         "subunits": [
-            {"subunit_title": "Parte 1", "lessons": 8},
-            {"subunit_title": "Parte 2", "lessons": 8},
-            {"subunit_title": "Práctica", "lessons": 3},
+            {"subunit_title": "Parte 1", "lessons": []},
+            {"subunit_title": "Parte 2", "lessons": []},
+            {"subunit_title": "Práctica", "lessons": []},
             {"subunit_title": "Premio"},
-            {"subunit_title": "Parte 3", "lessons": 8},
-            {"subunit_title": "Prueba", "lessons": 1}
-        ]},
-
-        {"unit_title": "El verbo «egon»", "subunits": [
-            {"subunit_title": "Parte 1", "lessons": 8},
-            {"subunit_title": "Parte 2", "lessons": 8},
-            {"subunit_title": "Práctica", "lessons": 3},
-            {"subunit_title": "Premio"},
-            {"subunit_title": "Parte 3", "lessons": 8},
-            {"subunit_title": "Prueba", "lessons": 1}
+            {"subunit_title": "Parte 3", "lessons": []},
+            {"subunit_title": "Prueba", "lessons": []}
         ]},
 
         {"unit_title": "Los verbos «joan» y «etorri»", 
@@ -76,21 +111,22 @@
                 {"eus": "nondik", "es": "de donde"}
             ],
         "subunits": [
-            {"subunit_title": "Parte 1", "lessons": 8},
-            {"subunit_title": "Parte 2", "lessons": 8},
-            {"subunit_title": "Práctica", "lessons": 3},
+            {"subunit_title": "Parte 1", "lessons": []},
+            {"subunit_title": "Parte 2", "lessons": []},
+            {"subunit_title": "Práctica", "lessons": []},
             {"subunit_title": "Premio"},
-            {"subunit_title": "Parte 3", "lessons": 8},
-            {"subunit_title": "Prueba", "lessons": 1}
+            {"subunit_title": "Parte 3", "lessons": []},
+            {"subunit_title": "Prueba", "lessons": []}
         ]},
         
-        {"unit_title": "Indicando posesión", "subunits": [
-            {"subunit_title": "Parte 1", "lessons": 8},
-            {"subunit_title": "Parte 2", "lessons": 8},
-            {"subunit_title": "Práctica", "lessons": 3},
+        {"unit_title": "Indicando posesión",
+        "subunits": [
+            {"subunit_title": "Parte 1", "lessons": []},
+            {"subunit_title": "Parte 2", "lessons": []},
+            {"subunit_title": "Práctica", "lessons": []},
             {"subunit_title": "Premio"},
-            {"subunit_title": "Parte 3", "lessons": 8},
-            {"subunit_title": "Prueba", "lessons": 1}
+            {"subunit_title": "Parte 3", "lessons": []},
+            {"subunit_title": "Prueba", "lessons": []}
         ]}
     ]
 }

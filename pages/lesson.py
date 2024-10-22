@@ -24,10 +24,9 @@ def on_reset():
     st.session_state.choices = None
     st.session_state.finished = False  
 
-    # Randomise exercise order.
-    random.shuffle(st.session_state.lesson['exercises'])
+    st.session_state.lesson = None
     st.session_state.exercise_index = 0
-    st.session_state.score = 0.0
+    st.session_state.exercise_score = 0.0
 
 if __name__ == '__main__':
 
@@ -49,34 +48,41 @@ if __name__ == '__main__':
     if not 'finished' in st.session_state:
         st.session_state.finished = False        
 
-    if 'lesson' not in st.session_state or st.session_state.lesson == True:
-        with open('lesson.json', encoding='utf-8') as f:
-            st.session_state.lesson = json.load(f)
-        on_reset()
+    # if 'lesson' not in st.session_state or st.session_state.lesson == True:
+    #     with open('lesson.json', encoding='utf-8') as f:
+    #         st.session_state.lesson = json.load(f)
+    #     on_reset()
+
+    if not 'exercise_index' in st.session_state:
+        st.session_state.exercise_index = 0
     
-    pro = st.session_state.exercise_index /len(st.session_state.lesson['exercises'])
+    if not 'exercise_score' in st.session_state:
+        st.session_state.exercise_score = 0.0
+    
+    if st.session_state.lesson is not None:
+        st.session_state.exercise_progress = st.session_state.exercise_index /len(st.session_state.lesson['exercises'])
+    else:
+        st.session_state.exercise_progress = 1.0
 
     # HEADER
     cols = st.columns([0.05, 0.95], vertical_alignment='center')
     with cols[0]:
-        if st.button(label=':material/close:', on_click=on_reset):
+        if st.button(label=':material/close:', on_click=on_reset, disabled=st.session_state.finished):
             # TODO Add a warning!
             # TODO Insert advertisment.
-            st.session_state.lesson = None
             st.switch_page('pages/course.py')
     with cols[1]:
-        st.progress(value=pro)
+        st.progress(value=st.session_state.exercise_progress)
 
     # ACTIVITY
-    if pro >= 1.0:
+    if st.session_state.exercise_progress >= 1.0:
         st.title('¡Lección terminada!')
 
-        st.metric(label='Puntuación', value='{0} %'.format(int(100 * st.session_state.score)))
+        st.metric(label='Puntuación', value='{0} %'.format(int(100 * st.session_state.exercise_score)))
 
         if st.button(label='Continuar...', use_container_width=True, type='primary', on_click=on_reset):
-            # st.rerun()
+            # st.rerun(
             # TODO Insert advertisment.
-            st.session_state.lesson = None
             st.switch_page('pages/course.py')
     
     else:
@@ -157,7 +163,7 @@ if __name__ == '__main__':
         if st.session_state.finished:
             # Update score
             if st.session_state.result == True:
-                st.session_state.score += 1.0/len(st.session_state.lesson['exercises'])
+                st.session_state.exercise_score += 1.0/len(st.session_state.lesson['exercises'])
 
             # Next exercise...
             st.session_state.exercise_index = st.session_state.exercise_index + 1
