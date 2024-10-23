@@ -2,7 +2,10 @@ import json
 import os
 import random
 
+import pandas as pd
 import streamlit as st
+
+import data
 
 def begin_lesson(unit, subunit, lesson):
     st.session_state.lesson_index = ['A1', unit, subunit, lesson]
@@ -34,8 +37,9 @@ if __name__ == '__main__':
     # TODO Replace this with user's data.
     # Load user's progress.
     if 'userdata' not in st.session_state:
-        with open(os.path.join('data', 'users.json'), encoding='utf-8') as f:
-            st.session_state.userdata = json.load(f)[st.session_state.username]
+        conn = data.get_connection()
+        records = conn.query(f'SELECT user_name, user_nextlesson FROM users WHERE user_name="{st.session_state['username']}" LIMIT 1')
+        st.session_state.userdata = records.iloc[0].to_dict()
 
     if 'exercise_progress' in st.session_state and st.session_state.exercise_progress >= 1.0:
 
@@ -63,6 +67,10 @@ if __name__ == '__main__':
                         next_lesson[0] = 'A2'
 
             st.session_state.userdata['user_nextlesson'] = next_lesson
+
+            # TODO Save to database
+            conn = data.get_connection()
+            records = conn.query(f'UPDATE users SET user_progress={st.session_state.userdata['user_nextlesson']} WHERE user_name="{st.session_state.userdata['user_name']}"')
 
     st.session_state.exercise_progress = 0.0
 

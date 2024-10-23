@@ -1,11 +1,13 @@
+import json
+import os
+
 import streamlit as st
 import streamlit_authenticator as stauth
-import yaml
-from yaml.loader import SafeLoader
+# import yaml
+# from yaml.loader import SafeLoader
 
-
-with open('config.yaml', encoding='utf-8') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+with open(os.path('data', 'users.json'), encoding='utf-8') as file:
+    config = json.load(file)
 
 # Pre-hashing all plain text passwords once
 # stauth.Hasher.hash_passwords(config['credentials'])
@@ -31,8 +33,8 @@ if st.session_state['authentication_status']:
     with st.expander('Actualizar datos personales...'):
         try:
             if authenticator.update_user_details(st.session_state['username']):
-                with open('config.yaml', 'w', encoding='utf-8') as file:
-                    yaml.dump(config, file, default_flow_style=False)
+                with open(os.path.join('data', 'users.json'), 'w', encoding='utf-8') as file:
+                    json.dump(config, file)
                 st.success('Entries updated successfully')
         except Exception as e:
             st.error(e)
@@ -41,8 +43,8 @@ if st.session_state['authentication_status']:
     with st.expander('Cambiar contraseña...'):
         try:
             if authenticator.reset_password(st.session_state['username']):
-                with open('config.yaml', 'w', encoding='utf-8') as file:
-                    yaml.dump(config, file, default_flow_style=False)
+                with open(os.path.join('data', 'users.json'), 'w', encoding='utf-8') as file:
+                    json.dump(config, file)
                 st.success('Password modified successfully')
         except Exception as e:
             st.error(e)
@@ -64,8 +66,8 @@ if st.session_state['authentication_status'] in (None, False):
             name_of_registered_user = authenticator.register_user(pre_authorized=config['pre-authorized']['emails'])
             if email_of_registered_user:
                 st.success('User registered successfully')
-            with open('config.yaml', 'w', encoding='utf-8') as file:
-                    yaml.dump(config, file, default_flow_style=False)
+            with open(os.path.join('data', 'users.json'), 'w', encoding='utf-8') as file:
+                    json.dump(config, file)
         except Exception as e:
             st.error(e)
 
@@ -79,8 +81,8 @@ if st.session_state['authentication_status'] in (None, False):
                 # TODO The developer should securely transfer the new password to the user.
                 st.success(new_random_password)
 
-                with open('config.yaml', 'w', encoding='utf-8') as file:
-                    yaml.dump(config, file, default_flow_style=False)
+                with open(os.path.join('data', 'users.json'), 'w', encoding='utf-8') as file:
+                    json.dump(config, file)
 
             elif username_of_forgotten_password == False:
                 st.error('Username not found')
