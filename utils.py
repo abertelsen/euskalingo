@@ -71,6 +71,9 @@ def to_canon(target):
         elif t0.startswith('['):
             t0 = t0.removeprefix('[').removesuffix(']')
             out.append(t0.split(sep=',')[0])
+        # elif t0.startswith('<'):
+        #     t0 = t0.removeprefix('<').removesuffix('>')
+        #     out.append(t0.split(sep=',')[0])
         else:
             out.append(t0)
             
@@ -87,6 +90,9 @@ def to_list(target):
         elif t0.startswith('['):
             t0 = t0.removeprefix('[').removesuffix(']')
             out += t0.split(sep=',')
+        # elif t0.startswith('<'):
+        #     t0 = t0.removeprefix('<').removesuffix('>')
+        #     out += t0.split(sep=',')
         else:
             out.append(t0)
             
