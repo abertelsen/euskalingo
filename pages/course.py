@@ -6,8 +6,6 @@ import sqlalchemy
 import pandas as pd
 import streamlit as st
 
-import data
-
 def begin_lesson(unit, subunit, lesson):
     st.session_state.lesson_index = 'A1.{0:02d}.{1:02d}.{2:02d}'.format(unit, subunit, lesson)
 
@@ -32,7 +30,7 @@ if __name__ == '__main__':
 
     # Load course
     if not 'course' in st.session_state or st.session_state.course is None:
-        with open(os.path.join('data', 'course.json'), encoding='utf-8') as f:
+        with open(os.path.join('data', 'course_es-eus_A1.json'), encoding='utf-8') as f:
             st.session_state.course = json.load(f)
 
     # Load user's progress.
