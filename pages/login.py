@@ -6,7 +6,7 @@ import streamlit_authenticator as stauth
 # import yaml
 # from yaml.loader import SafeLoader
 
-with open(os.path('data', 'users.json'), encoding='utf-8') as file:
+with open(os.path.join('data', 'users.json'), encoding='utf-8') as file:
     config = json.load(file)
 
 # Pre-hashing all plain text passwords once
