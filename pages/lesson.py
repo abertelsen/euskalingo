@@ -64,20 +64,10 @@ if __name__ == '__main__':
     else:
         st.session_state.exercise_progress = 1.0
 
-    # HEADER
-    cols = st.columns([0.05, 0.95], vertical_alignment='center')
-    with cols[0]:
-        if st.button(label=':material/close:', on_click=on_reset, disabled=st.session_state.finished):
-            # TODO Add a warning!
-            # TODO Insert advertisment.
-            st.switch_page('pages/course.py')
-    with cols[1]:
-        st.progress(value=st.session_state.exercise_progress)
-
     # ACTIVITY
     if st.session_state.exercise_progress >= 1.0:
         st.title('¡Lección terminada!')
-
+        st.balloons()
         st.metric(label='Puntuación', value='{0} %'.format(int(100 * st.session_state.exercise_score)))
 
         if st.button(label='Continuar...', use_container_width=True, type='primary', on_click=on_reset):
@@ -86,6 +76,16 @@ if __name__ == '__main__':
             st.switch_page('pages/course.py')
     
     else:
+    # HEADER
+        cols = st.columns([0.05, 0.95], vertical_alignment='center')
+        with cols[0]:
+            if st.button(label=':material/close:', on_click=on_reset, disabled=st.session_state.finished):
+                # TODO Add a warning!
+                # TODO Insert advertisment.
+                st.switch_page('pages/course.py')
+        with cols[1]:
+            st.progress(value=st.session_state.exercise_progress)
+
         # GUI
         st.title(':owl:')
 
@@ -98,7 +98,7 @@ if __name__ == '__main__':
             if exercise['type'] == 'choices':
                 st.session_state.choices = list(exercise['target'])  # Ensure copy, not reference
                 random.shuffle(st.session_state.choices)  # Works in place, no return.
-            elif exercise['type'] == 'puzzle':
+            elif exercise['type'] == 'translation':
                 st.session_state.choices = utils.to_list(exercise['target'])
                 random.shuffle(st.session_state.choices)  # Works in place, no return.
 
@@ -111,14 +111,14 @@ if __name__ == '__main__':
             answer = answer.strip()  # Remove trailing and ending whitespaces.
 
         elif exercise['type'] == 'choices':
-                st.header('¿Cómo se dice...')
-                st.subheader('...«{0}»?'.format(exercise['text']), anchor=False)
+                st.header('¿Qué significa «{0}»?'.format(exercise['text']), anchor=False)
+                # TODO Title should change depending on the shown word.
                 answer = sac.segmented(items=st.session_state.choices, index=None,
                            label='',
                            align='center', direction='vertical', use_container_width=True,
                            color='#82c91e', bg_color=None)
                 
-        elif exercise['type'] == 'puzzle':
+        elif exercise['type'] == 'translation':
                 st.header('Traduce esta oración:')
                 # TODO Add distractors.
                 st.subheader(exercise['text'], anchor=False)
@@ -128,6 +128,8 @@ if __name__ == '__main__':
                                        color='#82c91e')
                 answer = ' '.join(answer_list)
                 st.subheader(answer, anchor=False)
+
+        # TODO Add matches exercises.
 
         with bottom():
             st.button(label='Comprobar', use_container_width=True, type='primary',

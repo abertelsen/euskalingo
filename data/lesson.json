@@ -2,6 +2,6 @@
     "exercises": [
         {"type": "blankfill", "text": "Zuek emakuneak _ eta gu gizonak gara.", "target": "zarete"},
         {"type": "choices", "text": "Yo", "target": ["Ni", "Zu", "Hi"]},
-        {"type": "puzzle", "text": "Tú no eres mi amigo", "target": "(Zu) ez zara nire laguna"}
+        {"type": "translation", "text": "Tú no eres mi amigo", "target": "(Zu) ez zara nire laguna"}
     ]
 }
