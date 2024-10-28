@@ -5,7 +5,7 @@ import streamlit as st
 import streamlit_antd_components as sac
 from streamlit_extras.bottom_container import bottom
 
-import utils 
+import euskalingo.utils as utils 
 
 def on_check(answer=None):
     st.session_state.answer = answer
