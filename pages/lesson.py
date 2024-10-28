@@ -114,7 +114,10 @@ if __name__ == '__main__':
             answer = answer.strip()  # Remove trailing and ending whitespaces.
 
         elif exercise['type'] == 'choices':
-                st.header('¿Qué significa «{0}»?'.format(exercise['text']), anchor=False)
+                if exercise['variant'] == 'choices_in_target':
+                    st.header('¿Cómo se dice «{0}»?'.format(exercise['text']), anchor=False)
+                else:
+                    st.header('¿Qué significa «{0}»?'.format(exercise['text']), anchor=False)
                 # TODO Title should change depending on the shown word.
                 answer = sac.segmented(items=st.session_state.choices, index=None,
                            label='',

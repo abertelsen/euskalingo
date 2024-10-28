@@ -1,0 +1,18 @@
+{
+    "units": [
+        {"unit_title": "Demo",
+        "subunits":[
+            {"subunit_title": "Parte 1", "lessons": [
+                {"exercises": [
+                    {"type": "blankfill", "text": "Zuek emakuneak _ eta gu gizonak gara.", "target": "zarete"},
+                    {"type": "choices", "text": "Yo", "target": ["Ni", "Zu", "Hi"]},
+                    {"type": "translation", "text": "Tú no eres mi amigo", "target": "(Zu) ez zara nire laguna"}
+                ]},
+                {"exercises": [
+                    {"type":"choices", "text":"Egun on!", "target":["¡Buenos días!", "¡Buenas tardes!", "¡Adiós!"]}
+                ]}
+            ]},
+            {"subunit_title": "Parte 2", "lessons": []}
+        ]}
+    ]
+}

@@ -1,18 +1,48 @@
 import json
 import os
 import random
-import sqlalchemy
 
+import sqlalchemy
 import pandas as pd
 import streamlit as st
+
+import os
+import sys
+sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
+import euskalingo.utils as utils
 
 def begin_lesson(unit, subunit, lesson):
     st.session_state.lesson_index = 'A1.{0:02d}.{1:02d}.{2:02d}'.format(unit, subunit, lesson)
 
     # TODO Generate exercises on the fly, based on the section's keywords and keyphrases.
-    st.session_state.lesson = st.session_state.course['units'][unit]['subunits'][subunit]['lessons'][lesson]
     
-    random.shuffle(st.session_state.lesson['exercises'])
+    # st.session_state.lesson = st.session_state.course['units'][unit]['subunits'][subunit]['lessons'][lesson]
+    # random.shuffle(st.session_state.lesson['exercises'])
+    
+    st.session_state.lesson = create_lesson(unit=st.session_state.course['units'][unit], n=3)
+
+
+def create_lesson(unit: dict, n: int=12):
+    lesson = {'exercises': [{'type': None} for x in range(n)]}
+
+    for ex in lesson['exercises']:
+        ex['type'] = random.choice(['choices'])
+
+        # if ex['type'] == 'blankfill':
+        #     keyphrase = random.choice(unit['keyphrases'])
+        keywords = random.sample(unit['keywords'], 3)
+
+        ex['variant'] = random.choice(('choices_in_target', 'choices_in_source'))
+        if ex['variant'] == 'choices_in_target':
+            ex['text'] = keywords[0]['es']
+            ex['target'] = [x['eus'] for x in keywords]
+        else:
+            ex['text'] = keywords[0]['eus']
+            ex['target'] = [x['es'] for x in keywords]
+        # elif ex['type'] == 'translate':
+        #     pass
+
+    return lesson 
 
 if __name__ == '__main__':
 
@@ -48,7 +78,12 @@ if __name__ == '__main__':
             lesson_index = st.session_state.lesson_index.split(sep='.', maxsplit=3)
             lesson_index[1:4] = list(map(int, lesson_index[1:4]))
 
-            n_lessons = len(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'])
+            # TODO Please improve this horrible block.
+            if isinstance(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'], int):
+                n_lessons = st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons']
+            elif isinstance(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'], list):
+                n_lessons = len(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'])
+
             n_subunits = len(st.session_state.course['units'][lesson_index[1]]['subunits'])
             n_units = len(st.session_state.course['units'])
 
@@ -90,7 +125,8 @@ if __name__ == '__main__':
                 present = k_unit == next_lesson[1] and k_subunit == next_lesson[2]
                 future = (k_unit > next_lesson[1]) or (k_unit == next_lesson[1] and k_subunit > next_lesson[2])
 
-                label = '{0}: Clase {1} de {2}'.format(su['subunit_title'], 1 + next_lesson[3], len(su['lessons'])) if present else su['subunit_title']
+                n_lessons = su['lessons'] if isinstance(su['lessons'], int) else len(su['lessons'])
+                label = '{0}: Clase {1} de {2}'.format(su['subunit_title'], 1 + next_lesson[3], n_lessons) if present else su['subunit_title']
                 bttype = 'primary' if present else 'secondary'
                 disabled = future
                 k_lesson = -1 if (past or future) else next_lesson[3]

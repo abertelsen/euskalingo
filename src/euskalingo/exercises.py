@@ -4,6 +4,21 @@ import uuid
 import streamlit as st
 import streamlit_antd_components as sac
 
+def blankfill(text: str):
+    st.header('Completa la oración')
+    t = text.split(sep='_', maxsplit=1)
+    st.subheader(t[0] + '...')
+    answer = st.text_input(label='...', label_visibility='collapsed', disabled=st.session_state.checked)
+    st.subheader('...' + t[1])
+    answer = answer.strip()  # Remove trailing and ending whitespaces.    
+
+def choices(text: str):
+    st.header('¿Cómo se dice «{0}»?'.format(text), anchor=False)
+    # TODO Title should change depending on the shown word.
+    answer = sac.segmented(items=st.session_state.choices, index=None,
+            label='',
+            align='center', direction='vertical', use_container_width=True,
+            color='#82c91e', bg_color=None)
 
 def matching(words_left, words_right):
 
@@ -78,3 +93,14 @@ def matching(words_left, words_right):
 
     if all(st.session_state.matching_state['disabled'][0]) and all(st.session_state.matching_state['disabled'][1]):
         st.session_state.finished = True
+
+def translation(text: str):
+    st.header('Traduce esta oración:')
+    # TODO Add distractors.
+    st.subheader(text, anchor=False)
+    answer_list = sac.chip(items=st.session_state.choices, index=None,
+                            label='',
+                            align='start', radius='md', variant='outline', multiple=True,
+                            color='#82c91e')
+    answer = ' '.join(answer_list)
+    st.subheader(answer, anchor=False)
