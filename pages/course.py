@@ -37,7 +37,7 @@ if __name__ == '__main__':
     if 'userdata' not in st.session_state:
         conn = st.connection('turso', 'sql')
         records = conn.query("SELECT user_name, user_nextlesson FROM users WHERE user_name = :u LIMIT 1", 
-                             params={"u": st.session_state['username']})
+                             params={"u": st.session_state['username']}, ttl=10)
         st.session_state.userdata = records.iloc[0].to_dict()
 
     if 'exercise_progress' in st.session_state and st.session_state.exercise_progress >= 1.0:
@@ -68,8 +68,9 @@ if __name__ == '__main__':
             # Save to database
             conn = st.connection('turso', 'sql')
             with conn.session as session:
-                session.execute(sqlalchemy.text(r"UPDATE users SET user_nextlesson='\:n' WHERE user_name='\:u';"),
-                                params={'n': st.session_state.userdata['user_nextlesson'], 'u': st.session_state.userdata['user_name']})
+                session.execute(sqlalchemy.text('UPDATE users SET user_nextlesson= :n WHERE user_name= :u ;'),
+                                params={'n': st.session_state.userdata['user_nextlesson'],
+                                        'u': st.session_state.userdata['user_name']})
                 session.commit()
 
     st.session_state.exercise_progress = 0.0

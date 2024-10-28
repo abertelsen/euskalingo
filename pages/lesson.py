@@ -5,6 +5,9 @@ import streamlit as st
 import streamlit_antd_components as sac
 from streamlit_extras.bottom_container import bottom
 
+import os
+import sys
+sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
 import euskalingo.utils as utils 
 
 def on_check(answer=None):

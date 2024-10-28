@@ -1,6 +1,9 @@
 import streamlit as st
 
-from euskalingo import exercises
+import os
+import sys
+sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
+import euskalingo.exercises as exercises
 
 
 st.set_page_config()
