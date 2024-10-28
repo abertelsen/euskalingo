@@ -18,15 +18,22 @@ def begin_lesson(unit, subunit, lesson):
     
     # st.session_state.lesson = st.session_state.course['units'][unit]['subunits'][subunit]['lessons'][lesson]
     # random.shuffle(st.session_state.lesson['exercises'])
+
+    su = st.session_state.course['units'][unit]['subunits'][subunit]
+    types = su['types'] if 'types' in su.keys() else None 
     
-    st.session_state.lesson = create_lesson(unit=st.session_state.course['units'][unit], n=12)
+    st.session_state.lesson = create_lesson(unit=st.session_state.course['units'][unit],
+                                            n=12,
+                                            types=types)
 
-
-def create_lesson(unit: dict, n: int=12):
+def create_lesson(unit: dict, n: int=12, types=None):
+    if types is None:
+        types = ['blankfill', 'choices', 'translation']
+    
     lesson = {'exercises': [{'type': None} for x in range(n)]}
 
     for ex in lesson['exercises']:
-        ex['type'] = random.choice(['blankfill', 'choices', 'translation'])  # TODO Add matching.
+        ex['type'] = random.choice(types)  # TODO Add matching.
 
         if ex['type'] == 'blankfill':
             keyphrase = random.choice(unit['keyphrases'])

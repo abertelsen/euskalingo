@@ -30,11 +30,11 @@
             {"eus": "(Haiek) neskak <dira>", "es": "(Ellas) son chicas"}
         ],
         "subunits":[
-            {"subunit_title": "Introducción", "lessons": 2},
-            {"subunit_title": "Parte 2", "lessons": 2},
-            {"subunit_title": "Práctica", "lessons": 2},
-            {"subunit_title": "Parte 3", "lessons": 2},
-            {"subunit_title": "Prueba", "lessons": 1}
+            {"subunit_title": "Introducción", "lessons": 2, "types": ["choices", "translation"]},
+            {"subunit_title": "Parte 2", "lessons": 2, "types": ["choices", "translation"]},
+            {"subunit_title": "Práctica", "lessons": 2, "types": ["choices", "translation"]},
+            {"subunit_title": "Parte 3", "lessons": 2, "types": ["choices", "translation"]},
+            {"subunit_title": "Prueba", "lessons": 1, "types": ["choices", "translation"]}
         ]},
 
         {"unit_title": "Frases negativas",

@@ -1,5 +1,6 @@
 import json
 import random
+import time 
 
 import streamlit as st
 import streamlit_antd_components as sac
@@ -15,6 +16,18 @@ def on_check(answer=None):
     st.session_state.checked = True 
     st.session_state.finished = False
 
+def on_finish():
+    st.session_state.answer = None
+    st.session_state.checked = False 
+    st.session_state.choices = None
+    st.session_state.finished = False 
+
+    st.session_state.lesson = None
+    st.session_state.exercise_index = 0
+    st.session_state.exercise_score = 0
+
+    st.session_state.lesson_finished = True 
+
 def on_next():
     st.session_state.answer = None
     st.session_state.checked = False 
@@ -29,9 +42,24 @@ def on_reset():
 
     st.session_state.lesson = None
     st.session_state.exercise_index = 0
-    st.session_state.exercise_score = 0.0
+    st.session_state.exercise_score = 0
 
 if __name__ == '__main__':
+
+    if not 'lesson_time_begin' in st.session_state:
+        st.session_state.lesson_time_begin = time.monotonic()
+
+    if not 'lesson_time_end' in st.session_state:
+        st.session_state.lesson_time_end = None 
+
+    # REDIRECTIONS
+    if not 'lesson_finished' in st.session_state:
+        st.session_state.lesson_finished = False
+    elif st.session_state.lesson_finished:
+        del st.session_state.lesson_finished
+        del st.session_state.lesson_time_begin
+        del st.session_state.lesson_time_end
+        st.switch_page('pages/course.py')
 
     st.set_page_config(page_title='Euskolingo', page_icon='🦉', layout='wide')
 
@@ -45,11 +73,11 @@ if __name__ == '__main__':
     if not 'choices' in st.session_state:
         st.session_state.choices = None 
 
+    if not 'finished' in st.session_state:
+        st.session_state.finished = False 
+
     if not 'result' in st.session_state:
         st.session_state.result = None
-
-    if not 'finished' in st.session_state:
-        st.session_state.finished = False        
 
     # if 'lesson' not in st.session_state or st.session_state.lesson == True:
     #     with open('lesson.json', encoding='utf-8') as f:
@@ -60,38 +88,45 @@ if __name__ == '__main__':
         st.session_state.exercise_index = 0
     
     if not 'exercise_score' in st.session_state:
-        st.session_state.exercise_score = 0.0
+        st.session_state.exercise_score = 0
     
     if st.session_state.lesson is not None:
-        st.session_state.exercise_progress = st.session_state.exercise_index /len(st.session_state.lesson['exercises'])
+        st.session_state.exercise_progress = st.session_state.exercise_index / len(st.session_state.lesson['exercises'])
     else:
         st.session_state.exercise_progress = 1.0
 
     # ACTIVITY
     if st.session_state.exercise_progress >= 1.0:
+        st.session_state.lesson_time_end = time.monotonic()
+
         st.title('¡Lección terminada!')
         st.balloons()
-        st.metric(label='Puntuación', value='{0} %'.format(int(100 * st.session_state.exercise_score)))
 
-        if st.button(label='Continuar...', use_container_width=True, type='primary', on_click=on_reset):
-            # st.rerun(
-            # TODO Insert advertisment.
-            st.switch_page('pages/course.py')
+        cols = st.columns(3)
+
+        with cols[0]:
+            st.metric(label='Precisión', value='{0} %'.format(100.0 * st.session_state.exercise_score / len(st.session_state.lesson['exercises'])))
+
+        with cols[1]:
+            st.metric(label='Puntuación', value=st.session_state.exercise_score)
+
+        with cols[2]:
+            lesson_time = st.session_state.lesson_time_end - st.session_state.lesson_time_begin
+            st.metric(label='Tiempo', value='{0:02d}:{1:02d}'.format(int(lesson_time / 60.0), int(lesson_time % 60.0)))
+        
+        # TODO Add timer
+
+        st.button(label='Continuar...', use_container_width=True, type='primary', on_click=on_finish)
     
     else:
     # HEADER
         cols = st.columns([0.05, 0.95], vertical_alignment='center')
         with cols[0]:
-            if st.button(label=':material/close:', on_click=on_reset, disabled=st.session_state.finished):
-                # TODO Add a warning!
-                # TODO Insert advertisment.
-                st.switch_page('pages/course.py')
+            st.button(label=':material/close:', on_click=on_finish, disabled=st.session_state.finished)
         with cols[1]:
             st.progress(value=st.session_state.exercise_progress)
 
         # GUI
-        st.title(':owl:')
-
         exercise = st.session_state.lesson['exercises'][st.session_state.exercise_index]
 
         # Set choices, if needed.
@@ -134,7 +169,7 @@ if __name__ == '__main__':
                                        color='#82c91e')
                 answer = ' '.join(answer_list)
                 st.subheader(answer, anchor=False)
-                st.info(exercise['target'])
+                # st.info(exercise['target'])
 
         # TODO Add matches exercises.
 
@@ -172,7 +207,7 @@ if __name__ == '__main__':
         if st.session_state.finished:
             # Update score
             if st.session_state.result == True:
-                st.session_state.exercise_score += 1.0/len(st.session_state.lesson['exercises'])
+                st.session_state.exercise_score += 1
 
             # Next exercise...
             st.session_state.exercise_index = st.session_state.exercise_index + 1
