@@ -2,6 +2,7 @@ import json
 import random
 import time 
 
+from sqlalchemy import text as text
 import streamlit as st
 import streamlit_antd_components as sac
 from streamlit_extras.bottom_container import bottom
@@ -22,9 +23,22 @@ def on_finish():
     st.session_state.choices = None
     st.session_state.finished = False 
 
+    # TODO don't do this in case of cancel
+    conn = st.connection(name='turso', type='sql')
+
+    rec = conn.query('SELECT user_xp, user_gp FROM users WHERE user_name = :u LIMIT 1', params={'u': 'abertelsen'}, ttl=0)
+    userdata = rec.iloc[0].to_dict()
+
+    with conn.session as session:
+        session.execute(text('UPDATE users SET user_xp = :x, user_gp = :g WHERE user_name = :u'),
+                        params={'x': userdata['user_xp'] + st.session_state.exercise_xp,
+                                'g': userdata['user_xp'] + st.session_state.exercise_gp,
+                                'u': 'abertelsen'})
+        session.commit()
+
     st.session_state.lesson = None
     st.session_state.exercise_index = 0
-    st.session_state.exercise_score = 0
+    st.session_state.exercise_xp = 0
 
     st.session_state.lesson_finished = True 
 
@@ -42,7 +56,7 @@ def on_reset():
 
     st.session_state.lesson = None
     st.session_state.exercise_index = 0
-    st.session_state.exercise_score = 0
+    st.session_state.exercise_xp = 0
 
 if __name__ == '__main__':
 
@@ -87,8 +101,11 @@ if __name__ == '__main__':
     if not 'exercise_index' in st.session_state:
         st.session_state.exercise_index = 0
     
-    if not 'exercise_score' in st.session_state:
-        st.session_state.exercise_score = 0
+    if not 'exercise_xp' in st.session_state:
+        st.session_state.exercise_xp = 0
+
+    if not 'exercise_gp' in st.session_state:
+        st.session_state.exercise_gp = 0
     
     if st.session_state.lesson is not None:
         st.session_state.exercise_progress = st.session_state.exercise_index / len(st.session_state.lesson['exercises'])
@@ -105,16 +122,17 @@ if __name__ == '__main__':
         cols = st.columns(3)
 
         with cols[0]:
-            st.metric(label='Precisión', value='{0} %'.format(100.0 * st.session_state.exercise_score / len(st.session_state.lesson['exercises'])))
+            st.metric(label='Precisión', value='{0} %'.format(100.0 * st.session_state.exercise_xp / len(st.session_state.lesson['exercises'])))
 
         with cols[1]:
-            st.metric(label='Puntuación', value=st.session_state.exercise_score)
+            st.metric(label='Puntuación', value=st.session_state.exercise_xp)
 
         with cols[2]:
             lesson_time = st.session_state.lesson_time_end - st.session_state.lesson_time_begin
             st.metric(label='Tiempo', value='{0:02d}:{1:02d}'.format(int(lesson_time / 60.0), int(lesson_time % 60.0)))
         
-        # TODO Add timer
+        st.session_state.exercise_gp = 1
+        st.info(':coin: +{0}'.format(st.session_state.exercise_gp))
 
         st.button(label='Continuar...', use_container_width=True, type='primary', on_click=on_finish)
     
@@ -207,7 +225,7 @@ if __name__ == '__main__':
         if st.session_state.finished:
             # Update score
             if st.session_state.result == True:
-                st.session_state.exercise_score += 1
+                st.session_state.exercise_xp += 1
 
             # Next exercise...
             st.session_state.exercise_index = st.session_state.exercise_index + 1
