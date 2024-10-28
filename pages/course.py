@@ -19,28 +19,38 @@ def begin_lesson(unit, subunit, lesson):
     # st.session_state.lesson = st.session_state.course['units'][unit]['subunits'][subunit]['lessons'][lesson]
     # random.shuffle(st.session_state.lesson['exercises'])
     
-    st.session_state.lesson = create_lesson(unit=st.session_state.course['units'][unit], n=3)
+    st.session_state.lesson = create_lesson(unit=st.session_state.course['units'][unit], n=12)
 
 
 def create_lesson(unit: dict, n: int=12):
     lesson = {'exercises': [{'type': None} for x in range(n)]}
 
     for ex in lesson['exercises']:
-        ex['type'] = random.choice(['choices'])
+        ex['type'] = random.choice(['blankfill', 'choices', 'translation'])  # TODO Add matching.
 
-        # if ex['type'] == 'blankfill':
-        #     keyphrase = random.choice(unit['keyphrases'])
-        keywords = random.sample(unit['keywords'], 3)
+        if ex['type'] == 'blankfill':
+            keyphrase = random.choice(unit['keyphrases'])
+            ex['text'], ex['target'] = utils.to_blankfill(keyphrase['eus'])
 
-        ex['variant'] = random.choice(('choices_in_target', 'choices_in_source'))
-        if ex['variant'] == 'choices_in_target':
-            ex['text'] = keywords[0]['es']
-            ex['target'] = [x['eus'] for x in keywords]
-        else:
-            ex['text'] = keywords[0]['eus']
-            ex['target'] = [x['es'] for x in keywords]
-        # elif ex['type'] == 'translate':
-        #     pass
+        elif ex['type'] == 'choices':
+            keywords = random.sample(unit['keywords'], 3)
+            ex['variant'] = random.choice(('to_target', 'to_source'))
+            if ex['variant'] == 'to_target':
+                ex['text'] = keywords[0]['es']
+                ex['target'] = [x['eus'] for x in keywords]
+            else:
+                ex['text'] = keywords[0]['eus']
+                ex['target'] = [x['es'] for x in keywords]
+
+        elif ex['type'] == 'translation':
+            keyphrase = random.choice(unit['keyphrases'])
+            ex['variant'] = random.choice(('to_target', 'to_source'))
+            if ex['variant'] == 'to_target':
+                ex['text'] = utils.to_canon(keyphrase['es'])
+                ex['target'] = keyphrase['eus']
+            else:
+                ex['text'] = utils.to_canon(keyphrase['eus'])
+                ex['target'] = keyphrase['es']
 
     return lesson 
 

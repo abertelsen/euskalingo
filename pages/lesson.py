@@ -114,7 +114,7 @@ if __name__ == '__main__':
             answer = answer.strip()  # Remove trailing and ending whitespaces.
 
         elif exercise['type'] == 'choices':
-                if exercise['variant'] == 'choices_in_target':
+                if exercise['variant'] == 'to_target':
                     st.header('¿Cómo se dice «{0}»?'.format(exercise['text']), anchor=False)
                 else:
                     st.header('¿Qué significa «{0}»?'.format(exercise['text']), anchor=False)
@@ -134,6 +134,7 @@ if __name__ == '__main__':
                                        color='#82c91e')
                 answer = ' '.join(answer_list)
                 st.subheader(answer, anchor=False)
+                st.info(exercise['target'])
 
         # TODO Add matches exercises.
 

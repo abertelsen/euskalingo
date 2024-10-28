@@ -29,8 +29,9 @@ def match(text: str, target: str):
                 i1 += 1
             continue 
 
-        elif t0.startswith('['):
+        elif t0.startswith('[') or t0.startswith('<'):
             t0 = t0.removeprefix('[').removesuffix(']')
+            t0 = t0.removeprefix('<').removesuffix('>')
 
             variants = t0.split(sep=',')
             # print('t1: {0}; variants: {1}'.format(t1, variants))
@@ -56,6 +57,28 @@ def match(text: str, target: str):
         return False 
             
     return True
+
+def to_blankfill(target):
+
+    out = []
+    keyword = None
+
+    split0 = target.split()
+    for t0 in split0:
+        if t0.startswith('('):
+            t0 = t0.removeprefix('(').removesuffix(')')
+            out.append(t0.split(sep=',')[0])
+        elif t0.startswith('['):
+            t0 = t0.removeprefix('[').removesuffix(']')
+            out.append(t0.split(sep=',')[0])
+        elif t0.startswith('<'):
+            t0 = t0.removeprefix('<').removesuffix('>')
+            keyword = t0.split(sep=',')[0]
+            out.append('_')
+        else:
+            out.append(t0)
+            
+    return ' '.join(out), keyword
 
 def to_canon(target):
 
