@@ -5,6 +5,7 @@ import random
 import sqlalchemy
 import pandas as pd
 import streamlit as st
+from streamlit_extras.bottom_container import bottom
 
 import os
 import sys
@@ -25,8 +26,9 @@ def create_lesson(unit: dict, n: int=12, types=None, index=None):
         types = ['blankfill', 'choices', 'translation']
     
     lesson = {
+        'index': index,
         'exercises': [{'type': None} for x in range(n)],
-        'index': index
+        'state': 'started'
         }
 
     for ex in lesson['exercises']:
@@ -60,29 +62,44 @@ def create_lesson(unit: dict, n: int=12, types=None, index=None):
 
 if __name__ == '__main__':
 
+    st.set_page_config(page_title='Euskolingo', page_icon='🦉', layout='wide')
+
     # REDIRECTIONS
     if not 'username' in st.session_state or st.session_state.username is None:
         st.switch_page('pages/login.py')
 
-    if 'lesson' in st.session_state and st.session_state.lesson is not None:
+    if 'lesson' in st.session_state \
+        and st.session_state.lesson is not None \
+        and st.session_state.lesson['state'] not in ['cancelled', 'finished']:
         st.switch_page('pages/lesson.py')
-    else:
-        st.session_state.lesson = None
+    # else:
+    #     st.session_state.lesson = None
 
-    # RENDERING
-    st.set_page_config(page_title='Euskolingo', page_icon='🦉', layout='wide')
-
+    # Load user's progress.
+    if 'userdata' not in st.session_state:
+        conn = st.connection('turso', 'sql')
+        records = conn.query("SELECT user_name, user_nextlesson, user_xp, user_gp FROM users WHERE user_name = :u LIMIT 1", 
+                             params={"u": st.session_state['username']}, ttl=10)
+        st.session_state.userdata = records.iloc[0].to_dict()
+    
     # Load course
     if not 'course' in st.session_state or st.session_state.course is None:
         with open(os.path.join('data', 'course_es-eus_A1.json'), encoding='utf-8') as f:
             st.session_state.course = json.load(f)
 
-    # Load user's progress.
-    if 'userdata' not in st.session_state:
-        conn = st.connection('turso', 'sql')
-        records = conn.query("SELECT user_name, user_nextlesson FROM users WHERE user_name = :u LIMIT 1", 
-                             params={"u": st.session_state['username']}, ttl=10)
-        st.session_state.userdata = records.iloc[0].to_dict()
+    # RENDERING
+
+    with bottom():
+        cols = st.columns(3)
+
+        with cols[0]:
+            st.markdown(':id: {0}'.format(st.session_state['username']))
+        
+        with cols[1]:
+            st.markdown(':dart: {0} **xp**'.format(st.session_state.userdata['user_xp']))
+
+        with cols[2]:
+            st.markdown(':coin: {0} **gp**'.format(st.session_state.userdata['user_gp']))
 
     if 'attempt' in st.session_state:
         

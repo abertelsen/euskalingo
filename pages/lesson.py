@@ -22,7 +22,7 @@ def on_exercise_next():
     st.session_state.exercise['state'] = 'finished'
 
 def on_attempt_cancel():
-    st.session_state.attempt['state'] = 'cancelled'
+    st.session_state.lesson['state'] = 'cancelled'
 
 def on_attempt_finish():
     conn = st.connection(name='turso', type='sql')
@@ -38,7 +38,7 @@ def on_attempt_finish():
                                 'u': st.session_state['username']})
         session.commit()
 
-    st.session_state.attempt['state'] = 'finished'
+    st.session_state.lesson['state'] = 'finished'
 
 
 if __name__ == '__main__':
@@ -56,7 +56,7 @@ if __name__ == '__main__':
         }
 
     # REDIRECTIONS
-    if st.session_state.attempt['state'] in ['cancelled', 'finished']:
+    if st.session_state.lesson['state'] in ['cancelled', 'finished']:
         if 'exercise' in st.session_state: del st.session_state.exercise
         # if 'attempt' in st.session_state: del st.session_state.attempt
         # if 'lesson' in st.session_state: del st.session_state.lesson
