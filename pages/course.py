@@ -12,25 +12,22 @@ sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
 import euskalingo.utils as utils
 
 def begin_lesson(unit, subunit, lesson):
-    st.session_state.lesson_index = 'A1.{0:02d}.{1:02d}.{2:02d}'.format(unit, subunit, lesson)
-
-    # TODO Generate exercises on the fly, based on the section's keywords and keyphrases.
-    
-    # st.session_state.lesson = st.session_state.course['units'][unit]['subunits'][subunit]['lessons'][lesson]
-    # random.shuffle(st.session_state.lesson['exercises'])
-
     su = st.session_state.course['units'][unit]['subunits'][subunit]
     types = su['types'] if 'types' in su.keys() else None 
     
     st.session_state.lesson = create_lesson(unit=st.session_state.course['units'][unit],
                                             n=12,
-                                            types=types)
+                                            types=types,
+                                            index='A1.{0:02d}.{1:02d}.{2:02d}'.format(unit, subunit, lesson))
 
-def create_lesson(unit: dict, n: int=12, types=None):
+def create_lesson(unit: dict, n: int=12, types=None, index=None):
     if types is None:
         types = ['blankfill', 'choices', 'translation']
     
-    lesson = {'exercises': [{'type': None} for x in range(n)]}
+    lesson = {
+        'exercises': [{'type': None} for x in range(n)],
+        'index': index
+        }
 
     for ex in lesson['exercises']:
         ex['type'] = random.choice(types)  # TODO Add matching.
@@ -87,45 +84,47 @@ if __name__ == '__main__':
                              params={"u": st.session_state['username']}, ttl=10)
         st.session_state.userdata = records.iloc[0].to_dict()
 
-    if 'exercise_progress' in st.session_state and st.session_state.exercise_progress >= 1.0:
+    if 'attempt' in st.session_state:
+        
+        if st.session_state.attempt['progress'] >= 1.0:
 
-        # Only update if the last exercise was completed.
-        if st.session_state.lesson_index >= st.session_state.userdata['user_nextlesson']:
+            # Only update if the last exercise was completed.
+            if st.session_state.lesson['index'] >= st.session_state.userdata['user_nextlesson']:
 
-            lesson_index = st.session_state.lesson_index.split(sep='.', maxsplit=3)
-            lesson_index[1:4] = list(map(int, lesson_index[1:4]))
+                lesson_index = st.session_state.lesson['index'].split(sep='.', maxsplit=3)
+                lesson_index[1:4] = list(map(int, lesson_index[1:4]))
 
-            # TODO Please improve this horrible block.
-            if isinstance(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'], int):
-                n_lessons = st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons']
-            elif isinstance(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'], list):
-                n_lessons = len(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'])
+                # TODO Please improve this horrible block.
+                if isinstance(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'], int):
+                    n_lessons = st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons']
+                elif isinstance(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'], list):
+                    n_lessons = len(st.session_state.course['units'][lesson_index[1]]['subunits'][lesson_index[2]]['lessons'])
 
-            n_subunits = len(st.session_state.course['units'][lesson_index[1]]['subunits'])
-            n_units = len(st.session_state.course['units'])
+                n_subunits = len(st.session_state.course['units'][lesson_index[1]]['subunits'])
+                n_units = len(st.session_state.course['units'])
 
-            next_lesson = list(lesson_index)
-            next_lesson[3] = (next_lesson[3] + 1) % n_lessons
-            if next_lesson[3] == 0:
-                next_lesson[2] = (next_lesson[2] + 1) % n_subunits
-                if next_lesson[2] == 0:
-                    next_lesson[1] = (next_lesson[1] + 1) % n_units
-                    if next_lesson[1] == 0:
-                        # TODO Advance to the next level
-                        next_lesson[0] = 'A2'
+                next_lesson = list(lesson_index)
+                next_lesson[3] = (next_lesson[3] + 1) % n_lessons
+                if next_lesson[3] == 0:
+                    next_lesson[2] = (next_lesson[2] + 1) % n_subunits
+                    if next_lesson[2] == 0:
+                        next_lesson[1] = (next_lesson[1] + 1) % n_units
+                        if next_lesson[1] == 0:
+                            # TODO Advance to the next level
+                            next_lesson[0] = 'A2'
 
-            next_lesson[1:4] = list(map(lambda x: f'{x:02d}', next_lesson[1:4]))
-            st.session_state.userdata['user_nextlesson'] = '.'.join(next_lesson)
+                next_lesson[1:4] = list(map(lambda x: f'{x:02d}', next_lesson[1:4]))
+                st.session_state.userdata['user_nextlesson'] = '.'.join(next_lesson)
 
-            # Save to database
-            conn = st.connection('turso', 'sql')
-            with conn.session as session:
-                session.execute(sqlalchemy.text('UPDATE users SET user_nextlesson= :n WHERE user_name= :u ;'),
-                                params={'n': st.session_state.userdata['user_nextlesson'],
-                                        'u': st.session_state.userdata['user_name']})
-                session.commit()
+                # Save to database
+                conn = st.connection('turso', 'sql')
+                with conn.session as session:
+                    session.execute(sqlalchemy.text('UPDATE users SET user_nextlesson= :n WHERE user_name= :u ;'),
+                                    params={'n': st.session_state.userdata['user_nextlesson'],
+                                            'u': st.session_state.userdata['user_name']})
+                    session.commit()
 
-    st.session_state.exercise_progress = 0.0
+        del st.session_state.attempt
 
     # GUI
     next_lesson = st.session_state.userdata['user_nextlesson'].split(sep='.', maxsplit=3)
