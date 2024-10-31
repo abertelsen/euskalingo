@@ -113,7 +113,7 @@ if __name__ == '__main__':
                 'result': None
             }
 
-        if st.session_state['exercise']['state'] == 'finished':
+        if 'state' in st.session_state['exercise'].keys() and st.session_state['exercise']['state'] == 'finished':
             # Update score
             if st.session_state['exercise']['result'] == True:
                 st.session_state['lesson']['attempt']['accuracy'] += 1.0 / len(st.session_state['lesson']['exercises'])
@@ -131,7 +131,7 @@ if __name__ == '__main__':
         # HEADER
         # st.info(st.session_state['username'])
 
-        cols = st.columns([0.05, 0.95], vertical_alignment='center')
+        cols = st.columns([0.1, 0.9], vertical_alignment='center')
         with cols[0]:
             st.button(label=':material/close:', on_click=on_attempt_cancel)
         with cols[1]:
@@ -156,7 +156,8 @@ if __name__ == '__main__':
 
         with bottom():
             st.button(label='Comprobar', use_container_width=True, type='primary',
-                disabled = st.session_state['exercise']['state'] == 'checked', on_click=on_exercise_check, kwargs={'answer': answer})
+                disabled = st.session_state['exercise']['state'] == 'checked', 
+                on_click=on_exercise_check, kwargs={'answer': answer})
 
             if st.session_state['exercise']['state'] == 'checked':
 

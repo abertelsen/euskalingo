@@ -12,15 +12,15 @@ import sys
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
 import euskalingo.utils as utils
 
-def begin_lesson(unit, subunit, lesson):
+def begin_lesson(unit, subunit, lesson, xp=12, gp=3):
     su = st.session_state['course']['units'][unit]['subunits'][subunit]
     types = su['types'] if 'types' in su.keys() else None 
     
     st.session_state['lesson'] = create_lesson(unit=st.session_state['course']['units'][unit],
-                                            n=12,
-                                            types=types,
-                                            index='A1.{0:02d}.{1:02d}.{2:02d}'.format(unit, subunit, lesson),
-                                            xp=12, gp=3)
+                                                n=12,
+                                                types=types,
+                                                index='A1.{0:02d}.{1:02d}.{2:02d}'.format(unit, subunit, lesson),
+                                                xp=xp, gp=gp)
 
 def create_lesson(unit: dict, n: int=12, types=None, index=None, xp=12, gp=3):
     if types is None:
@@ -167,5 +167,10 @@ if __name__ == '__main__':
                 k_lesson = -1 if (past or future) else next_lesson[3]
 
                 key = 'es-eus_A1-{0:02d}-{1:02d}'.format(k_unit, k_subunit)
+                kwargs={'unit': k_unit, 'subunit': k_subunit, 'lesson': k_lesson}
+                # If this is an past lesson, give 3 times less xp and gp
+                if k_lesson == -1:
+                    kwargs['xp'] = 4
+                    kwargs['gp'] = 1
                 st.button(label=label, type=bttype, use_container_width=True, key=key, disabled=disabled, 
-                          on_click=begin_lesson, kwargs={'unit': k_unit, 'subunit': k_subunit, 'lesson': k_lesson})
+                          on_click=begin_lesson, kwargs=kwargs)
