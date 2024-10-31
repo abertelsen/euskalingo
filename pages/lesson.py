@@ -98,8 +98,8 @@ if __name__ == '__main__':
             lesson_time = st.session_state['lesson']['attempt']['time_end'] - st.session_state['lesson']['attempt']['time_begin']
             st.metric(label='Tiempo', value='{0:02d}:{1:02d}'.format(int(lesson_time / 60.0), int(lesson_time % 60.0)))
         
-        st.info(':dart: +{0} **xp**\t\t:coin: +{0} **gp**'.format(st.session_state['lesson']['attempt']['xp'],
-                                                                st.session_state['lesson']['attempt']['gp']))
+        st.info(':dart: +{0} **xp**    :coin: +{1} **gp**'.format(st.session_state['lesson']['attempt']['xp'],
+                                                                  st.session_state['lesson']['attempt']['gp']))
 
         st.button(label='Continuar...', use_container_width=True, type='primary', on_click=on_attempt_finish)
     
