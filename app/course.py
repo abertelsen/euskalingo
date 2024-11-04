@@ -246,7 +246,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
 
 # Load user's progress.
 if 'userdata' not in st.session_state:
-    conn = st.connection('turso', 'sql')
+    conn = st.connection('turso', 'sql', ttl=60)
     records = conn.query("SELECT user_name, user_nextlesson, user_xp, user_gp FROM users WHERE user_name = :u LIMIT 1", 
                             params={"u": st.session_state['username']}, ttl=60)
     st.session_state['userdata'] = records.iloc[0].to_dict()
