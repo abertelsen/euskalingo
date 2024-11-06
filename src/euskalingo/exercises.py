@@ -1,3 +1,4 @@
+import os 
 import random
 import uuid 
 
@@ -117,10 +118,16 @@ def translation(text: str, target: str):
         random.shuffle(st.session_state['exercise']['choices'])  # Works in place, no return.
 
     st.header('Traduce esta oración:')
-    
-    # TODO Add distractors.
-    
     st.subheader(text, anchor=False)
+
+    # TODO Get the audio files from a storage server.
+    audio_dir = os.path.join(os.path.dirname(__file__), "..", "..", "data", "audio_spa-eus_A1")
+    audio_name = utils.to_filename(text)
+    audio_path = os.path.join(audio_dir, audio_name + ".wav")
+    if os.path.exists(audio_path):
+        st.audio(data=audio_path, loop=False, autoplay=True)
+
+    # TODO Add distractors.
     answer_list = sac.chip(items=st.session_state['exercise']['choices'], index=None,
                             label='',
                             align='start', radius='md', variant='outline', multiple=True,

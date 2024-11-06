@@ -1,0 +1,126 @@
+{
+    "units": [
+        {"unit_title": "Presentándose", 
+        "keywords": [
+            {"eus": "Kaixo!", "spa": "¡Hola!"},
+            {"eus": "Egun on!", "spa": "¡Buenos días!"},
+            {"eus": "Arratsalde on!", "spa": "¡Buenas tardes!"},
+            {"eus": "Gabon!", "spa": "¡Buenas noches!"},
+            {"eus": "Agur!", "spa": "¡Adiós!"},
+            {"eus": "Bihar arte!", "spa": "¡Hasta mañana!"},
+            {"eus": "Gero arte!", "spa": "¡Hasta pronto!"},
+            {"eus": "ni", "spa": "yo"},
+            {"eus": "zu", "spa": "tú"},
+            {"eus": "hura", "spa": "él/ella"},
+            {"eus": "gu", "spa": "nosotros/nosotras"},
+            {"eus": "zuek", "spa": "vosotros/vosotras"},
+            {"eus": "haiek", "spa": "ellos/ellas"},
+            {"eus": "eta", "spa": "y"},
+            {"eus": "edo", "spa": "o"},
+            {"eus": "bai", "spa": "sí"},
+            {"eus": "ez", "spa": "no"}
+        ],
+        "keyphrases": [
+            {"eus": "(Ni) Gorka <naiz>", "spa": "(Yo) soy Gorka"},
+            {"eus": "(Zu) ikaslea <zara>", "spa": "(Tú) eres estudiante"},
+            {"eus": "(Hura) maisua <da>", "spa": "(Él) es maestro"},
+            {"eus": "(Hura) andereñoa <da>", "spa": "(Ella) es maestra"},
+            {"eus": "(Gu) ikasleak <gara>", "spa": "(Nosotros) somos estudiantes"},
+            {"eus": "(Zuek) gizonak <zarete>", "spa": "(Vosotros) sois hombres"},
+            {"eus": "(Zuek) emakumeak <zarete>", "spa": "(Vosotras) sois mujeres"},
+            {"eus": "(Haiek) mutilak <dira>", "spa": "(Ellos) son chicos"},
+            {"eus": "(Haiek) neskak <dira>", "spa": "(Ellas) son chicas"}
+        ],
+        "subunits":[
+            {"subunit_title": "Introducción", "lessons": 2, "types": ["choices", "translation"]},
+            {"subunit_title": "Parte 2", "lessons": 2, "types": ["choices", "translation"]},
+            {"subunit_title": "Práctica", "lessons": 2, "types": ["choices", "translation"]},
+            {"subunit_title": "Parte 3", "lessons": 2, "types": ["choices", "translation"]},
+            {"subunit_title": "Prueba", "lessons": 1, "types": ["choices", "translation"]}
+        ]},
+
+        {"unit_title": "El verbo «egon»",
+        "keywords":[
+            {"eus": "egon", "spa": "estar"},
+            {"eus": "etxe", "spa": "casa,"},
+            {"eus": "hemen", "spa": "aquí"},
+            {"eus": "hori", "spa": "ahí"},
+            {"eus": "han", "spa": "allí"},
+            {"eus": "hondartza", "spa": "playa"},
+            {"eus": "kale", "spa": "calle"},
+            {"eus": "ondo", "spa": "bien"},
+            {"eus": "parke", "spa": "parque"},
+            {"eus": "udaletxe", "spa": "ayuntamiento"}
+        ],
+        "keyphrases":[
+            {"eus": "(Hura) han <dago>", "spa": "(Él,Ella) está allí"},
+            {"eus": "(Ni) ondo <nago>", "spa": "(Yo) estoy bien"},
+            {"eus": "(Ni) ez <nago> ondo", "spa": "(Yo) no estoy bien"},
+            {"eus": "(Ni) etxean nago", "spa": "(Yo) estoy en casa"},
+            {"eus": "Hemen parkea dago", "spa": "Aquí hay un parque"},
+            {"eus": "Han udaletxea dago", "spa": "Ahí está el ayuntamiento"},
+            {"eus": "Donostian hondartzak daude", "spa": "Hay playas en San Sebastián"},
+            {"eus": "Gazteizen ez daude hondartzarik", "spa": "No hay playas en Vitoria"}
+        ],
+        "subunits": [
+            {"subunit_title": "Introducción", "lessons": 2},
+            {"subunit_title": "Parte 2", "lessons": 2},
+            {"subunit_title": "Práctica", "lessons": 2},
+            {"subunit_title": "Parte 3", "lessons": 2},
+            {"subunit_title": "Prueba", "lessons": 1}
+        ]},
+
+        {"unit_title": "Haciendo preguntas",
+        "keywords": [
+            {"eus": "ardo", "spa": "vino"},
+            {"eus": "emakume", "spa": "mujer"},
+            {"eus": "gizon", "spa": "hombre"},
+            {"eus": "hotel", "spa": "hotel"},
+            {"eus": "komuna", "spa": "baño"},
+            {"eus": "non", "spa": "donde"},
+            {"eus": "nor", "spa": "quien"},
+            {"eus": "zer", "spa": "que"}
+        ],
+        "keyphrases":[
+            {"eus": "<Non> dago hotela?", "spa": "¿Dónde está el hotel?"},
+            {"eus": "Barkatu, <non> dago komunak?", "spa": "Disculpe, ¿dónde están los baños?"},
+            {"eus": "<Non> gaude?", "spa": "¿Dónde estamos?"},
+            {"eus": "<Non> zaude?", "spa": "¿Dónde estás?"},
+            {"eus": "<Nor> zara?", "spa": "¿Quién eres?"},
+            {"eus": "<Nor> da gizon hura?", "spa": "¿Quién es ese hombre?"},
+            {"eus": "<Zer> moduz zaude?", "spa": "¿Cómo estás?"},
+            {"eus": "<Zer> moduz zaudete?", "spa": "¿Cómo estáis?"}
+        ],
+        "subunits": [
+            {"subunit_title": "Introducción", "lessons": 2},
+            {"subunit_title": "Parte 2", "lessons": 2},
+            {"subunit_title": "Práctica", "lessons": 2},
+            {"subunit_title": "Parte 3", "lessons": 2},
+            {"subunit_title": "Prueba", "lessons": 1}
+        ]},
+
+        {"unit_title": "Los verbos «joan» y «etorri»", 
+            "keywords":[
+                {"eus": "etorri", "spa": "venir"},
+                {"eus": "joan", "spa": "ir"},
+                {"eus": "nora", "spa": "a donde"},
+                {"eus": "nondik", "spa": "de donde"}
+            ],
+        "subunits": [
+            {"subunit_title": "Introducción", "lessons": 2},
+            {"subunit_title": "Parte 2", "lessons": 2},
+            {"subunit_title": "Práctica", "lessons": 2},
+            {"subunit_title": "Parte 3", "lessons": 2},
+            {"subunit_title": "Prueba", "lessons": 1}
+        ]},
+        
+        {"unit_title": "Indicando posesión",
+        "subunits": [
+            {"subunit_title": "Introducción", "lessons": 2},
+            {"subunit_title": "Parte 2", "lessons": 2},
+            {"subunit_title": "Práctica", "lessons": 2},
+            {"subunit_title": "Parte 3", "lessons": 2},
+            {"subunit_title": "Prueba", "lessons": 1}
+        ]}
+    ]
+}

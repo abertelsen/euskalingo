@@ -48,21 +48,21 @@ def create_lesson(unit: dict, n: int=12, types=None, index=None, xp=12, gp=3):
             keywords = random.sample(unit['keywords'], 3)
             ex['variant'] = random.choice(('to_target', 'to_source'))
             if ex['variant'] == 'to_target':
-                ex['text'] = keywords[0]['es']
+                ex['text'] = keywords[0]['spa']
                 ex['target'] = [x['eus'] for x in keywords]
             else:
                 ex['text'] = keywords[0]['eus']
-                ex['target'] = [x['es'] for x in keywords]
+                ex['target'] = [x['spa'] for x in keywords]
 
         elif ex['type'] == 'translation':
             keyphrase = random.choice(unit['keyphrases'])
             ex['variant'] = random.choice(('to_target', 'to_source'))
             if ex['variant'] == 'to_target':
-                ex['text'] = utils.to_canon(keyphrase['es'])
+                ex['text'] = utils.to_canon(keyphrase['spa'])
                 ex['target'] = keyphrase['eus']
             else:
                 ex['text'] = utils.to_canon(keyphrase['eus'])
-                ex['target'] = keyphrase['es']
+                ex['target'] = keyphrase['spa']
 
     return lesson 
 
@@ -253,7 +253,7 @@ if 'userdata' not in st.session_state:
 
 # Load course
 if not 'course' in st.session_state or st.session_state['course'] is None:
-    with open(os.path.join('data', 'course_es-eus_A1.json'), encoding='utf-8') as f:
+    with open(os.path.join('data', 'course_spa-eus_A1.json'), encoding='utf-8') as f:
         st.session_state['course'] = json.load(f)
 
 # Sidebar
@@ -328,7 +328,7 @@ for (k_unit, u) in enumerate(st.session_state['course']['units']):
             disabled = future
             k_lesson = -1 if (past or future) else next_lesson[3]
 
-            key = 'es-eus_A1-{0:02d}-{1:02d}'.format(k_unit, k_subunit)
+            key = 'spa-eus_A1-{0:02d}-{1:02d}'.format(k_unit, k_subunit)
             kwargs={'unit': k_unit, 'subunit': k_subunit, 'lesson': k_lesson}
             # If this is an past lesson, give 3 times less xp and gp
             if k_lesson == -1:

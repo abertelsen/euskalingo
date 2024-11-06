@@ -102,6 +102,9 @@ def to_canon(target):
             
     return ' '.join(out)
 
+def to_filename(phrase):
+    return to_canon(phrase).lower().translate(str.maketrans(" ", "_", "\/:*?\"<>|¿¡!,;"))
+
 def to_list(target):
     out = []
 
