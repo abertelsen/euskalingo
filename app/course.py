@@ -79,16 +79,16 @@ def on_attempt_cancel():
     st.session_state['lesson']['state'] = 'cancelled'
 
 def on_attempt_finish():
-    conn = st.connection(name='turso', type='sql')
+    conn = st.connection(name='turso', type='sql', ttl=30)
 
-    rec = conn.query('SELECT user_xp, user_gp FROM users WHERE user_name = :u LIMIT 1',
+    rec = conn.query('SELECT xp, gp FROM users WHERE name = :u LIMIT 1',
                      params={'u': st.session_state['username']}, ttl=0)
     userdata = rec.iloc[0].to_dict()
 
     with conn.session as session:
-        session.execute(text('UPDATE users SET user_xp = :x, user_gp = :g WHERE user_name = :u'),
-                        params={'x': userdata['user_xp'] + st.session_state['lesson']['attempt']['xp'],
-                                'g': userdata['user_gp'] + st.session_state['lesson']['attempt']['gp'],
+        session.execute(text('UPDATE users SET xp = :x, gp = :g WHERE name = :u'),
+                        params={'x': userdata['xp'] + st.session_state['lesson']['attempt']['xp'],
+                                'g': userdata['gp'] + st.session_state['lesson']['attempt']['gp'],
                                 'u': st.session_state['username']})
         session.commit()
 
@@ -246,9 +246,9 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
 
 # Load user's progress.
 if 'userdata' not in st.session_state:
-    conn = st.connection('turso', 'sql', ttl=60)
-    records = conn.query("SELECT user_name, user_nextlesson, user_xp, user_gp FROM users WHERE user_name = :u LIMIT 1", 
-                            params={"u": st.session_state['username']}, ttl=60)
+    conn = st.connection('turso', 'sql', ttl=30)
+    records = conn.query("SELECT name, nextlesson, xp, gp FROM users WHERE name = :u LIMIT 1", 
+                            params={"u": st.session_state['username']}, ttl=30)
     st.session_state['userdata'] = records.iloc[0].to_dict()
 
 # Load course
@@ -258,9 +258,9 @@ if not 'course' in st.session_state or st.session_state['course'] is None:
 
 # Sidebar
 with st.sidebar:
-    st.markdown(':id: {0}'.format(st.session_state['userdata']['user_name']))
-    st.markdown(':dart: {0} **xp**'.format(st.session_state['userdata']['user_xp']))
-    st.markdown(':coin: {0} **gp**'.format(st.session_state['userdata']['user_gp']))
+    st.markdown(':id: {0}'.format(st.session_state['userdata']['name']))
+    st.markdown(':dart: {0} **xp**'.format(st.session_state['userdata']['xp']))
+    st.markdown(':coin: {0} **gp**'.format(st.session_state['userdata']['gp']))
 
 # RENDERING
 
@@ -270,7 +270,7 @@ if 'attempt' in st.session_state['lesson'].keys():
         and st.session_state['lesson']['attempt']['progress'] >= 1.0:
 
         # Only update if the last exercise was completed.
-        if st.session_state['lesson']['index'] >= st.session_state['userdata']['user_nextlesson']:
+        if st.session_state['lesson']['index'] >= st.session_state['userdata']['nextlesson']:
 
             lesson_index = st.session_state['lesson']['index'].split(sep='.', maxsplit=3)
             lesson_index[1:4] = list(map(int, lesson_index[1:4]))
@@ -295,20 +295,20 @@ if 'attempt' in st.session_state['lesson'].keys():
                         next_lesson[0] = 'A2'
 
             next_lesson[1:4] = list(map(lambda x: f'{x:02d}', next_lesson[1:4]))
-            st.session_state['userdata']['user_nextlesson'] = '.'.join(next_lesson)
+            st.session_state['userdata']['nextlesson'] = '.'.join(next_lesson)
 
             # Save to database
-            conn = st.connection('turso', 'sql')
+            conn = st.connection('turso', 'sql', ttl=30)
             with conn.session as session:
-                session.execute(sqlalchemy.text('UPDATE users SET user_nextlesson= :n WHERE user_name= :u ;'),
-                                params={'n': st.session_state['userdata']['user_nextlesson'],
+                session.execute(sqlalchemy.text('UPDATE users SET nextlesson= :n WHERE name= :u ;'),
+                                params={'n': st.session_state['userdata']['nextlesson'],
                                         'u': st.session_state['username']})
                 session.commit()
 
     st.session_state['lesson']['attempt'] = {}
 
 # GUI
-next_lesson = st.session_state['userdata']['user_nextlesson'].split(sep='.', maxsplit=3)
+next_lesson = st.session_state['userdata']['nextlesson'].split(sep='.', maxsplit=3)
 next_lesson[1:4] = list(map(int, next_lesson[1:4]))
 
 for (k_unit, u) in enumerate(st.session_state['course']['units']):

@@ -28,14 +28,14 @@ def on_attempt_cancel():
 def on_attempt_finish():
     conn = st.connection(name='turso', type='sql')
 
-    rec = conn.query('SELECT user_xp, user_gp FROM users WHERE user_name = :u LIMIT 1',
+    rec = conn.query('SELECT xp, gp FROM users WHERE name = :u LIMIT 1',
                      params={'u': st.session_state['username']}, ttl=0)
     userdata = rec.iloc[0].to_dict()
 
     with conn.session as session:
-        session.execute(text('UPDATE users SET user_xp = :x, user_gp = :g WHERE user_name = :u'),
-                        params={'x': userdata['user_xp'] + st.session_state['lesson']['attempt']['xp'],
-                                'g': userdata['user_gp'] + st.session_state['lesson']['attempt']['gp'],
+        session.execute(text('UPDATE users SET xp = :x, gp = :g WHERE name = :u'),
+                        params={'x': userdata['xp'] + st.session_state['lesson']['attempt']['xp'],
+                                'g': userdata['gp'] + st.session_state['lesson']['attempt']['gp'],
                                 'u': st.session_state['username']})
         session.commit()
 

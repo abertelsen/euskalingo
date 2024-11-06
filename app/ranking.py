@@ -3,25 +3,28 @@ import sqlalchemy
 
 st.title('Ranking', anchor=False)
 
-conn = st.connection(name='turso', type='sql', ttl=60)
+conn = st.connection(name='turso', type='sql', ttl=30)
 
-data = conn.query("SELECT user_name, user_xp FROM users ORDER BY user_xp DESC LIMIT 30")
+data = conn.query("SELECT name, xp FROM users ORDER BY xp DESC LIMIT 30", ttl=30)
 
-data['user_position'] = data.index + 1
-data = data.set_index('user_position')
+with st.container(border=True):
+    for i, r in enumerate(data.iloc):
+        p = i+1
+        r = r.to_dict()
+       
+        if p==1:
+            p_str = "🥇"
+        elif p==2:
+            p_str = "🥈"
+        elif p==3:
+            p_str = "🥉"
+        else:
+            p_str = "{0}.".format(p)
 
-data['user_comment'] = ''
-data.loc[1, 'user_comment'] = '🥇'
-data.loc[2, 'user_comment'] = '🥈'
-data.loc[3, 'user_comment'] = '🥉'
-data.loc[5, 'user_comment'] = '⏬'
+        st.metric(label="position", value="{0} {1}".format(p_str, r["name"]), delta="🎯 {0} xp".format(r["xp"]), label_visibility="collapsed")
 
-cc = {
-    'user_position': st.column_config.NumberColumn(label='Posición', width='small'),
-    'user_comment': st.column_config.TextColumn(label='', width='small'),
-    'user_name': st.column_config.TextColumn(label='ID', width='large'),
-    'user_xp': st.column_config.NumberColumn(label='Puntuación')
-    }
-co = ['user_comment', 'user_name', 'user_xp']
-
-st.dataframe(data=data, use_container_width=True, column_config=cc, column_order=co)
+        # cols = st.columns([.7, .3], vertical_alignment="bottom")
+        # with cols[0]:
+        #     st.subheader(body="{0} {1}".format(p_str, r["name"]), anchor=False, divider=True)
+        # with cols[1]:
+        #     st.markdown(body="#### :dart: {0} xp".format(r["xp"]))

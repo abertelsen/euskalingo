@@ -111,7 +111,7 @@ from streamlit_authenticator.utilities import Validator
 #                         if self.path and self.cookie_controller.get_cookie():
 #                             st.rerun()
 
-
+# TODO I really dislike the idea of loading a file containing ALL users' data.
 with open(os.path.join('data', 'users.json'), encoding='utf-8') as file:
     config = json.load(file)
 
@@ -146,7 +146,7 @@ if st.session_state['authentication_status']:
     # UPDATE USER DETAILS
     with st.expander('Actualizar datos personales...'):
         try:
-            if authenticator.update_user_details(st.session_state['username']):
+            if authenticator.update_details(st.session_state['username']):
                 with open(os.path.join('data', 'users.json'), 'w', encoding='utf-8') as file:
                     json.dump(config, file)
                 st.success('Entries updated successfully')
