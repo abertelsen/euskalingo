@@ -78,6 +78,7 @@ def on_exercise_next():
 
 def on_attempt_cancel():
     st.session_state['lesson']['state'] = 'cancelled'
+    del st.session_state["exercise"]
 
 def on_attempt_finish():
     conn = st.connection(name='turso', type='sql', ttl=30)
@@ -194,6 +195,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
         ], use_container_width=True, index=1, variant="filled", key='progress_buttons',return_index=True)
         if buttons_index == 0:
             on_attempt_cancel()
+            st.rerun()
 
         # GUI
         exercise = st.session_state['lesson']['exercises'][st.session_state['lesson']['attempt']['exercise_index']]
