@@ -7,6 +7,7 @@ import sqlalchemy
 from sqlalchemy import text as text 
 import pandas as pd
 import streamlit as st
+import streamlit_antd_components as sac
 from streamlit_extras.bottom_container import bottom
 
 import os
@@ -183,13 +184,16 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
             st.rerun()            
 
         # HEADER
+
+        # Debugging info can be printed here...
         # st.info(st.session_state['username'])
 
-        cols = st.columns([0.1, 0.9], vertical_alignment='center')
-        with cols[0]:
-            st.button(label=':material/close:', on_click=on_attempt_cancel)
-        with cols[1]:
-            st.progress(value=st.session_state['lesson']['attempt']['progress'])
+        buttons_index = sac.buttons(items=[
+            sac.ButtonsItem(label="Cancelar", icon="x-circle", color="red"),
+            sac.ButtonsItem(label="Progreso: {0}%".format(int(100 * st.session_state['lesson']['attempt']['progress'])), disabled=True)
+        ], use_container_width=True, index=1, variant="filled", key='progress_buttons',return_index=True)
+        if buttons_index == 0:
+            on_attempt_cancel()
 
         # GUI
         exercise = st.session_state['lesson']['exercises'][st.session_state['lesson']['attempt']['exercise_index']]
@@ -209,10 +213,6 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
             answer = exercises.translation(text=exercise['text'], target=exercise['target'])
 
         with bottom():
-            st.button(label='Comprobar', use_container_width=True, type='primary',
-                disabled = st.session_state['exercise']['state'] == 'checked', 
-                on_click=on_exercise_check, kwargs={'answer': answer})
-
             if st.session_state['exercise']['state'] == 'checked':
 
                 if isinstance(exercise['target'], list):
@@ -232,13 +232,21 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
                             **¡Incorrecto!**  
                             {0}'''.format(utils.to_canon(target)))
 
-                cols = st.columns((2,1), vertical_alignment='bottom')
+                cols = st.columns(3, vertical_alignment='bottom')
 
                 with cols[0]:
-                    st.empty()    
+                    st.button(label="Reportar error...", use_container_width=True, type="secondary", disabled=True)
                 
                 with cols[1]:
+                    st.empty()
+
+                with cols[2]:
                     st.button(label='Siguiente...', use_container_width=True, type='primary', on_click=on_exercise_next)
+
+            else:
+                st.button(label='Comprobar', use_container_width=True, type='primary',
+                disabled = st.session_state['exercise']['state'] == 'checked', 
+                on_click=on_exercise_check, kwargs={'answer': answer})
 
     st.stop()
 
