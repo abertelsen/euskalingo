@@ -1,126 +1,271 @@
-{
-    "units": [
-        {"unit_title": "Presentándose", 
-        "keywords": [
-            {"eus": "Kaixo!", "spa": "¡Hola!"},
-            {"eus": "Egun on!", "spa": "¡Buenos días!"},
-            {"eus": "Arratsalde on!", "spa": "¡Buenas tardes!"},
-            {"eus": "Gabon!", "spa": "¡Buenas noches!"},
-            {"eus": "Agur!", "spa": "¡Adiós!"},
-            {"eus": "Bihar arte!", "spa": "¡Hasta mañana!"},
-            {"eus": "Gero arte!", "spa": "¡Hasta pronto!"},
-            {"eus": "ni", "spa": "yo"},
-            {"eus": "zu", "spa": "tú"},
-            {"eus": "hura", "spa": "él/ella"},
-            {"eus": "gu", "spa": "nosotros/nosotras"},
-            {"eus": "zuek", "spa": "vosotros/vosotras"},
-            {"eus": "haiek", "spa": "ellos/ellas"},
-            {"eus": "eta", "spa": "y"},
-            {"eus": "edo", "spa": "o"},
-            {"eus": "bai", "spa": "sí"},
-            {"eus": "ez", "spa": "no"}
-        ],
-        "keyphrases": [
-            {"eus": "(Ni) Gorka <naiz>", "spa": "(Yo) soy Gorka"},
-            {"eus": "(Zu) ikaslea <zara>", "spa": "(Tú) eres estudiante"},
-            {"eus": "(Hura) maisua <da>", "spa": "(Él) es maestro"},
-            {"eus": "(Hura) andereñoa <da>", "spa": "(Ella) es maestra"},
-            {"eus": "(Gu) ikasleak <gara>", "spa": "(Nosotros) somos estudiantes"},
-            {"eus": "(Zuek) gizonak <zarete>", "spa": "(Vosotros) sois hombres"},
-            {"eus": "(Zuek) emakumeak <zarete>", "spa": "(Vosotras) sois mujeres"},
-            {"eus": "(Haiek) mutilak <dira>", "spa": "(Ellos) son chicos"},
-            {"eus": "(Haiek) neskak <dira>", "spa": "(Ellas) son chicas"}
-        ],
-        "subunits":[
-            {"subunit_title": "Introducción", "lessons": 2, "types": ["choices", "translation"]},
-            {"subunit_title": "Parte 2", "lessons": 2, "types": ["choices", "translation"]},
-            {"subunit_title": "Práctica", "lessons": 2, "types": ["choices", "translation"]},
-            {"subunit_title": "Parte 3", "lessons": 2, "types": ["choices", "translation"]},
-            {"subunit_title": "Prueba", "lessons": 1, "types": ["choices", "translation"]}
-        ]},
+{"units": [
+    {"unit_title": "Presentándose", 
+    "keywords": [
+        {"eus": "Kaixo!", "spa": "¡Hola!"},
+        {"eus": "Egun on!", "spa": "¡Buenos días!"},
+        {"eus": "Arratsalde on!", "spa": "¡Buenas tardes!"},
+        {"eus": "Gabon!", "spa": "¡Buenas noches!"},
+        {"eus": "Agur!", "spa": "¡Adiós!"},
+        {"eus": "Bihar arte!", "spa": "¡Hasta mañana!"},
+        {"eus": "Gero arte!", "spa": "¡Hasta pronto!"},
+        {"eus": "ni", "spa": "yo"},
+        {"eus": "zu", "spa": "tú"},
+        {"eus": "hura", "spa": "él/ella"},
+        {"eus": "gu", "spa": "nosotros/nosotras"},
+        {"eus": "zuek", "spa": "vosotros/vosotras"},
+        {"eus": "haiek", "spa": "ellos/ellas"},
+        {"eus": "eta", "spa": "y"},
+        {"eus": "edo", "spa": "o"},
+        {"eus": "bai", "spa": "sí"},
+        {"eus": "ez", "spa": "no"}
+    ],
+    "keyphrases": [
+        {"eus": "(Ni) Gorka <naiz>", "spa": "(Yo) soy Gorka"},
+        {"eus": "(Zu) ikaslea <zara>", "spa": "(Tú) eres estudiante"},
+        {"eus": "(Hura) maisua <da>", "spa": "(Él) es maestro"},
+        {"eus": "(Hura) andereñoa <da>", "spa": "(Ella) es maestra"},
+        {"eus": "(Gu) ikasleak <gara>", "spa": "(Nosotros) somos estudiantes"},
+        {"eus": "(Zuek) gizonak <zarete>", "spa": "(Vosotros) sois hombres"},
+        {"eus": "(Zuek) emakumeak <zarete>", "spa": "(Vosotras) sois mujeres"},
+        {"eus": "(Haiek) mutilak <dira>", "spa": "(Ellos) son chicos"},
+        {"eus": "(Haiek) neskak <dira>", "spa": "(Ellas) son chicas"}
+    ],
+    "subunits":[
+        {"subunit_title": "Introducción", "lessons": 2, "types": ["choices", "translation"]},
+        {"subunit_title": "Parte 2", "lessons": 2, "types": ["choices", "translation"]},
+        {"subunit_title": "Práctica", "lessons": 2, "types": ["choices", "translation"]},
+        {"subunit_title": "Parte 3", "lessons": 2, "types": ["choices", "translation"]},
+        {"subunit_title": "Prueba", "lessons": 1, "types": ["choices", "translation"]}
+    ]},
 
-        {"unit_title": "El verbo «egon»",
+    {"unit_title": "El verbo «egon»",
+    "keywords":[
+        {"eus": "egon", "spa": "estar"},
+        {"eus": "etxe", "spa": "casa,"},
+        {"eus": "hemen", "spa": "aquí"},
+        {"eus": "hori", "spa": "ahí"},
+        {"eus": "han", "spa": "allí"},
+        {"eus": "hondartza", "spa": "playa"},
+        {"eus": "kale", "spa": "calle"},
+        {"eus": "ondo", "spa": "bien"},
+        {"eus": "parke", "spa": "parque"},
+        {"eus": "udaletxe", "spa": "ayuntamiento"}
+    ],
+    "keyphrases":[
+        {"eus": "(Hura) han <dago>", "spa": "(Él,Ella) está allí"},
+        {"eus": "(Ni) ondo <nago>", "spa": "(Yo) estoy bien"},
+        {"eus": "(Ni) ez <nago> ondo", "spa": "(Yo) no estoy bien"},
+        {"eus": "(Ni) etxean nago", "spa": "(Yo) estoy en casa"},
+        {"eus": "Hemen parkea dago", "spa": "Aquí hay un parque"},
+        {"eus": "Han udaletxea dago", "spa": "Ahí está el ayuntamiento"},
+        {"eus": "Donostian hondartzak daude", "spa": "Hay playas en San Sebastián"},
+        {"eus": "Gazteizen ez daude hondartzarik", "spa": "No hay playas en Vitoria"}
+    ],
+    "subunits": [
+        {"subunit_title": "Introducción", "lessons": 2},
+        {"subunit_title": "Parte 2", "lessons": 2},
+        {"subunit_title": "Práctica", "lessons": 2},
+        {"subunit_title": "Parte 3", "lessons": 2},
+        {"subunit_title": "Prueba", "lessons": 1}
+    ]},
+
+    {"unit_title": "Haciendo preguntas",
+    "keywords": [
+        {"eus": "ardo", "spa": "vino"},
+        {"eus": "emakume", "spa": "mujer"},
+        {"eus": "gizon", "spa": "hombre"},
+        {"eus": "gasolindegia", "spa": "gasolinera"},
+        {"eus": "hotel", "spa": "hotel"},
+        {"eus": "komuna", "spa": "baño"},
+        {"eus": "non", "spa": "donde"},
+        {"eus": "nor", "spa": "quien"},
+        {"eus": "zer", "spa": "que"}
+    ],
+    "keyphrases":[
+        {"eus": "Begira, han daude gasolindegiak", "spa": "Mira, allí hay una gasolinera"},
+        {"eus": "Hor badago parkerik?", "spa": "¿Ahí hay parques?"},
+        {"eus": "Ez, hor ez dago parkerik", "spa": "No, ahí no hay parques"},
+        {"eus": "<Non> dago eliza?", "spa": "¿Dónde está el hotel?"},
+        {"eus": "<Non> dago hotela?", "spa": "¿Dónde está el hotel?"},
+        {"eus": "Barkatu, <non> dago komunak?", "spa": "Disculpe, ¿dónde están los baños?"},
+        {"eus": "<Non> gaude?", "spa": "¿Dónde estamos?"},
+        {"eus": "<Non> zaude?", "spa": "¿Dónde estás?"},
+        {"eus": "<Nor> zara?", "spa": "¿Quién eres?"},
+        {"eus": "<Nor> da gizon hura?", "spa": "¿Quién es ese hombre?"},
+        {"eus": "<Zer> moduz zaude?", "spa": "¿Cómo estás?"},
+        {"eus": "<Zer> moduz zaudete?", "spa": "¿Cómo estáis?"}
+    ],
+    "subunits": [
+        {"subunit_title": "Introducción", "lessons": 2},
+        {"subunit_title": "Parte 2", "lessons": 2},
+        {"subunit_title": "Práctica", "lessons": 2},
+        {"subunit_title": "Parte 3", "lessons": 2},
+        {"subunit_title": "Prueba", "lessons": 1}
+    ]},
+
+    {"unit_title": "Usando adjetivos",
+        "keywords": [
+            {"eus": "berri", "spa": "nuevo"},
+            {"eus": "gaizki", "spa": "malo"},
+            {"eus": "haserre", "spa": "enfadado"},
+            {"eus": "lasai", "spa": "tranquilo"},
+            {"eus": "on", "spa": "bueno"},
+            {"eus": "polita", "spa": "bonito"},
+            {"eus": "pozik", "spa": "alegre"},
+            {"eus": "triste", "spa": "triste"},
+            {"eus": "zahar", "spa": "viejo"}
+        ]
+    },
+
+    {"unit_title": "Números", 
         "keywords":[
-            {"eus": "egon", "spa": "estar"},
-            {"eus": "etxe", "spa": "casa,"},
-            {"eus": "hemen", "spa": "aquí"},
-            {"eus": "hori", "spa": "ahí"},
-            {"eus": "han", "spa": "allí"},
-            {"eus": "hondartza", "spa": "playa"},
-            {"eus": "kale", "spa": "calle"},
-            {"eus": "ondo", "spa": "bien"},
-            {"eus": "parke", "spa": "parque"},
-            {"eus": "udaletxe", "spa": "ayuntamiento"}
+            {"eus": "bat", "spa": "uno"},
+            {"eus": "bi", "spa": "dos"},
+            {"eus": "hiru", "spa": "tres"},
+            {"eus": "lau", "spa": "cuatro"},
+            {"eus": "bost", "spa": "cinco"},
+            {"eus": "sei", "spa": "seis"},
+            {"eus": "zazpi", "spa": "siete"},
+            {"eus": "zortzi", "spa": "ocho"},
+            {"eus": "bederatzi", "spa": "nueve"},
+            {"eus": "hamar", "spa": "diez"}
         ],
-        "keyphrases":[
-            {"eus": "(Hura) han <dago>", "spa": "(Él,Ella) está allí"},
-            {"eus": "(Ni) ondo <nago>", "spa": "(Yo) estoy bien"},
-            {"eus": "(Ni) ez <nago> ondo", "spa": "(Yo) no estoy bien"},
-            {"eus": "(Ni) etxean nago", "spa": "(Yo) estoy en casa"},
-            {"eus": "Hemen parkea dago", "spa": "Aquí hay un parque"},
-            {"eus": "Han udaletxea dago", "spa": "Ahí está el ayuntamiento"},
-            {"eus": "Donostian hondartzak daude", "spa": "Hay playas en San Sebastián"},
-            {"eus": "Gazteizen ez daude hondartzarik", "spa": "No hay playas en Vitoria"}
-        ],
-        "subunits": [
-            {"subunit_title": "Introducción", "lessons": 2},
-            {"subunit_title": "Parte 2", "lessons": 2},
-            {"subunit_title": "Práctica", "lessons": 2},
-            {"subunit_title": "Parte 3", "lessons": 2},
-            {"subunit_title": "Prueba", "lessons": 1}
-        ]},
+    "keyphrases":[
+        {"eus": "Auzo honetan bi taberna daude", "spa": "En este barrio hay dos bares"}
+    ],
+    "subunits": [
+        {"subunit_title": "Introducción", "lessons": 2},
+        {"subunit_title": "Parte 2", "lessons": 2},
+        {"subunit_title": "Práctica", "lessons": 2},
+        {"subunit_title": "Parte 3", "lessons": 2},
+        {"subunit_title": "Prueba", "lessons": 1}
+    ]},
 
-        {"unit_title": "Haciendo preguntas",
-        "keywords": [
-            {"eus": "ardo", "spa": "vino"},
-            {"eus": "emakume", "spa": "mujer"},
-            {"eus": "gizon", "spa": "hombre"},
-            {"eus": "hotel", "spa": "hotel"},
-            {"eus": "komuna", "spa": "baño"},
-            {"eus": "non", "spa": "donde"},
-            {"eus": "nor", "spa": "quien"},
-            {"eus": "zer", "spa": "que"}
-        ],
-        "keyphrases":[
-            {"eus": "<Non> dago hotela?", "spa": "¿Dónde está el hotel?"},
-            {"eus": "Barkatu, <non> dago komunak?", "spa": "Disculpe, ¿dónde están los baños?"},
-            {"eus": "<Non> gaude?", "spa": "¿Dónde estamos?"},
-            {"eus": "<Non> zaude?", "spa": "¿Dónde estás?"},
-            {"eus": "<Nor> zara?", "spa": "¿Quién eres?"},
-            {"eus": "<Nor> da gizon hura?", "spa": "¿Quién es ese hombre?"},
-            {"eus": "<Zer> moduz zaude?", "spa": "¿Cómo estás?"},
-            {"eus": "<Zer> moduz zaudete?", "spa": "¿Cómo estáis?"}
-        ],
-        "subunits": [
-            {"subunit_title": "Introducción", "lessons": 2},
-            {"subunit_title": "Parte 2", "lessons": 2},
-            {"subunit_title": "Práctica", "lessons": 2},
-            {"subunit_title": "Parte 3", "lessons": 2},
-            {"subunit_title": "Prueba", "lessons": 1}
-        ]},
+    {"unit_title": "Decir las horas", 
+    "keywords":[
+        {"eus": "ordu", "spa": "hora"},
+        {"eus": "erdiak", "spa": "media"},
+        {"eus": "lauren", "spa": "cuarto"},
+        {"eus": "orain", "spa": "ahora"}
+    ],
+    "keyphrases":[
+        {"eus": "Orain bostak hamar gutxi dira", "spa": "Ahora son las cinco menos diez"},
+        {"eus": "Ordu biak dira", "spa": "Son las dos en punto"},
+        {"eus": "Zazpi eta erdiak dira", "spa": "Son las siete y media"}
+    ],
+    "subunits": [
+    {"subunit_title": "Introducción", "lessons": 2},
+    {"subunit_title": "Parte 2", "lessons": 2},
+    {"subunit_title": "Práctica", "lessons": 2},
+    {"subunit_title": "Parte 3", "lessons": 2},
+    {"subunit_title": "Prueba", "lessons": 1}
+    ]},
 
-        {"unit_title": "Los verbos «joan» y «etorri»", 
-            "keywords":[
-                {"eus": "etorri", "spa": "venir"},
-                {"eus": "joan", "spa": "ir"},
-                {"eus": "nora", "spa": "a donde"},
-                {"eus": "nondik", "spa": "de donde"}
-            ],
-        "subunits": [
-            {"subunit_title": "Introducción", "lessons": 2},
-            {"subunit_title": "Parte 2", "lessons": 2},
-            {"subunit_title": "Práctica", "lessons": 2},
-            {"subunit_title": "Parte 3", "lessons": 2},
-            {"subunit_title": "Prueba", "lessons": 1}
-        ]},
-        
-        {"unit_title": "Indicando posesión",
-        "subunits": [
-            {"subunit_title": "Introducción", "lessons": 2},
-            {"subunit_title": "Parte 2", "lessons": 2},
-            {"subunit_title": "Práctica", "lessons": 2},
-            {"subunit_title": "Parte 3", "lessons": 2},
-            {"subunit_title": "Prueba", "lessons": 1}
-        ]}
+    {"unit_title": "La familia",
+    "keywords":[
+        {"eus": "aita", "spa": "padre"},
+        {"eus": "ama", "spa": "madre"},
+        {"eus": "gurasoak", "spa": "padres"},
+        {"eus": "seme", "spa": "hijo"},
+        {"eus": "alaba", "spa": "hija"},
+        {"eus": "seme-alabak", "spa": "hijos"},
+        {"eus": "aitona", "spa": "abuelo"},
+        {"eus": "amona", "spa": "abuela"},
+        {"eus": "senar", "spa": "esposo"},
+        {"eus": "osaba", "spa": "tío"}
     ]
+    },
+
+    {"unit_title": "Hablando sobre el trabajo",
+    "keywords":[
+        {"eus": "abokatu", "spa": "abogado"},
+        {"eus": "apaiz", "spa": "sacerdote"},
+        {"eus": "arrantzale", "spa": "pescador"},
+        {"eus": "bezero", "spa": "cliente"},
+        {"eus": "bidaiari", "spa": "viajero"},
+        {"eus": "erizain", "spa": "enfermera"},
+        {"eus": "erosketa", "spa": "compra"},
+        {"eus": "fubolari", "spa": "futbolista"},
+        {"eus": "gidari", "spa": "conductor"},
+        {"eus": "idazkari", "spa": "secretario"},
+        {"eus": "idazle", "spa": "escritor"},
+        {"eus": "ingeniari", "spa": "ingeniero"},
+        {"eus": "lan", "spa": "trabajo"},
+        {"eus": "langile", "spa": "empleado"},
+        {"eus": "mediku", "spa": "médico"},
+        {"eus": "mekanikari", "spa": "mecánico"},
+        {"eus": "salmenta", "spa": "venta"},
+        {"eus": "sukaldari", "spa": "cocinero"},
+        {"eus": "zuzendari", "spa": "director"}
+    ]
+    },
+
+    {"unit_title": "Los verbos «joan» y «etorri»", 
+        "keywords":[
+            {"eus": "etorri", "spa": "venir"},
+            {"eus": "joan", "spa": "ir"},
+            {"eus": "nora", "spa": "a donde"},
+            {"eus": "nondik", "spa": "de donde"}
+        ],
+    "subunits": [
+        {"subunit_title": "Introducción", "lessons": 2},
+        {"subunit_title": "Parte 2", "lessons": 2},
+        {"subunit_title": "Práctica", "lessons": 2},
+        {"subunit_title": "Parte 3", "lessons": 2},
+        {"subunit_title": "Prueba", "lessons": 1}
+    ]},
+    
+    {"unit_title": "Indicando posesión",
+    "keywords":[
+        {"eus": "nire", "spa": "mi"},
+        {"eus": "zure", "spa": "tu"},
+        {"eus": "gure", "spa": "nuestro"},
+        {"eus": "nirea", "spa": "mío"},
+        {"eus": "zurea", "spa": "tuyo"},
+        {"eus": "gurea", "spa": "nuestro"}
+    ],
+    "subunits": [
+        {"subunit_title": "Introducción", "lessons": 2},
+        {"subunit_title": "Parte 2", "lessons": 2},
+        {"subunit_title": "Práctica", "lessons": 2},
+        {"subunit_title": "Parte 3", "lessons": 2},
+        {"subunit_title": "Prueba", "lessons": 1}
+    ]},
+
+    {"unit_title": "Verbos en presente"},
+
+    {"unit_title": "Nork"},
+
+    {"unit_title": "Los verbos «eduki» y «jakin»",
+        "keyphrases":[
+            {"eus": "(Nik) daukat", "spa": "(Yo) [lo,la] tengo"},
+            {"eus": "(Zuk) daukazu", "spa": "(Tú) [lo,la] tienes"},
+            {"eus": "(Hark) dauka", "spa": "(Él,ella) [lo,la] tiene"},
+            {"eus": "(Guk) daukagu", "spa": "(Nosotros) [lo,la] tenemos"},
+            {"eus": "(Zuek) daukazue", "spa": "(Vosotros) [lo,la] tenéis"},
+            {"eus": "(Haiek) daukate", "spa": "(Ellos,ellas) [lo,la] tienen"},
+            {"eus": "(Nik) dauzkat", "spa": "(Yo) [los,las] tengo"},
+            {"eus": "(Zuk) dauzkazu", "spa": "(Tú) [los,las] tienes"},
+            {"eus": "(Hark) dauzka", "spa": "(Él,ella) [los,las] tiene"},
+            {"eus": "(Guk) dauzkagu", "spa": "(Nosotros) [los,las] tenemos"},
+            {"eus": "(Zuek) dauzkazue", "spa": "(Vosotros) [los,las] tenéis"},
+            {"eus": "(Haiek) dauzkate", "spa": "(Ellos,ellas) [los,las] tienen"}
+        ]
+    },
+
+    {"unit_title": "Nor-Nori",
+        "keywords":[
+            {"eus": "galdu", "spa": "perder"},
+            {"eus": "heldu", "spa": "llegar"},
+            {"eus": "jausi", "spa": "caer"}
+        ],
+        "keyphrases":[
+            {"eus": "(Niri) gutuna heldu zait", "spa": "Me ha llegado la carta"},
+            {"eus": "(Niri) giltzak galdu zaizkit", "spa": "(Yo) he perdido las llaves"},
+            {"eus": "Nori galdu zaizkio giltzak?", "spa": "¿A quién se le han perdido las llaves?"},
+            {"eus": "(Zuri) nire gutuna heldu zaizu?", "spa": "¿A tí te ha llegado mi carta?"},
+            {"eus": "Nire senarrari giltzak galtzen zaizkio beti", "spa": "A mi esposo siempre se le pierden las llaves"}
+        ]
+    }
+]
 }
