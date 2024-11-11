@@ -234,7 +234,22 @@
 
     {"unit_title": "Verbos en presente"},
 
-    {"unit_title": "Nork"},
+    {"unit_title": "Nork",
+        "keywords":[
+            {"eus": "ikasi", "spa": "estudiar"},
+            {"eus": "jokatu", "spa": "jugar"}
+        ],
+        "keyphrases":[
+            {"eus": "(Nik) egiten dut", "spa": "(Yo) [lo,la] hago"},
+            {"eus": "(Zuk) egiten duzu", "spa": "(Tú) [lo,la] haces"},
+            {"eus": "(Hark) egiten du", "spa": "(Él,ella) [lo,la] hace"},
+            {"eus": "(Guk) egiten dugu", "spa": "(Yo) [lo,la] hago"},
+            {"eus": "(Zuek) egiten duzue", "spa": "(Tú) [lo,la] haces"},
+            {"eus": "(Haiek) egiten dute", "spa": "(Él,ella) [lo,la] hace"},
+            {"eus": "(Nik) euskara ikasi dut", "spa": "(Yo) he estudiado euskera"},
+            {"eus": "(Hura) futbolean jokatzen du", "spa": "(Él,ella) juega (al) fútbol"}
+        ]
+    },
 
     {"unit_title": "Los verbos «eduki» y «jakin»",
         "keyphrases":[
@@ -266,6 +281,29 @@
             {"eus": "(Zuri) nire gutuna heldu zaizu?", "spa": "¿A tí te ha llegado mi carta?"},
             {"eus": "Nire senarrari giltzak galtzen zaizkio beti", "spa": "A mi esposo siempre se le pierden las llaves"}
         ]
-    }
-]
-}
+    },
+
+    {"unit_title": "Nor-nori-nork",
+        "keywords":[
+            {"eus": "ekarri", "spa": "traer"},
+            {"eus": "eraman", "spa": "llevar"},
+            {"eus": "lagundu", "spa": "ayudar"},
+            {"eus": "eraztun", "spa": "anillo"}
+        ],
+        "keyphrases":[
+            {"eus": "Banatzaileak (zuri) bihar paketea emango dizu", "spa": "El repartidor te entregará el paquete mañana"},
+            {"eus": "(Nik) (zuri) kafe bat eramango dizut", "spa": "(Yo) te llevaré un café"},
+            {"eus": "(Nik) pastel bat erosi dizuet (zuei)", "spa": "(Yo) os he comprado un pastel"},
+            {"eus": "(Nik) gozoki bat erosi diet nire seme txikiari", "spa": "(Yo) le he comprado un caramelo a mi hijo menor"},
+            {"eus": "Nire senarra loreak erosi dit", "spa": "Mi marido me ha comprado flores"},
+            {"eus": "Mirenen senargaiak eraztun bat oparitu dio", "spa": "El novio de Miren le ha regalado un anillo"},
+            {"eus": "(Nik) txokolate bat erosiko diot emazteari", "spa": "(Yo) compraré un chocolate para mi esposa"},
+            {"eus": "(Guk) ez dizuegu janaria mahaira eramango", "spa": "(Nosotros) no os llevaremos la comida a la mesa"},
+            {"eus": "(Guk) kanta berri bat abestuko dizuegu (zuei)", "spa": "(Nosotros) os cantaremos una canción nueva"},
+            {"eus": "(Hark) (zuri) lagunduko dizu", "spa": "(Él,Ella) te ayudará"},
+            {"eus": "(Haiek) bihar dirua ekarriko digute (guri)", "spa": "Mañana (ellos,ellas) nos traerán el dinero"}
+        ]
+    },
+
+    {"unit_title": "Usando verbos modales"}
+]}
