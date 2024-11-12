@@ -39,7 +39,7 @@ def blankfill(text: str, target: str):
     answer = st.text_input(label='...', label_visibility='collapsed', disabled=st.session_state["exercise"]["state"] == "checked")
     if len(t[1].strip()) > 0:
         st.subheader('...' + t[1])
-        
+
     answer = answer.strip()  # Remove trailing and ending whitespaces.
 
     return answer
@@ -49,10 +49,12 @@ def choices(text: str, target: list, variant: str):
         st.session_state['exercise']['choices'] = list(target)  # Ensure copy, not reference
         random.shuffle(st.session_state.exercise['choices'])  # Works in place, no return.
 
+    helptext = utils.create_helptext(text, target[0])
+
     if variant == 'to_target':
-        st.header('¿Cómo se dice «{0}»?'.format(text), anchor=False)
+        st.header('¿Cómo se dice «{0}»?'.format(text), anchor=False, help=helptext)
     else:
-        st.header('¿Qué significa «{0}»?'.format(text), anchor=False)
+        st.header('¿Qué significa «{0}»?'.format(text), anchor=False, help=helptext)
 
     answer = sac.segmented(items=st.session_state['exercise']['choices'], index=None,
             label='',
@@ -137,12 +139,14 @@ def matching(words_left, words_right):
 
 def translation(text: str, target: str):
 
+    # TODO Implement variants with audio only.
+
     if not 'choices' in st.session_state['exercise'].keys() or st.session_state['exercise']['choices'] is None:
         st.session_state['exercise']['choices'] = utils.to_list(target)
         random.shuffle(st.session_state['exercise']['choices'])  # Works in place, no return.
 
-    st.header('Traduce esta oración:')
-    st.subheader(text, anchor=False)
+    st.header('Traduce esta oración:', anchor=False)
+    st.subheader(text, anchor=False, help=utils.create_helptext(text, target))
 
     # TODO Get the audio files from a storage server.
     audio_dir = os.path.join(os.path.dirname(__file__), "..", "..", "data", "audio_spa-eus_A1")

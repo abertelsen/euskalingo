@@ -1,5 +1,11 @@
 import streamlit as st
 
+def create_helptext(text: str, target: str):
+    return '''
+**{0}**  
+{1}  
+'''.format(to_canon(text), to_canon(target))
+
 def match(text: str, target: str):
 
     # Words in parenthesis are optional, one may be present or not.
