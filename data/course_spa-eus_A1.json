@@ -55,11 +55,11 @@
         {"eus": "(Hura) han <dago>", "spa": "(Él,Ella) está allí"},
         {"eus": "(Ni) ondo <nago>", "spa": "(Yo) estoy bien"},
         {"eus": "(Ni) ez <nago> ondo", "spa": "(Yo) no estoy bien"},
-        {"eus": "(Ni) etxean nago", "spa": "(Yo) estoy en casa"},
-        {"eus": "Hemen parkea dago", "spa": "Aquí hay un parque"},
-        {"eus": "Han udaletxea dago", "spa": "Ahí está el ayuntamiento"},
-        {"eus": "Donostian hondartzak daude", "spa": "Hay playas en San Sebastián"},
-        {"eus": "Gazteizen ez daude hondartzarik", "spa": "No hay playas en Vitoria"}
+        {"eus": "(Ni) etxean <nago>", "spa": "(Yo) estoy en casa"},
+        {"eus": "Hemen parkea <dago>", "spa": "Aquí hay un parque"},
+        {"eus": "Han udaletxea <dago>", "spa": "Ahí está el ayuntamiento"},
+        {"eus": "Donostian hondartzak <daude>", "spa": "Hay playas en San Sebastián"},
+        {"eus": "Gazteizen ez <daude> hondartzarik", "spa": "No hay playas en Vitoria"}
     ],
     "subunits": [
         {"subunit_title": "Introducción", "lessons": 2},
@@ -82,9 +82,9 @@
         {"eus": "zer", "spa": "que"}
     ],
     "keyphrases":[
-        {"eus": "Begira, han daude gasolindegiak", "spa": "Mira, allí hay una gasolinera"},
-        {"eus": "Hor badago parkerik?", "spa": "¿Ahí hay parques?"},
-        {"eus": "Ez, hor ez dago parkerik", "spa": "No, ahí no hay parques"},
+        {"eus": "Begira, <han> daude gasolindegiak", "spa": "Mira, allí hay una gasolinera"},
+        {"eus": "<Hor> badago parkerik?", "spa": "¿Ahí hay parques?"},
+        {"eus": "Ez, <hor> ez dago parkerik", "spa": "No, ahí no hay parques"},
         {"eus": "<Non> dago eliza?", "spa": "¿Dónde está el hotel?"},
         {"eus": "<Non> dago hotela?", "spa": "¿Dónde está el hotel?"},
         {"eus": "Barkatu, <non> dago komunak?", "spa": "Disculpe, ¿dónde están los baños?"},

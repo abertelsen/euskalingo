@@ -202,7 +202,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
 
         # Render the exercise
         if exercise['type'] == 'blankfill': 
-            answer = exercises.blankfill(text=exercise['text'])
+            answer = exercises.blankfill(text=exercise['text'], target=exercise["target"])
 
         elif exercise['type'] == 'choices': 
             answer = exercises.choices(text=exercise['text'], target=exercise['target'], variant=exercise['variant'])

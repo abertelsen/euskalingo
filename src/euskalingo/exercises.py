@@ -8,13 +8,35 @@ import streamlit_antd_components as sac
 import euskalingo.utils as utils
 
 
-def blankfill(text: str):
-    st.session_state.exercise['choices'] = None
+def blankfill(text: str, target: str):
+
+    # st.info(text)
+
+    st.session_state["exercise"]["choices"] = None
+
+    if "text" not in st.session_state["exercise"].keys() or not isinstance(st.session_state["exercise"]["text"], str):
+        st.session_state["exercise"]["text"] = text
+
+    if "target" not in st.session_state["exercise"].keys() or not isinstance(st.session_state["exercise"]["target"], str):
+        st.session_state["exercise"]["target"] = target
 
     st.header('Completa la oración')
-    t = text.split(sep='_', maxsplit=1)
+
+    # TODO Get the audio files from a storage server.
+    audio_dir = os.path.join(os.path.dirname(__file__), "..", "..", "data", "audio_spa-eus_A1")
+    audio_name = utils.to_filename(st.session_state["exercise"]["text"].replace("_", st.session_state["exercise"]["target"]))
+    audio_path = os.path.join(audio_dir, audio_name + ".wav")
+
+    # st.info(audio_path)
+
+    if os.path.exists(audio_path):
+        st.audio(data=audio_path, loop=False, autoplay=True)
+
+    # st.info(st.session_state["exercise"]["text"])
+
+    t = st.session_state["exercise"]["text"].split(sep='_', maxsplit=1)
     st.subheader(t[0] + '...')
-    answer = st.text_input(label='...', label_visibility='collapsed', disabled=st.session_state.checked)
+    answer = st.text_input(label='...', label_visibility='collapsed', disabled=st.session_state["exercise"]["state"] == "checked")
     st.subheader('...' + t[1])
     answer = answer.strip()  # Remove trailing and ending whitespaces.
 
