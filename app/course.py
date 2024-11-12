@@ -326,6 +326,11 @@ for (k_unit, u) in enumerate(st.session_state['course']['units']):
     expd = k_unit == next_lesson[1]
 
     with st.expander(label=u['unit_title'], expanded=expd):
+
+        if 'subunits' not in u.keys() or len(u['subunits']) <= 0:
+            st.empty()
+            continue
+
         for (k_subunit, su) in enumerate(u['subunits']):
 
             past = (k_unit < next_lesson[1]) or (k_unit == next_lesson[1] and k_subunit < next_lesson[2])
