@@ -1,5 +1,4 @@
-{"Ofertas":
+{"Tiritas":
 [
-    {"name": "Oferta 1", "price": 50, "description": "Placeholder"},
-    {"name": "Oferta 2", "price": 100, "description": "Placeholder"}
+    {"name": ":adhesive_bandage: Tiritas :five:", "price": 400, "description": "Paquete de cinco tiritas", "effect": "hp+5"}
 ]}

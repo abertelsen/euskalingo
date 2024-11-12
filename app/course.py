@@ -99,7 +99,33 @@ def on_attempt_finish():
 
     st.session_state['lesson']['state'] = 'finished'
 
-# st.set_page_config(page_title='Euskolingo', page_icon='🦉', layout='wide')
+@st.dialog("¡No tienes tiritas!")
+def on_zero_hp():
+    st.markdown('''
+¡No te quedan tiritas! No puedes hacer lecciones hasta que consigas más.
+''')
+    
+    bandaids_price = 500
+    if st.button(label=":adhesive_bandage: Comprar tiritas (:coin: {0})".format(bandaids_price),
+                 use_container_width=True,
+                 type="primary",
+                 disabled=st.session_state["userdata"]["gp"] < bandaids_price):
+        st.session_state["userdata"]["gp"] = max(st.session_state["userdata"]["gp"] - bandaids_price, 0)
+        st.session_state["userdata"]["hp"] = 5
+
+        conn = st.connection(name="turso", type="sql", ttl=30)
+        with conn.session as session:
+            session.execute(text('UPDATE users SET hp = :h, gp = :g WHERE name = :u'),
+                        params={'h': st.session_state["userdata"]['hp'],
+                                'g': st.session_state["userdata"]['gp'],
+                                'u': st.session_state['username']})
+            session.commit()
+
+        st.rerun()
+
+    if st.button(label="Cancelar", use_container_width=True, type="secondary"):
+        on_attempt_cancel()
+        st.rerun()
 
 # REDIRECTIONS
 if not 'username' in st.session_state or st.session_state['username'] is None:
@@ -192,6 +218,9 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
         # Debugging info can be printed here...
         # st.info(st.session_state['username'])
 
+        st.markdown(":id: {0} | :dart: {1} **xp** | :coin: {2} **gp** | :adhesive_bandage: {3} **hp**".format(
+            st.session_state["username"], st.session_state["userdata"]["xp"], st.session_state["userdata"]["gp"], st.session_state["userdata"]["hp"]))
+
         buttons_index = sac.buttons(items=[
             sac.ButtonsItem(label="Cancelar", icon="x-circle", color="red"),
             sac.ButtonsItem(label="Progreso: {0}%".format(int(100 * st.session_state['lesson']['attempt']['progress'])), disabled=True)
@@ -236,6 +265,18 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
                     st.error('''
                             **¡Incorrecto!**  
                             {0}'''.format(utils.to_canon(target)))
+                    
+                    st.session_state["userdata"]["hp"] = max(st.session_state["userdata"]["hp"] - 1, 0)  # Do not go < 0
+                    conn = st.connection(name="turso", type="sql", ttl=30)
+                    with conn.session as session:
+                        session.execute(sqlalchemy.text('UPDATE users SET hp= :h WHERE name= :u ;'),
+                                        params={'h': st.session_state["userdata"]["hp"],
+                                                'u': st.session_state["username"]})
+                        session.commit()
+
+                    # TODO React if the user looses all his band-aids
+                    if st.session_state["userdata"]["hp"] <= 0:
+                        on_zero_hp()
 
                 cols = st.columns(3, vertical_alignment='bottom')
 
@@ -260,9 +301,21 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
 # Load user's progress.
 if 'userdata' not in st.session_state:
     conn = st.connection('turso', 'sql', ttl=30)
-    records = conn.query("SELECT name, nextlesson, xp, gp FROM users WHERE name = :u LIMIT 1", 
+    records = conn.query("SELECT name, nextlesson, xp, gp, hp FROM users WHERE name = :u LIMIT 1",
                             params={"u": st.session_state['username']}, ttl=30)
     st.session_state['userdata'] = records.iloc[0].to_dict()
+
+# No band-aids? Give one for free.
+if st.session_state["userdata"]["hp"] <= 0:
+    st.session_state["userdata"]["hp"] = 1
+    conn = st.connection('turso', 'sql', ttl=30)
+    with conn.session as session:
+        session.execute(sqlalchemy.text('UPDATE users SET hp= :h WHERE name= :u ;'),
+                                        params={'h': st.session_state["userdata"]["hp"],
+                                                'u': st.session_state["username"]})
+        session.commit()
+
+    st.toast("Has recibido 1 tirita gratis para continuar haciendo lecciones.", icon="🩹")
 
 # Load course
 if not 'course' in st.session_state or st.session_state['course'] is None:
@@ -274,6 +327,7 @@ with st.sidebar:
     st.markdown(':id: {0}'.format(st.session_state['userdata']['name']))
     st.markdown(':dart: {0} **xp**'.format(st.session_state['userdata']['xp']))
     st.markdown(':coin: {0} **gp**'.format(st.session_state['userdata']['gp']))
+    st.markdown(':adhesive_bandage: {0} **hp**'.format(st.session_state['userdata']['hp']))
 
 # RENDERING
 
