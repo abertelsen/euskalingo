@@ -37,7 +37,9 @@ def blankfill(text: str, target: str):
     t = st.session_state["exercise"]["text"].split(sep='_', maxsplit=1)
     st.subheader(t[0] + '...')
     answer = st.text_input(label='...', label_visibility='collapsed', disabled=st.session_state["exercise"]["state"] == "checked")
-    st.subheader('...' + t[1])
+    if len(t[1].strip()) > 0:
+        st.subheader('...' + t[1])
+        
     answer = answer.strip()  # Remove trailing and ending whitespaces.
 
     return answer

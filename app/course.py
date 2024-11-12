@@ -42,7 +42,10 @@ def create_lesson(unit: dict, n: int=12, types=None, index=None, xp=12, gp=3):
         ex['type'] = random.choice(types)  # TODO Add matching.
 
         if ex['type'] == 'blankfill':
-            keyphrase = random.choice(unit['keyphrases'])
+            keyphrase = random.choice(unit['keyphrases'])  # TODO Chance probability distribution according to number of occurences and number of mistakes.
+
+            # TODO Check that the keyphrase is well formed (i.e. has a word between "<"" and ">") AND a valid audio file is available. If not, go to translation.
+
             ex['text'], ex['target'] = utils.to_blankfill(keyphrase['eus'])
 
         elif ex['type'] == 'choices':
