@@ -13,8 +13,9 @@ from streamlit_extras.bottom_container import bottom
 import os
 import sys
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
-import euskalingo.utils as utils
 import euskalingo.exercises as exercises 
+import euskalingo.ui as ui
+import euskalingo.utils as utils
 
 def begin_lesson(unit, subunit, lesson, xp=12, gp=3):
     su = st.session_state['course']['units'][unit]['subunits'][subunit]
@@ -126,6 +127,8 @@ def on_zero_hp():
     if st.button(label="Cancelar", use_container_width=True, type="secondary"):
         on_attempt_cancel()
         st.rerun()
+
+
 
 # REDIRECTIONS
 if not 'username' in st.session_state or st.session_state['username'] is None:
@@ -281,7 +284,11 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
                 cols = st.columns(3, vertical_alignment='bottom')
 
                 with cols[0]:
-                    st.button(label="Reportar error...", use_container_width=True, type="secondary", disabled=True)
+                    st.button(label="Reportar error...", use_container_width=True, type="secondary", on_click=ui.on_feedback, 
+                              kwargs={"userdata": st.session_state["userdata"], "attachment": st.session_state["exercise"]})
+                    
+                    # TODO Notify user that his feedback has been sent.
+                    # TODO Include additional information in the attachment: question's text and index are missing.
                 
                 with cols[1]:
                     st.empty()
@@ -299,11 +306,11 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
 # COURSE
 
 # Load user's progress.
-if 'userdata' not in st.session_state:
-    conn = st.connection('turso', 'sql', ttl=30)
-    records = conn.query("SELECT name, nextlesson, xp, gp, hp FROM users WHERE name = :u LIMIT 1",
-                            params={"u": st.session_state['username']}, ttl=30)
-    st.session_state['userdata'] = records.iloc[0].to_dict()
+if "userdata" not in st.session_state:
+    conn = st.connection("turso", "sql", ttl=30)
+    records = conn.query("SELECT id, name, nextlesson, xp, gp, hp FROM users WHERE name = :u LIMIT 1",
+                         params={"u": st.session_state["username"]}, ttl=30)
+    st.session_state["userdata"] = records.iloc[0].to_dict()
 
 # No band-aids? Give one for free.
 if st.session_state["userdata"]["hp"] <= 0:

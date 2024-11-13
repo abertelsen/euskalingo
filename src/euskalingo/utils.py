@@ -12,7 +12,7 @@ def match(text: str, target: str):
     # Words in square brackets are one among many, but one MUST be present.
     # The rest are mandatory
 
-    # TODO Should interrogation marks be removed?
+    # TODO Should interrogation marks be removed? Commas? Periods?
 
     split0 = target.strip().casefold().split()
     split1 = text.strip().casefold().split()
