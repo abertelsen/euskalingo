@@ -8,10 +8,10 @@ def on_purchase(price: int, effect: str):
     stat, value = effect.split(sep="+", maxsplit=1)
 
     if stat not in st.session_state["userdata"].keys(): return 
+    if price > st.session_state["userdata"]["gp"]: return  # Not enough money? Do nothing...
 
-    # WARNING! No limit checking!
     st.session_state["userdata"]["gp"] -= price
-    st.session_state["userdata"][stat] += int(value)
+    st.session_state["userdata"][stat] += int(value)  # TODO No limit checking!
 
     conn = st.connection("turso", "sql", ttl=30)
     with conn.session as session:
@@ -47,5 +47,6 @@ for section in data.keys():
             st.button(label='**Comprar** :coin: {0} gp'.format(i['price']),
                       use_container_width=True,
                       type='secondary',
+                      disabled=i["price"] > st.session_state["userdata"]["gp"],
                       on_click=on_purchase,
                       kwargs={"price": i['price'], "effect": i["effect"]})
