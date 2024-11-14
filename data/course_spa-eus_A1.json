@@ -72,6 +72,7 @@
     {"unit_title": "Haciendo preguntas",
     "keywords": [
         {"eus": "ardo", "spa": "vino"},
+        {"eus": "eliza", "spa": "iglesia"},
         {"eus": "emakume", "spa": "mujer"},
         {"eus": "gizon", "spa": "hombre"},
         {"eus": "gasolindegia", "spa": "gasolinera"},
@@ -82,10 +83,10 @@
         {"eus": "zer", "spa": "que"}
     ],
     "keyphrases":[
-        {"eus": "Begira, <han> daude gasolindegiak", "spa": "Mira, allí hay una gasolinera"},
+        {"eus": "Begira, <han> daude gasolindegia", "spa": "Mira, allí está la gasolinera"},
         {"eus": "<Hor> badago parkerik?", "spa": "¿Ahí hay parques?"},
         {"eus": "Ez, <hor> ez dago parkerik", "spa": "No, ahí no hay parques"},
-        {"eus": "<Non> dago eliza?", "spa": "¿Dónde está el hotel?"},
+        {"eus": "<Non> dago eliza?", "spa": "¿Dónde está la iglesia?"},
         {"eus": "<Non> dago hotela?", "spa": "¿Dónde está el hotel?"},
         {"eus": "Barkatu, <non> dago komunak?", "spa": "Disculpe, ¿dónde están los baños?"},
         {"eus": "<Non> gaude?", "spa": "¿Dónde estamos?"},
@@ -105,20 +106,55 @@
 
     {"unit_title": "Usando adjetivos",
         "keywords": [
+            {"eus": "hau", "spa": "este/esta"},
+            {"eus": "hori", "spa": "ese/esa"},
+            {"eus": "hura", "spa": "aquél/aquella"},
+            {"eus": "hauek", "spa": "estos/estas"},
+            {"eus": "horiek", "spa": "esos/esas"},
+            {"eus": "haiek", "spa": "aquellos/aquellas"},
+            {"eus": "alai", "spa": "alegre"},
             {"eus": "berri", "spa": "nuevo"},
-            {"eus": "gaizki", "spa": "malo"},
+            {"eus": "txar", "spa": "malo"},
             {"eus": "haserre", "spa": "enfadado"},
+            {"eus": "interesgarri", "spa": "interesante"},
             {"eus": "lasai", "spa": "tranquilo"},
             {"eus": "on", "spa": "bueno"},
             {"eus": "polita", "spa": "bonito"},
-            {"eus": "pozik", "spa": "alegre"},
+            {"eus": "pozik", "spa": "contento"},
             {"eus": "triste", "spa": "triste"},
-            {"eus": "zahar", "spa": "viejo"}
+            {"eus": "zahar", "spa": "viejo"},
+            {"eus": "hiri", "spa": "ciudad"},
+            {"eus": "kotxe", "spa": "coche"},
+            {"eus": "liburu", "spa": "libro"},
+            {"eus": "beti", "spa": "siempre"},
+            {"eus": "oso", "spa": "muy"}
+        ],
+        "keyphrases":[
+            {"eus": "(Zu) <triste> (al) zaude?", "spa": "¿Estás triste?"},
+            {"eus": "Hori da kotxe <berria>", "spa": "Ahí está el coche nuevo"},
+            {"eus": "Liburu hau <interesgarria> dago", "spa": "Este libro es interesante"},
+            {"eus": "Donostia hiri <polita> dago", "spa": "San Sebastián es una ciudad bonita"},
+            {"eus": "(Zu) beti <pozik> daude", "spa": "(Tú) siempre estás alegre"},
+            {"eus": "Kotxe hau oso <zaharra> da", "spa": "Este coche es muy viejo"},
+            {"eus": "(Ni) <haserre> nago!", "spa": "¡(Yo) estoy enfadado!"},
+            {"eus": "Donostia eta Bilbo hiri <interesgarriak> dira", "spa": "San Sebastián y Bilbao son ciudades interesantes"},
+            {"eus": "Liburu haiek oso <tristeak> dira", "spa": "Aquellos libros son muy tristes"},
+            {"eus": "Hiri horiek ez dira <zaharrak>", "spa": "Esas ciudades no son (antiguas,viejas)"},
+            {"eus": "Film hau oso <triste> dago", "spa": "Esta película está muy triste"},
+            {"eus": "Taberna <onak> daude hemen", "spa": "Hay buenos bares aquí"},
+            {"eus": "Liburu hau <txarra> eta oso tristea da", "spa": "Este libro es malo y muy triste"},
+            {"eus": "Kotxe horiek <zaharrak> eta txarrak dira", "spa": "Esos coches son viejos y malos"},
+            {"eus": "(Hura) beti <pozik> dago", "spa": "(Él,Ella) siempre está alegre"},
+            {"eus": "(Hura) emakume <alaia> da", "spa": "(Ella) es una mujer alegre"},
+            {"eus": "Txakur hauek beti <haserre> daude", "spa": "Estos perros siempre están enfadados"},
+            {"eus": "Ur hau oso <ona> da", "spa": "Esta agua es muy buena"},
+            {"eus": "Eguraldi <txarra> dago", "spa": "Hace mal tiempo"}
         ]
     },
 
     {"unit_title": "Números", 
         "keywords":[
+            {"eus": "zero", "spa": "cero"},
             {"eus": "bat", "spa": "uno"},
             {"eus": "bi", "spa": "dos"},
             {"eus": "hiru", "spa": "tres"},
@@ -128,10 +164,20 @@
             {"eus": "zazpi", "spa": "siete"},
             {"eus": "zortzi", "spa": "ocho"},
             {"eus": "bederatzi", "spa": "nueve"},
-            {"eus": "hamar", "spa": "diez"}
+            {"eus": "hamar", "spa": "diez"},
+            {"eus": "larrialdi", "spa": "emergencia"},
+            {"eus": "urte", "spa": "año"}
         ],
     "keyphrases":[
-        {"eus": "Auzo honetan bi taberna daude", "spa": "En este barrio hay dos bares"}
+        {"eus": "<bederatzi>, lau, hiru", "spa": "nueve, cuatro, tres"},
+        {"eus": "Autobus geltoki <bat> dago Donostian", "spa": "Hay una estación de autobuses en San Sebastián"},
+        {"eus": "Auzo honetan <hiru> taberna daude", "spa": "En este barrio hay tres bares"},
+        {"eus": "<Lau> urtaro daude urtean", "spa": "Hay cuatro estaciones en el año"},
+        {"eus": "<Lau> puntu kardinal daude", "spa": "Hay cuatro puntos cardinales"},
+        {"eus": "<Bost> hatz daude eskuan", "spa": "Hay cinco dedos en la mano"},
+        {"eus": "<Sei> arrautza daude kutxan", "spa": "Hay seis huevos en la caja"},
+        {"eus": "<Zazpi> egun dira astean", "spa": "Hay siete días en la semana"},
+        {"eus": "Ona da <zortzi> ordu lo egitea", "spa": "Es bueno dormir ocho horas"}
     ],
     "subunits": [
         {"subunit_title": "Introducción", "lessons": 2},
@@ -197,6 +243,9 @@
         {"eus": "salmenta", "spa": "venta"},
         {"eus": "sukaldari", "spa": "cocinero"},
         {"eus": "zuzendari", "spa": "director"}
+    ],
+    "keyphrases":[
+        {"eus": "Nire aita medikua da eta nire ama erizaina da", "spa": "Mi padre es médico y mi madre es enfermera"}
     ]
     },
 
@@ -243,11 +292,17 @@
             {"eus": "(Nik) egiten dut", "spa": "(Yo) [lo,la] hago"},
             {"eus": "(Zuk) egiten duzu", "spa": "(Tú) [lo,la] haces"},
             {"eus": "(Hark) egiten du", "spa": "(Él,ella) [lo,la] hace"},
-            {"eus": "(Guk) egiten dugu", "spa": "(Yo) [lo,la] hago"},
-            {"eus": "(Zuek) egiten duzue", "spa": "(Tú) [lo,la] haces"},
-            {"eus": "(Haiek) egiten dute", "spa": "(Él,ella) [lo,la] hace"},
+            {"eus": "(Guk) egiten dugu", "spa": "(Nosotros,Nosotras) [lo,la] hacemos"},
+            {"eus": "(Zuek) egiten duzue", "spa": "(Vosotros,Vosotras) [lo,la] hacéis"},
+            {"eus": "(Haiek) egiten dute", "spa": "(Ellos,Ellan) [lo,la] hacen"},
             {"eus": "(Nik) euskara ikasi dut", "spa": "(Yo) he estudiado euskera"},
-            {"eus": "(Hura) futbolean jokatzen du", "spa": "(Él,ella) juega (al) fútbol"}
+            {"eus": "(Hura) futbolean jokatzen du", "spa": "(Él,ella) juega (al) fútbol"},
+            {"eus": "(Nik) beti zortzi orduz lan <egiten> dut", "spa": "(Yo) siempre trabajo ocho horas"},
+            {"eus": "(Hark) futbolean <jokatzen> du, ez saskibaloian", "spa": "(Él/Ella) juega al fútbol, no al baloncesto"},
+            {"eus": "Guk hemen <jokatzen> dugu eta zuek hor jokatzen duzue", "spa": "Nosotros jugamos aquí y vosotros jugáis ahí"},
+            {"eus": "(Haiek) hotelean lo egiten dute orain", "spa": "Ellos duermen ahora en el hotel"},
+            {"eus": "(Haiek) hotelean lo egiten ari dira orain", "spa": "Ellos están durmiendo ahora en el hotel"},
+            {"eus": "Hemen eraikin berria eraikitzen ari dira", "spa": "Aquí están construyendo el nuevo edificio"}
         ]
     },
 
@@ -279,7 +334,7 @@
             {"eus": "(Niri) giltzak galdu zaizkit", "spa": "(Yo) he perdido las llaves"},
             {"eus": "Nori galdu zaizkio giltzak?", "spa": "¿A quién se le han perdido las llaves?"},
             {"eus": "(Zuri) nire gutuna heldu zaizu?", "spa": "¿A tí te ha llegado mi carta?"},
-            {"eus": "Nire senarrari giltzak galtzen zaizkio beti", "spa": "A mi esposo siempre se le pierden las llaves"}
+            {"eus": "Nire senarrari giltzak galtzen <zaizkio> beti", "spa": "A mi esposo siempre se le pierden las llaves"}
         ]
     },
 
@@ -291,19 +346,26 @@
             {"eus": "eraztun", "spa": "anillo"}
         ],
         "keyphrases":[
-            {"eus": "Banatzaileak (zuri) bihar paketea emango dizu", "spa": "El repartidor te entregará el paquete mañana"},
-            {"eus": "(Nik) (zuri) kafe bat eramango dizut", "spa": "(Yo) te llevaré un café"},
-            {"eus": "(Nik) pastel bat erosi dizuet (zuei)", "spa": "(Yo) os he comprado un pastel"},
-            {"eus": "(Nik) gozoki bat erosi diet nire seme txikiari", "spa": "(Yo) le he comprado un caramelo a mi hijo menor"},
-            {"eus": "Nire senarra loreak erosi dit", "spa": "Mi marido me ha comprado flores"},
-            {"eus": "Mirenen senargaiak eraztun bat oparitu dio", "spa": "El novio de Miren le ha regalado un anillo"},
-            {"eus": "(Nik) txokolate bat erosiko diot emazteari", "spa": "(Yo) compraré un chocolate para mi esposa"},
-            {"eus": "(Guk) ez dizuegu janaria mahaira eramango", "spa": "(Nosotros) no os llevaremos la comida a la mesa"},
-            {"eus": "(Guk) kanta berri bat abestuko dizuegu (zuei)", "spa": "(Nosotros) os cantaremos una canción nueva"},
-            {"eus": "(Hark) (zuri) lagunduko dizu", "spa": "(Él,Ella) te ayudará"},
-            {"eus": "(Haiek) bihar dirua ekarriko digute (guri)", "spa": "Mañana (ellos,ellas) nos traerán el dinero"}
+            {"eus": "Banatzaileak (zuri) bihar paketea emango <dizu>", "spa": "El repartidor te entregará el paquete mañana"},
+            {"eus": "(Nik) (zuri) kafe bat eramango <dizut>", "spa": "(Yo) te llevaré un café"},
+            {"eus": "(Nik) pastel bat erosi <dizuet> (zuei)", "spa": "(Yo) os he comprado un pastel"},
+            {"eus": "(Nik) gozoki bat erosi <diet> nire seme txikiari", "spa": "(Yo) le he comprado un caramelo a mi hijo menor"},
+            {"eus": "Nire senarra loreak erosi <dit>", "spa": "Mi marido me ha comprado flores"},
+            {"eus": "Mirenen senargaiak eraztun bat oparitu <dio>", "spa": "El novio de Miren le ha regalado un anillo"},
+            {"eus": "(Nik) txokolate bat erosiko <diot> emazteari", "spa": "(Yo) compraré un chocolate para mi esposa"},
+            {"eus": "(Guk) ez <dizuegu> janaria mahaira eramango", "spa": "(Nosotros) no os llevaremos la comida a la mesa"},
+            {"eus": "(Guk) kanta berri bat abestuko <dizuegu> (zuei)", "spa": "(Nosotros) os cantaremos una canción nueva"},
+            {"eus": "(Hark) (zuri) lagunduko <dizu>", "spa": "(Él,Ella) te ayudará"},
+            {"eus": "(Haiek) bihar dirua ekarriko <digute> (guri)", "spa": "Mañana (ellos,ellas) nos traerán el dinero"}
         ]
     },
 
-    {"unit_title": "Usando verbos modales"}
+    {"unit_title": "Usando verbos modales", 
+        "keywords":[
+            {"eus": "ahal", "spa": "poder"},
+            {"eus": "behar", "spa": "deber"},
+            {"eus": "nahi", "spa": "querer"}
+        ]
+
+    }
 ]}

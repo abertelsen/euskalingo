@@ -329,13 +329,6 @@ if not 'course' in st.session_state or st.session_state['course'] is None:
     with open(os.path.join('data', 'course_spa-eus_A1.json'), encoding='utf-8') as f:
         st.session_state['course'] = json.load(f)
 
-# Sidebar
-with st.sidebar:
-    st.markdown(':id: {0}'.format(st.session_state['userdata']['name']))
-    st.markdown(':dart: {0} **xp**'.format(st.session_state['userdata']['xp']))
-    st.markdown(':coin: {0} **gp**'.format(st.session_state['userdata']['gp']))
-    st.markdown(':adhesive_bandage: {0} **hp**'.format(st.session_state['userdata']['hp']))
-
 # RENDERING
 
 if 'attempt' in st.session_state['lesson'].keys():

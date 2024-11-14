@@ -1,3 +1,4 @@
+import os
 # import pathlib
 # import shutil
 
@@ -24,7 +25,9 @@ import streamlit as st
 
 # inject_ga()
 
-st.set_page_config(page_title="HitzON", layout="wide", page_icon="random")
+st.set_page_config(page_title="HitzOn", layout="wide", page_icon="random")
+
+st.logo(image=os.path.join(os.path.dirname(__file__), "data", "images", "hitzon_logo.png"), size="large")
 
 pages = [
     st.Page(page='app/login.py', title='Login'),
@@ -34,4 +37,13 @@ pages = [
     st.Page(page='app/ad.py', title='Ad')
     ]
 pg = st.navigation(pages=pages)
+
+# Sidebar
+if "userdata" in st.session_state:
+    with st.sidebar:
+        st.markdown(':id: {0}'.format(st.session_state['userdata']['name']))
+        st.markdown(':dart: {0} **xp**'.format(st.session_state['userdata']['xp']))
+        st.markdown(':coin: {0} **gp**'.format(st.session_state['userdata']['gp']))
+        st.markdown(':adhesive_bandage: {0} **hp**'.format(st.session_state['userdata']['hp']))
+
 pg.run()
