@@ -5,7 +5,7 @@ import uuid
 import streamlit as st
 import streamlit_antd_components as sac
 
-import euskalingo.utils as utils
+import hitzon.utils as utils
 
 
 def blankfill(text: str, target: str):
@@ -59,7 +59,7 @@ def choices(text: str, target: list, variant: str):
     answer = sac.segmented(items=st.session_state['exercise']['choices'], index=None,
             label='',
             align='center', direction='vertical', use_container_width=True,
-            color='#82c91e', bg_color=None)
+            color='lightsalmon', bg_color="white")
     
     return answer
 
@@ -159,7 +159,8 @@ def translation(text: str, target: str):
     answer_list = sac.chip(items=st.session_state['exercise']['choices'], index=None,
                             label='',
                             align='start', radius='md', variant='outline', multiple=True,
-                            color='#82c91e')
+                            color='lightsalmon')
+    # Other color #9ab9bf
     answer = ' '.join(answer_list)
     st.subheader(answer, anchor=False)
 

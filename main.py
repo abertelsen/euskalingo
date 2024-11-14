@@ -24,7 +24,7 @@ import streamlit as st
 
 # inject_ga()
 
-st.set_page_config(page_title="Euskera", layout="wide")
+st.set_page_config(page_title="HitzON", layout="wide", page_icon="random")
 
 pages = [
     st.Page(page='app/login.py', title='Login'),

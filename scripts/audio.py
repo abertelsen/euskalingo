@@ -15,7 +15,7 @@ from transformers import pipeline
 # import os
 import sys
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
-import euskalingo.utils as utils
+import hitzon.utils as utils
 
 overwrite = False
 

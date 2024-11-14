@@ -13,9 +13,9 @@ from streamlit_extras.bottom_container import bottom
 import os
 import sys
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
-import euskalingo.exercises as exercises 
-import euskalingo.ui as ui
-import euskalingo.utils as utils
+import hitzon.exercises as exercises 
+import hitzon.ui as ui
+import hitzon.utils as utils
 
 def begin_lesson(unit, subunit, lesson, xp=12, gp=3):
     su = st.session_state['course']['units'][unit]['subunits'][subunit]

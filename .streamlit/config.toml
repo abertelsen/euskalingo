@@ -1,6 +1,6 @@
 [theme]
-primaryColor="#82c91e"
+primaryColor="lightsalmon"
 backgroundColor="white"
-secondaryBackgroundColor="snow"
+secondaryBackgroundColor="aliceblue"
 textColor="darkslategray"
 font="sans serif"

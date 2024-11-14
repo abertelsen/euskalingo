@@ -10,8 +10,8 @@ from streamlit_extras.bottom_container import bottom
 import os
 import sys
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
-import euskalingo.exercises as exercises
-import euskalingo.utils as utils 
+import hitzon.exercises as exercises
+import hitzon.utils as utils 
 
 def on_exercise_check(answer=None):
     st.session_state['exercise']['answer'] = answer

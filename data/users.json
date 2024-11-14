@@ -1,5 +1,5 @@
 {
-    "cookie": {"expiry_days": 30, "key": "euskolingo_key", "name": "euskolingo_name"},
+    "cookie": {"expiry_days": 30, "key": "hitzon_key", "name": "hitzon_name"},
     "credentials": {
         "usernames":{
             "abertelsen": {"email": "abertelsen@gmail.com", "failed_login_attempts": 0, "first_name": "Alvaro", "last_name": "Bertelsen", 
