@@ -294,7 +294,8 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
                     st.empty()
 
                 with cols[2]:
-                    st.button(label='Siguiente...', use_container_width=True, type='primary', on_click=on_exercise_next)
+                    st.button(label='Siguiente...', use_container_width=True, type='primary', on_click=on_exercise_next,
+                              disabled=st.session_state["userdata"]["hp"] <= 0)
 
             else:
                 st.button(label='Comprobar', use_container_width=True, type='primary',
