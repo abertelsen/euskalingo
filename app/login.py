@@ -125,6 +125,9 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
+logo_path = os.path.join(os.path.dirname(__file__), "..", "data", "images", "hitzon_logo.png")
+st.image(image=logo_path)
+
 try:
     authenticator.login(
         fields={
