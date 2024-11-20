@@ -273,6 +273,9 @@
         {"eus": "zurea", "spa": "tuyo"},
         {"eus": "gurea", "spa": "nuestro"}
     ],
+    "keyphrases":[
+        {"eus": "Nire arrebarekin bizi naiz", "spa": "Vivo con mi hermana"}
+    ],
     "subunits": [
         {"subunit_title": "Introducción", "lessons": 2},
         {"subunit_title": "Parte 2", "lessons": 2},
