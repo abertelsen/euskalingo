@@ -1,7 +1,9 @@
+import datetime
 import json
 import os
 import random
-import time 
+import time
+import sys
 
 import sqlalchemy
 from sqlalchemy import text as text 
@@ -10,8 +12,6 @@ import streamlit as st
 import streamlit_antd_components as sac
 from streamlit_extras.bottom_container import bottom
 
-import os
-import sys
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
 import hitzon.exercises as exercises 
 import hitzon.ui as ui
@@ -266,11 +266,15 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
                             {0}'''.format(utils.to_canon(target)))
                     
                     st.session_state["userdata"]["hp"] = max(st.session_state["userdata"]["hp"] - 1, 0)  # Do not go < 0
-                    conn = st.connection(name="turso", type="sql", ttl=30)
+                    if (st.session_state["userdata"]["nextbandaids"] is None) and (st.session_state["userdata"]["hp"] < 5):
+                        st.session_state["userdata"]["nextbandaids"] = str(datetime.datetime.now() + datetime.timedelta(hours=8))
+
+                    conn = st.connection(name="turso", type="sql", ttl=1)
                     with conn.session as session:
-                        session.execute(sqlalchemy.text('UPDATE users SET hp= :h WHERE name= :u ;'),
-                                        params={'h': st.session_state["userdata"]["hp"],
-                                                'u': st.session_state["userdata"]["name"]})
+                        session.execute(sqlalchemy.text("UPDATE users SET hp={0}, nextbandaids='{1}' WHERE name='{2}' ;"
+                                                        .format(st.session_state["userdata"]["hp"],
+                                                                st.session_state["userdata"]["nextbandaids"] if st.session_state["userdata"]["nextbandaids"] is not None else "NULL",
+                                                                st.session_state["userdata"]["name"])))
                         session.commit()
 
                     # TODO React if the user looses all his band-aids
@@ -305,9 +309,25 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
 # Load user's progress.
 if "userdata" not in st.session_state:
     conn = st.connection("turso", "sql", ttl=30)
-    records = conn.query("SELECT id, name, nextlesson, xp, gp, hp FROM users WHERE name = :u LIMIT 1",
+    records = conn.query("SELECT id, name, nextlesson, xp, gp, hp, nextbandaids FROM users WHERE name = :u LIMIT 1",
                          params={"u": st.session_state["userdata"]["name"]}, ttl=30)
     st.session_state["userdata"] = records.iloc[0].to_dict()
+
+# Are we entitled to our next package of bandaids?
+if st.session_state["userdata"]["nextbandaids"] is not None:
+    if datetime.datetime.now() >= datetime.datetime.fromisoformat(st.session_state["userdata"]["nextbandaids"]) and (st.session_state["userdata"]["hp"] < 5):
+        st.session_state["userdata"]["hp"] = 5
+        st.session_state["userdata"]["nextbandaids"] = None
+
+        conn = st.connection('turso', 'sql', ttl=30)
+        with conn.session as session:
+            session.execute(sqlalchemy.text("UPDATE users SET hp={0}, nextbandaids=NULL WHERE name='{1}';"
+                                            .format(st.session_state["userdata"]["hp"],
+                                                    st.session_state["userdata"]["name"])))
+            session.commit()
+
+        st.toast("Vuelves a tener **5** tiritas para hacer lecciones.", icon="🩹")
+        
 
 # No band-aids? Give one for free.
 if st.session_state["userdata"]["hp"] <= 0:

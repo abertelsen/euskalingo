@@ -211,7 +211,7 @@ def registration_widget():
 
 def request_userdata(username):
     conn = st.connection(name="turso", type="sql", ttl=1)
-    records = conn.query("SELECT id,name,email,nextlesson,xp,gp,hp FROM Users WHERE name='{0}' LIMIT 1;".format(username), ttl=1)
+    records = conn.query("SELECT id,name,email,nextlesson,xp,gp,hp,nextbandaids FROM Users WHERE name='{0}' LIMIT 1;".format(username), ttl=1)
 
     if len(records) < 1: return None 
 
@@ -228,7 +228,7 @@ def request_userdata_from_cookie(name="user@hitzon.streamlit.app"):
     if len(token) == 0: return None
     token = token.iloc[0].to_dict()
 
-    userdata = conn.query("SELECT id,name,email,nextlesson,xp,gp,hp FROM users WHERE id={0} LIMIT 1;".format(token["user_id"]), ttl=1)
+    userdata = conn.query("SELECT id,name,email,nextlesson,xp,gp,hp,nextbandaids FROM users WHERE id={0} LIMIT 1;".format(token["user_id"]), ttl=1)
     if len(userdata) == 0: return None
     userdata = userdata.iloc[0].to_dict()
 

@@ -1,6 +1,8 @@
 # Create audio files for all units' keyphrases.
 
-# TODO Make dependencies optional: transformers, simpleaudio, scipy
+# TODO Add argparse
+# TODO Remove audio files no longer used
+
 
 import json
 import os
