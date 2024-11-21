@@ -9,6 +9,15 @@ import streamlit as st
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), "src"))
 import hitzon.ui as hui
 
+@st.dialog("Registro")
+def on_register():
+    if hui.registration_widget():
+        st.rerun()
+
+@st.dialog("Contraseña olvidada")
+def on_forgotten():
+    pass
+
 # def inject_ga():
 #     GA_ID = "google_adsense"
 #     GA_META = '<meta name="google-adsense-account" content="ca-pub-xxxxxxxxxxxx9488">'
@@ -31,15 +40,29 @@ import hitzon.ui as hui
 
 st.set_page_config(page_title="HitzOn", layout="wide", page_icon="random")
 
+# TODO Process query arguments here (e.g. email validation, forgotten password)
+
+if "notification" in st.session_state and st.session_state["notification"] is not None:
+    st.toast(body=st.session_state["notification"]["body"], icon=st.session_state["notification"]["icon"])
+st.session_state["notification"] = None 
+
 # No user? Redirect to login page...
 st.session_state["userdata"] = hui.request_userdata_from_cookie()
 if st.session_state["userdata"] is None:
-    logo_path = os.path.join(os.path.dirname(__file__), "data", "images", "hitzon_logo.png")
-    st.image(image=logo_path)
-    hui.login_widget()
+
+    with st.container(border=True):
+        logo_path = os.path.join(os.path.dirname(__file__), "data", "images", "hitzon_logo.png")
+        st.image(image=logo_path)
+        hui.login_widget()
+
+    st.button(label="¿Eres nuevo? ¡Regístrate aquí!", use_container_width=True, type="secondary",
+              on_click=on_register)
+    st.button(label="¿Has olvidado tu contraseña? Haz clic aquí.", use_container_width=True, type="secondary",
+              on_click=on_forgotten)
 
 else:
     # Navigation panel...
+    
     st.logo(image=os.path.join(os.path.dirname(__file__), "data", "images", "hitzon_logo.png"), size="large")
 
     pages = [

@@ -64,7 +64,7 @@
     "subunits": [
         {"subunit_title": "Introducción", "lessons": 2},
         {"subunit_title": "Parte 2", "lessons": 2},
-        {"subunit_title": "Práctica", "lessons": 2},
+        
         {"subunit_title": "Parte 3", "lessons": 2},
         {"subunit_title": "Prueba", "lessons": 1}
     ]},
@@ -99,7 +99,7 @@
     "subunits": [
         {"subunit_title": "Introducción", "lessons": 2},
         {"subunit_title": "Parte 2", "lessons": 2},
-        {"subunit_title": "Práctica", "lessons": 2},
+        
         {"subunit_title": "Parte 3", "lessons": 2},
         {"subunit_title": "Prueba", "lessons": 1}
     ]},
@@ -149,6 +149,12 @@
             {"eus": "Txakur hauek beti <haserre> daude", "spa": "Estos perros siempre están enfadados"},
             {"eus": "Ur hau oso <ona> da", "spa": "Esta agua es muy buena"},
             {"eus": "Eguraldi <txarra> dago", "spa": "Hace mal tiempo"}
+        ],
+        "subunits": [
+            {"subunit_title": "Introducción", "lessons": 3},
+            {"subunit_title": "Parte 2", "lessons": 3},
+            {"subunit_title": "Parte 3", "lessons": 3},
+            {"subunit_title": "Prueba", "lessons": 1}
         ]
     },
 
@@ -182,7 +188,7 @@
     "subunits": [
         {"subunit_title": "Introducción", "lessons": 2},
         {"subunit_title": "Parte 2", "lessons": 2},
-        {"subunit_title": "Práctica", "lessons": 2},
+        
         {"subunit_title": "Parte 3", "lessons": 2},
         {"subunit_title": "Prueba", "lessons": 1}
     ]},
@@ -202,7 +208,7 @@
     "subunits": [
     {"subunit_title": "Introducción", "lessons": 2},
     {"subunit_title": "Parte 2", "lessons": 2},
-    {"subunit_title": "Práctica", "lessons": 2},
+    
     {"subunit_title": "Parte 3", "lessons": 2},
     {"subunit_title": "Prueba", "lessons": 1}
     ]},
@@ -259,7 +265,7 @@
     "subunits": [
         {"subunit_title": "Introducción", "lessons": 2},
         {"subunit_title": "Parte 2", "lessons": 2},
-        {"subunit_title": "Práctica", "lessons": 2},
+        
         {"subunit_title": "Parte 3", "lessons": 2},
         {"subunit_title": "Prueba", "lessons": 1}
     ]},
@@ -279,7 +285,7 @@
     "subunits": [
         {"subunit_title": "Introducción", "lessons": 2},
         {"subunit_title": "Parte 2", "lessons": 2},
-        {"subunit_title": "Práctica", "lessons": 2},
+        
         {"subunit_title": "Parte 3", "lessons": 2},
         {"subunit_title": "Prueba", "lessons": 1}
     ]},

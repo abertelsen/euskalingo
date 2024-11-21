@@ -2,23 +2,23 @@ import json
 import uuid
 
 import bcrypt
-import extra_streamlit_components as stx
 import sqlalchemy.exc
 import streamlit as st
+import streamlit_cookies_controller as stcc
 from sqlalchemy import text as sqltext
 import sqlalchemy
 
-@st.cache_resource
-def get_cookiemanager():
-    return stx.CookieManager()
+import hitzon.email as hemail
 
+def notify(body, icon=None):
+    st.session_state["notification"] = {"body": body, "icon": icon}
 
 @st.dialog("Reportar error")
 def on_feedback(userdata: dict, attachment=None):
 
     conn = st.connection(name="turso", type="sql", ttl=30)
 
-    options = conn.query("SELECT id, spa FROM feedback_options", index_col="id")
+    options = conn.query("SELECT id, spa FROM feedback_options", index_col="id", ttl=1)
     feedback_option = st.radio(label="Motivo", options=options.index[::-1], format_func=lambda x: options.loc[x, "spa"])
     feedback_text = st.text_area(label="Comentarios")
 
@@ -57,7 +57,7 @@ def on_changepasswd(username: str, old_passwd: str, new_passwd: str, rep_passwd:
     
     conn = st.connection(name="turso", type="sql", ttl=1)
     
-    records = conn.query("SELECT password FROM Users WHERE name='{0}' LIMIT 1;".format(username))
+    records = conn.query("SELECT password FROM Users WHERE name='{0}' LIMIT 1;".format(username), ttl=1)
     if len(records) == 0: return False
     b0 = str(records.iloc[0,0]).encode("utf-8")
 
@@ -65,13 +65,12 @@ def on_changepasswd(username: str, old_passwd: str, new_passwd: str, rep_passwd:
     if bcrypt.checkpw(password=b1, hashed_password=b0):
 
         b2 = bcrypt.hashpw(new_passwd.encode("utf-8"), bcrypt.gensalt())
-        b2 = b2.decode("utf-8")
-        st.info(b2)
+        # st.info(b2)
         with conn.session as session:
-            session.execute(sqltext("UPDATE users SET password='{0}' WHERE name='{1}';".format(b2, username)))
+            session.execute(sqltext("UPDATE users SET password='{0}' WHERE name='{1}';".format(b2.decode("utf-8"), username)))
             session.commit()
             
-            st.toast(body="¡Contraseña cambiada con éxito!".format(username), icon="👍")
+            notify(body="¡Contraseña cambiada con éxito!".format(username), icon="👍")
             return True
         
         return False
@@ -93,14 +92,25 @@ def on_delete(name):
     # Normally, this line should not be reached (unless "with conn.session..." fails)
     return False 
 
+def on_forgotten(email):
+    conn = st.connection(name="turso", type="sql", ttl=1)
+    records = conn.query("SELECT name FROM users WHERE email='{0}' LIMIT 1;".format(email), ttl=1)
+    
+    if len(records) == 0:
+        notify(body="El correo electrónico **{0}** no tiene usuario asignado.".format(email), icon="⛔")
+        return False
+    
+    # TODO Actually send an email
+    hemail.send_email_forgotten_password(to=email)
+
 def on_login(username, password):
     b1 = password.encode("utf-8")
 
     conn = st.connection(name="turso", type="sql", ttl=1)
-    records = conn.query("SELECT password FROM Users WHERE name='{0}' LIMIT 1;".format(username))
+    records = conn.query("SELECT password FROM users WHERE name='{0}' LIMIT 1;".format(username), ttl=1)
 
     if len(records) == 0: 
-        st.toast(body="El nombre de usuario **{0}** no existe.".format(username), icon="⛔")
+        notify(body="El nombre de usuario **{0}** no existe.".format(username), icon="⛔")
         return False
 
     b0 = str(records.iloc[0,0]).encode("utf-8")
@@ -114,21 +124,21 @@ def on_login(username, password):
             session.execute(sqltext("INSERT INTO tokens (uuid, user_id) VALUES ('{0}', {1})".format(token, st.session_state["userdata"]["id"])))
             session.commit()
 
-        get_cookiemanager().set(cookie="user@hitzon.streamlit.app",
-                                path="/",
-                                domain="hitzon.streamlit.app",
-                                same_site="strict",
-                                val=token)
+        stcc.CookieController().set(name="user@hitzon.streamlit.app",
+                                    value=token,
+                                    path="/",
+                                    domain=None,  # hitzon.streamlit.app?
+                                    same_site="strict")
 
-        st.toast(body="¡Has accedido con éxito!", icon="👍")
+        notify(body="¡Has accedido con éxito!", icon="👍")
         return True
     else:
-        st.toast(body="La contraseña no es correcta", icon="⛔")
+        notify(body="La contraseña no es correcta", icon="⛔")
         return False 
 
 def on_logout():
     st.session_state["userdata"] = None
-    get_cookiemanager().delete("user@hitzon.streamlit.app")
+    stcc.CookieController().remove("user@hitzon.streamlit.app")
 
 def on_register(name, email, password):
     b0 = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
@@ -141,14 +151,14 @@ def on_register(name, email, password):
             )))
         except sqlalchemy.exc.IntegrityError as e:  # e.g. UNIQUE constraint failed: users.name
             if str(e).find("users.name") > -1:
-                st.toast(body="El nombre de usuario **{0}** no está disponible: Escoge uno diferente.".format(name), icon="⛔")
+                notify(body="El nombre de usuario **{0}** no está disponible: Escoge uno diferente.".format(name), icon="⛔")
             if str(e).find("users.email") > -1:
-                st.toast(body="El correo electrónico **{0}** no está disponible: Escoge uno diferente.".format(email), icon="⛔")
+                notify(body="El correo electrónico **{0}** no está disponible: Escoge uno diferente.".format(email), icon="⛔")
             return False 
 
         session.commit()
 
-        st.toast("¡Nuevo usuario **{0}** registrado con éxito!".format(name), icon="👍")
+        notify("¡Nuevo usuario **{0}** registrado con éxito!".format(name), icon="👍")
         return True
     
     # Normally, this line should not be reached (unless "with conn.session..." fails)
@@ -181,36 +191,44 @@ def chagepassword_widget(userdata: dict):
     st.button(label="Cambiar contraseña", use_container_width=True, type="primary",
               on_click=on_changepasswd, kwargs={"username": userdata["name"], "old_passwd": old_passwd, "new_passwd": new_passwd, "rep_passwd": rep_passwd})
 
+def forgotten_widget(userdata: dict):
+    fgt_email = st.text_input(label="Correo electrónico", key="fgt_email")
+
+    return st.button(label="Enviar", use_container_width=True, type="primary",
+                     disabled = fgt_email is not None,
+                     on_click=on_forgotten, kwargs={"email": fgt_email})
+
 def registration_widget():
     reg_username = st.text_input(label="Nombre de usuario", key="reg_username")
     reg_email = st.text_input(label="Correo electrónico", key="reg_email")
     reg_password = st.text_input(label="Contraseña", type="password", key="reg_password")
-    st.button(label="Registrarse", use_container_width=True, type="primary",
-              on_click=on_register, kwargs={"name": reg_username, "email": reg_email, "password": reg_password})
+    
+    return st.button(label="Registrarse", use_container_width=True, type="primary",
+                     on_click=on_register, kwargs={"name": reg_username, "email": reg_email, "password": reg_password})
 
 # def lost_username():
 #     pass
 
 def request_userdata(username):
     conn = st.connection(name="turso", type="sql", ttl=1)
-    records = conn.query("SELECT id,name,email,nextlesson,xp,gp,hp FROM Users WHERE name='{0}' LIMIT 1;".format(username))
+    records = conn.query("SELECT id,name,email,nextlesson,xp,gp,hp FROM Users WHERE name='{0}' LIMIT 1;".format(username), ttl=1)
 
     if len(records) < 1: return None 
 
     return records.iloc[0].to_dict()
 
 def request_userdata_from_cookie(name="user@hitzon.streamlit.app"):
-    cookie = get_cookiemanager().get(cookie=name)
+    cookie = stcc.CookieController().get(name=name)
 
     if cookie is None: return None
 
     conn = st.connection(name="turso", type="sql", ttl=1)
-    token = conn.query("SELECT uuid, expiration, user_id FROM tokens WHERE uuid='{0}' LIMIT 1;".format(cookie))
+    token = conn.query("SELECT uuid, expiration, user_id FROM tokens WHERE uuid='{0}' LIMIT 1;".format(cookie), ttl=1)
 
     if len(token) == 0: return None
     token = token.iloc[0].to_dict()
 
-    userdata = conn.query("SELECT id,name,email,nextlesson,xp,gp,hp FROM users WHERE id={0} LIMIT 1;".format(token["user_id"]))
+    userdata = conn.query("SELECT id,name,email,nextlesson,xp,gp,hp FROM users WHERE id={0} LIMIT 1;".format(token["user_id"]), ttl=1)
     if len(userdata) == 0: return None
     userdata = userdata.iloc[0].to_dict()
 

@@ -7,9 +7,9 @@ import os
 # import time
 
 import numpy as np
-# import simpleaudio as sa
 import scipy
 from transformers import pipeline
+# NOTE pytorch is also needed (pip install torch).
 
 
 # import os

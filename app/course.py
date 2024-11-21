@@ -129,11 +129,6 @@ def on_zero_hp():
         st.rerun()
 
 
-
-# REDIRECTIONS
-# if not 'username' in st.session_state or st.session_state['username'] is None:
-#     st.switch_page('app/login.py')
-
 # LESSON
 
 if 'lesson' not in st.session_state:
@@ -222,7 +217,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
         # st.info(st.session_state["userdata"]["name"])
 
         st.markdown(":id: {0} | :dart: {1} **xp** | :coin: {2} **gp** | :adhesive_bandage: {3} **hp**".format(
-            st.session_state["username"], st.session_state["userdata"]["xp"], st.session_state["userdata"]["gp"], st.session_state["userdata"]["hp"]))
+            st.session_state["userdata"]["name"], st.session_state["userdata"]["xp"], st.session_state["userdata"]["gp"], st.session_state["userdata"]["hp"]))
 
         buttons_index = sac.buttons(items=[
             sac.ButtonsItem(label="Cancelar", icon="x-circle", color="red"),
@@ -263,7 +258,8 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
                     st.session_state['exercise']['result'] = False
 
                 if st.session_state['exercise']['result']:
-                    st.success('**¡Correcto!**')
+                    st.success("""**¡Correcto!**  
+                               {0}""".format(utils.to_canon(target)))
                 else:
                     st.error('''
                             **¡Incorrecto!**  
@@ -274,7 +270,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
                     with conn.session as session:
                         session.execute(sqlalchemy.text('UPDATE users SET hp= :h WHERE name= :u ;'),
                                         params={'h': st.session_state["userdata"]["hp"],
-                                                'u': st.session_state["username"]})
+                                                'u': st.session_state["userdata"]["name"]})
                         session.commit()
 
                     # TODO React if the user looses all his band-aids
@@ -310,7 +306,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
 if "userdata" not in st.session_state:
     conn = st.connection("turso", "sql", ttl=30)
     records = conn.query("SELECT id, name, nextlesson, xp, gp, hp FROM users WHERE name = :u LIMIT 1",
-                         params={"u": st.session_state["username"]}, ttl=30)
+                         params={"u": st.session_state["userdata"]["name"]}, ttl=30)
     st.session_state["userdata"] = records.iloc[0].to_dict()
 
 # No band-aids? Give one for free.
@@ -320,7 +316,7 @@ if st.session_state["userdata"]["hp"] <= 0:
     with conn.session as session:
         session.execute(sqlalchemy.text('UPDATE users SET hp= :h WHERE name= :u ;'),
                                         params={'h': st.session_state["userdata"]["hp"],
-                                                'u': st.session_state["username"]})
+                                                'u': st.session_state["userdata"]["name"]})
         session.commit()
 
     st.toast("Has recibido 1 tirita gratis para continuar haciendo lecciones.", icon="🩹")
@@ -383,7 +379,7 @@ for (k_unit, u) in enumerate(st.session_state['course']['units']):
 
     expd = k_unit == next_lesson[1]
 
-    with st.expander(label=u['unit_title'], expanded=expd):
+    with st.expander(label="{0} {1}".format(k_unit + 1, u['unit_title']), expanded=expd):
 
         if 'subunits' not in u.keys() or len(u['subunits']) <= 0:
             st.empty()
