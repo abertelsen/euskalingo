@@ -29,14 +29,14 @@ def on_attempt_finish():
     conn = st.connection(name='turso', type='sql')
 
     rec = conn.query('SELECT xp, gp FROM users WHERE name = :u LIMIT 1',
-                     params={'u': st.session_state['username']}, ttl=0)
+                     params={'u': st.session_state["userdata"]["name"]}, ttl=0)
     userdata = rec.iloc[0].to_dict()
 
     with conn.session as session:
         session.execute(text('UPDATE users SET xp = :x, gp = :g WHERE name = :u'),
                         params={'x': userdata['xp'] + st.session_state['lesson']['attempt']['xp'],
                                 'g': userdata['gp'] + st.session_state['lesson']['attempt']['gp'],
-                                'u': st.session_state['username']})
+                                'u': st.session_state["userdata"]["name"]})
         session.commit()
 
     st.session_state['lesson']['state'] = 'finished'
@@ -124,7 +124,7 @@ else:
         st.rerun()            
 
     # HEADER
-    # st.info(st.session_state['username'])
+    # st.info(st.session_state["userdata"]["name"])
 
     cols = st.columns([0.1, 0.9], vertical_alignment='center')
     with cols[0]:

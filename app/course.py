@@ -88,14 +88,14 @@ def on_attempt_finish():
     conn = st.connection(name='turso', type='sql', ttl=30)
 
     rec = conn.query('SELECT xp, gp FROM users WHERE name = :u LIMIT 1',
-                     params={'u': st.session_state['username']}, ttl=0)
+                     params={'u': st.session_state["userdata"]["name"]}, ttl=0)
     userdata = rec.iloc[0].to_dict()
 
     with conn.session as session:
         session.execute(text('UPDATE users SET xp = :x, gp = :g WHERE name = :u'),
                         params={'x': userdata['xp'] + st.session_state['lesson']['attempt']['xp'],
                                 'g': userdata['gp'] + st.session_state['lesson']['attempt']['gp'],
-                                'u': st.session_state['username']})
+                                'u': st.session_state["userdata"]["name"]})
         session.commit()
 
     st.session_state['lesson']['state'] = 'finished'
@@ -119,7 +119,7 @@ def on_zero_hp():
             session.execute(text('UPDATE users SET hp = :h, gp = :g WHERE name = :u'),
                         params={'h': st.session_state["userdata"]['hp'],
                                 'g': st.session_state["userdata"]['gp'],
-                                'u': st.session_state['username']})
+                                'u': st.session_state["userdata"]["name"]})
             session.commit()
 
         st.rerun()
@@ -131,8 +131,8 @@ def on_zero_hp():
 
 
 # REDIRECTIONS
-if not 'username' in st.session_state or st.session_state['username'] is None:
-    st.switch_page('app/login.py')
+# if not 'username' in st.session_state or st.session_state['username'] is None:
+#     st.switch_page('app/login.py')
 
 # LESSON
 
@@ -219,7 +219,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
         # HEADER
 
         # Debugging info can be printed here...
-        # st.info(st.session_state['username'])
+        # st.info(st.session_state["userdata"]["name"])
 
         st.markdown(":id: {0} | :dart: {1} **xp** | :coin: {2} **gp** | :adhesive_bandage: {3} **hp**".format(
             st.session_state["username"], st.session_state["userdata"]["xp"], st.session_state["userdata"]["gp"], st.session_state["userdata"]["hp"]))
@@ -370,7 +370,7 @@ if 'attempt' in st.session_state['lesson'].keys():
             with conn.session as session:
                 session.execute(sqlalchemy.text('UPDATE users SET nextlesson= :n WHERE name= :u ;'),
                                 params={'n': st.session_state['userdata']['nextlesson'],
-                                        'u': st.session_state['username']})
+                                        'u': st.session_state["userdata"]["name"]})
                 session.commit()
 
     st.session_state['lesson']['attempt'] = {}

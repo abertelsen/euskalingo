@@ -77,7 +77,7 @@ def on_purchase(price: int, effect: str):
 if "userdata" not in st.session_state:
     conn = st.connection("turso", "sql", ttl=30)
     records = conn.query("SELECT name, nextlesson, xp, gp, hp FROM users WHERE name = :u LIMIT 1",
-                            params={"u": st.session_state['username']}, ttl=30)
+                            params={"u": st.session_state["userdata"]["name"]}, ttl=30)
     st.session_state["userdata"] = records.iloc[0].to_dict()
 
 with open(file=os.path.join('data', 'shop.json'), mode='r', encoding='utf-8') as f:
