@@ -14,7 +14,7 @@ from streamlit_extras.bottom_container import bottom
 
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
 import hitzon.exercises as exercises 
-import hitzon.ui as ui
+import hitzon.ui as hui
 import hitzon.utils as utils
 
 def begin_lesson(unit, subunit, lesson, xp=12, gp=3):
@@ -284,7 +284,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
                 cols = st.columns(3, vertical_alignment='bottom')
 
                 with cols[0]:
-                    st.button(label="Reportar error...", use_container_width=True, type="secondary", on_click=ui.on_feedback, 
+                    st.button(label="Reportar error...", use_container_width=True, type="secondary", on_click=hui.on_feedback, 
                               kwargs={"userdata": st.session_state["userdata"], "attachment": st.session_state["exercise"]})
                     
                     # TODO Notify user that his feedback has been sent.
@@ -314,7 +314,7 @@ if "userdata" not in st.session_state:
     st.session_state["userdata"] = records.iloc[0].to_dict()
 
 # Are we entitled to our next package of bandaids?
-if st.session_state["userdata"]["nextbandaids"] is not None:
+if st.session_state["userdata"]["nextbandaids"] is not None and st.session_state["userdata"]["nextbandaids"] != "NULL":
     if datetime.datetime.now() >= datetime.datetime.fromisoformat(st.session_state["userdata"]["nextbandaids"]) and (st.session_state["userdata"]["hp"] < 5):
         st.session_state["userdata"]["hp"] = 5
         st.session_state["userdata"]["nextbandaids"] = None
@@ -326,7 +326,7 @@ if st.session_state["userdata"]["nextbandaids"] is not None:
                                                     st.session_state["userdata"]["name"])))
             session.commit()
 
-        st.toast("Vuelves a tener **5** tiritas para hacer lecciones.", icon="🩹")
+        st.toast(body="Vuelves a tener **5** tiritas para hacer lecciones.", icon="🩹")
         
 
 # No band-aids? Give one for free.
@@ -339,7 +339,7 @@ if st.session_state["userdata"]["hp"] <= 0:
                                                 'u': st.session_state["userdata"]["name"]})
         session.commit()
 
-    st.toast("Has recibido 1 tirita gratis para continuar haciendo lecciones.", icon="🩹")
+    st.toast(body="Has recibido 1 tirita gratis para continuar haciendo lecciones.", icon="🩹")
 
 # Load course
 if not 'course' in st.session_state or st.session_state['course'] is None:

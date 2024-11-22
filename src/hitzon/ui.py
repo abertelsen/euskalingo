@@ -55,7 +55,12 @@ def notify(body, icon=None):
 
 # CALLBACKS ===================================================================
 
-def on_changeemail(username: str, new_email: str):   
+def on_changeemail():
+
+    username = safeget(["userdata", "name"], str)
+    new_email = safeget("uem_email", str)
+    if username is None or new_email is None: return False 
+
     conn = st.connection(name="turso", type="sql", ttl=1)
     
     with conn.session as session:
@@ -67,7 +72,12 @@ def on_changeemail(username: str, new_email: str):
     
     return True
 
-def on_changepasswd(username: str, old_passwd: str, new_passwd: str, rep_passwd: str):
+def on_changepasswd():
+
+    username = safeget(["userdata", "name"], str)
+    old_passwd = safeget("upw_old_password", str)
+    new_passwd = safeget("upw_new_password", str)
+    rep_passwd = safeget("upw_rep_password", str)
 
     # TODO Should all tokens be removed after a password change?
 
@@ -97,11 +107,8 @@ def on_changepasswd(username: str, old_passwd: str, new_passwd: str, rep_passwd:
     else: return False
 
 def on_delete():
-    name = None
-    if "userdata" in st.session_state:
-        if isinstance(st.session_state["userdata"], dict) and "name" in st.session_state["userdata"].keys():
-            name = st.session_state["userdata"]["name"] if st.session_state["userdata"]["name"] is not None else None 
-    if not isinstance(name, str): return False 
+    name = safeget(["userdata", "name"], str)
+    if name is None: return False 
 
     # Logout first, delete later...
     on_logout()
@@ -116,7 +123,11 @@ def on_delete():
     return False 
 
 @st.dialog("Reportar error")
-def on_feedback(userdata: dict, attachment=None):
+def on_feedback():
+
+    userdata = safeget("userdata", dict)
+    attachment = safeget("fbk_attachment", dict)
+    if userdata is None or attachment is None: return False 
 
     conn = st.connection(name="turso", type="sql", ttl=30)
 
@@ -135,7 +146,10 @@ def on_feedback(userdata: dict, attachment=None):
     if st.button(label="Cancelar", use_container_width=True, type="secondary"):
         st.rerun()
 
-def on_forgotten(email):
+def on_forgotten():
+    email = safeget("fgt_email", str)
+    if email is None: return False
+
     conn = st.connection(name="turso", type="sql", ttl=1)
     records = conn.query("SELECT name FROM users WHERE email='{0}' LIMIT 1;".format(email), ttl=1)
     
@@ -146,7 +160,12 @@ def on_forgotten(email):
     # TODO Actually send an email
     hemail.send_email_forgotten_password(to=email)
 
-def on_login(username, password):
+def on_login():
+
+    username = safeget("lgn_username", str)
+    password = safeget("lgn_password", str)
+    if username is None or password is None: return False 
+
     b1 = password.encode("utf-8")
 
     conn = st.connection(name="turso", type="sql", ttl=1)
@@ -173,7 +192,7 @@ def on_login(username, password):
                                     domain=None,  # hitzon.streamlit.app?
                                     same_site="strict")
 
-        notify(body="¡Has accedido con éxito!", icon="👍")
+        # notify(body="¡Has accedido con éxito!", icon="👍")
         return True
     else:
         notify(body="La contraseña no es correcta", icon="⛔")
@@ -181,27 +200,35 @@ def on_login(username, password):
 
 def on_logout():
     st.session_state["userdata"] = None
-    stcc.CookieController().remove("user@hitzon.streamlit.app")
+    try:
+        stcc.CookieController().remove("user@hitzon.streamlit.app")
+    except KeyError:
+        pass
 
-def on_register(name, email, password):
+def on_register():
+
+    username = safeget("reg_username", str)
+    email = safeget("reg_email", str)
+    password = safeget("reg_password", str)
+
     b0 = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
     conn = st.connection(name="turso", type="sql", ttl=1)
     with conn.session as session:
         try:
             session.execute(sqltext("INSERT INTO users (name, email, password) VALUES ('{0}', '{1}', '{2}')".format(
-                name, email, b0.decode("utf-8")
+                username, email, b0.decode("utf-8")
             )))
         except sqlalchemy.exc.IntegrityError as e:  # e.g. UNIQUE constraint failed: users.name
             if str(e).find("users.name") > -1:
-                notify(body="El nombre de usuario **{0}** no está disponible: Escoge uno diferente.".format(name), icon="⛔")
+                notify(body="El nombre de usuario **{0}** no está disponible: Escoge uno diferente.".format(username), icon="⛔")
             if str(e).find("users.email") > -1:
                 notify(body="El correo electrónico **{0}** no está disponible: Escoge uno diferente.".format(email), icon="⛔")
             return False 
 
         session.commit()
 
-        notify("¡Nuevo usuario **{0}** registrado con éxito!".format(name), icon="👍")
+        notify("¡Nuevo usuario **{0}** registrado con éxito!".format(username), icon="👍")
         return True
     
     # Normally, this line should not be reached (unless "with conn.session..." fails)
@@ -210,51 +237,57 @@ def on_register(name, email, password):
 # UI ==========================================================================
 
 @st.fragment
-def deletion_widget(userdata: dict):
-    st.button("Haz clic aquí para borrar al usuario", type="primary", use_container_width=True,
-              on_click=on_delete)
+def deletion_widget(scope="fragment"):
+    if st.button("Haz clic aquí para borrar al usuario", type="primary", use_container_width=True, on_click=on_delete):
+        st.rerun(scope=scope)
 
 @st.fragment
-def login_widget():
-    username = st.text_input(label="Nombre de usuario")
-    password = st.text_input(label="Contraseña", type="password")
-    st.button(label="Entrar", use_container_width=True, type="primary",
-              on_click=on_login, kwargs={"username": username, "password": password})
+def login_widget(scope="fragment"):
+    st.text_input(label="Nombre de usuario", key="lgn_username")
+    st.text_input(label="Contraseña", type="password", key="lgn_password")
+    
+    if st.button(label="Entrar", use_container_width=True, type="primary", on_click=on_login):
+        st.rerun(scope=scope)
+
+    # st.info(st.session_state["lgn_username"])
+    # st.info(st.session_state["lgn_password"])
 
 @st.fragment
-def logout_button():
-    st.button(label="Logout", on_click=on_logout, use_container_width=True, type="secondary")
+def logout_button(scope="fragment"):
+    if st.button(label="Logout", on_click=on_logout, use_container_width=True, type="secondary"):
+        st.rerun(scope=scope)
 
 @st.fragment
-def changeemail_widget(userdata: dict):
-    new_email = st.text_input(label="Nuevo correo electrónico")
-    st.button(label="Cambiar correo electrónico", use_container_width=True, type="primary",
-              on_click=on_changeemail, kwargs={"username": userdata["name"], "new_email": new_email})
+def changeemail_widget(scope="fragment"):
+    st.text_input(label="Nuevo correo electrónico", key="uem_email")
+    
+    if st.button(label="Cambiar correo electrónico", use_container_width=True, type="primary", on_click=on_changeemail):
+        st.rerun(scope=scope)
 
 @st.fragment
-def chagepassword_widget(userdata: dict):
-    old_passwd = st.text_input(label="Contraseña actual", type="password")
-    new_passwd = st.text_input(label="Contraseña nueva", type="password")
-    rep_passwd = st.text_input(label="Repite la contraseña nueva", type="password")
-    st.button(label="Cambiar contraseña", use_container_width=True, type="primary",
-              on_click=on_changepasswd, kwargs={"username": userdata["name"], "old_passwd": old_passwd, "new_passwd": new_passwd, "rep_passwd": rep_passwd})
+def chagepassword_widget(scope="fragment"):
+    st.text_input(label="Contraseña actual", type="password", key="upw_old_password")
+    st.text_input(label="Contraseña nueva", type="password", key="upw_new_password")
+    st.text_input(label="Repite la contraseña nueva", type="password", key="upw_rep_password")
+    
+    if st.button(label="Cambiar contraseña", use_container_width=True, type="primary", on_click=on_changepasswd):
+        st.rerun(scope=scope)
 
 @st.fragment
-def forgotten_widget(userdata: dict):
+def forgotten_widget(scope="fragment"):
     fgt_email = st.text_input(label="Correo electrónico", key="fgt_email")
 
-    return st.button(label="Enviar", use_container_width=True, type="primary",
-                     disabled = fgt_email is not None,
-                     on_click=on_forgotten, kwargs={"email": fgt_email})
+    if st.button(label="Enviar", use_container_width=True, type="primary", disabled = fgt_email is not None, on_click=on_forgotten):
+        st.rerun(scope=scope)
 
 @st.fragment
-def registration_widget():
-    reg_username = st.text_input(label="Nombre de usuario", key="reg_username")
-    reg_email = st.text_input(label="Correo electrónico", key="reg_email")
-    reg_password = st.text_input(label="Contraseña", type="password", key="reg_password")
+def registration_widget(scope="fragment"):
+    st.text_input(label="Nombre de usuario", key="reg_username")
+    st.text_input(label="Correo electrónico", key="reg_email")
+    st.text_input(label="Contraseña", type="password", key="reg_password")
     
-    return st.button(label="Registrarse", use_container_width=True, type="primary",
-                     on_click=on_register, kwargs={"name": reg_username, "email": reg_email, "password": reg_password})
+    if st.button(label="Registrarse", use_container_width=True, type="primary", key="reg_button", on_click=on_register):
+        st.rerun(scope=scope)
 
 
 # OTHER FUNCTIONS =============================================================
@@ -284,10 +317,15 @@ def request_userdata_from_cookie(name="user@hitzon.streamlit.app"):
 
     return userdata 
 
-def userdata_form(userdata: dict):
+
+def userdata_form():
     with st.form("userdata_form"):
-        st.text_input(label="Nombre de usuario", disabled=True, value=userdata["name"])
-        st.text_input(label="Correo electrónico", disabled=True, value=userdata["email"])  # TODO revalidate email
+
+        username = safeget(["userdata", "name"], str)
+        email = safeget(["userdata", "email"], str)
+
+        st.text_input(label="Nombre de usuario", disabled=True, value=username)
+        st.text_input(label="Correo electrónico", disabled=True, value=email)  # TODO revalidate email
         # password = st.text_input(label="Contraseña", type="password")
 
         st.form_submit_button(label="Actualizar", use_container_width=True, type="primary")

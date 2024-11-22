@@ -9,14 +9,17 @@ import streamlit as st
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), "src"))
 import hitzon.ui as hui
 
-@st.dialog("Registro")
-def on_register():
-    if hui.registration_widget():
-        st.rerun()
+# @st.dialog("Registro")
+# def on_register():
+#     hui.registration_widget()
+    
+#     if st.session_state["reg_button"]:
+#         # hui.on_register()
+#         st.rerun()
 
-@st.dialog("Contraseña olvidada")
-def on_forgotten():
-    pass
+# @st.dialog("Contraseña olvidada")
+# def on_forgotten():
+#     pass
 
 # def inject_ga():
 #     GA_ID = "google_adsense"
@@ -42,7 +45,9 @@ st.set_page_config(page_title="HitzOn", layout="wide", page_icon="random")
 
 # TODO Process query arguments here (e.g. email validation, forgotten password)
 
-if "notification" in st.session_state and st.session_state["notification"] is not None:
+# Show pending notifications.
+notification = hui.safeget("notification", dict)
+if notification is not None:
     st.toast(body=st.session_state["notification"]["body"], icon=st.session_state["notification"]["icon"])
 st.session_state["notification"] = None 
 
@@ -53,12 +58,12 @@ if st.session_state["userdata"] is None:
     with st.container(border=True):
         logo_path = os.path.join(os.path.dirname(__file__), "data", "images", "hitzon_logo.png")
         st.image(image=logo_path)
-        hui.login_widget()
+        hui.login_widget(scope="app")
 
-    st.button(label="¿Eres nuevo? ¡Regístrate aquí!", use_container_width=True, type="secondary",
-              on_click=on_register)
-    st.button(label="¿Has olvidado tu contraseña? Haz clic aquí.", use_container_width=True, type="secondary",
-              on_click=on_forgotten)
+    with st.expander(label="¿Eres nuevo? ¡Regístrate aquí!"):
+        hui.registration_widget(scope="app")
+    # st.button(label="¿Has olvidado tu contraseña? Haz clic aquí.", use_container_width=True, type="secondary",
+    #           on_click=on_forgotten)
 
 else:
     # Navigation panel...

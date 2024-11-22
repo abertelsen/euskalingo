@@ -8,19 +8,19 @@ import hitzon.ui as hui
 
 st.title(st.session_state["userdata"]["name"])
 
-hui.logout_button()
+hui.logout_button(scope="app")
 
 with st.expander("Datos del usuario"):
-    hui.userdata_form(userdata=st.session_state["userdata"])
+    hui.userdata_form()
 
 # st.divider()
 with st.expander("Cambiar contraseña"):
-    hui.chagepassword_widget(userdata=st.session_state["userdata"])
+    hui.chagepassword_widget(scope="app")
 
 # st.divider()
 with st.expander("Validar correo electrónico"):
-    hui.changeemail_widget(userdata=st.session_state["userdata"])
+    hui.changeemail_widget(scope="app")
 
 # st.divider()
 with st.expander(":rotating_light: Zona peligrosa"):
-    hui.deletion_widget(userdata=st.session_state["userdata"])
+    hui.deletion_widget(scope="app")

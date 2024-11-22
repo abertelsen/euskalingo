@@ -1,10 +1,31 @@
 import json 
 import os 
+import sys 
 
 import sqlalchemy
 import streamlit as st
 
-def on_promocode(code: str, userdata: dict):
+sys.path.insert(1, os.path.join(os.path.dirname(__file__), "..", "src"))
+import hitzon.ui as hui
+
+@st.fragment
+def item_widget(i: dict):
+    with st.container(border=True):
+        st.subheader(i['name'], anchor=False)
+        st.markdown(i['description'])
+        st.button(label='**Comprar** :coin: {0} gp'.format(i['price']),
+                    use_container_width=True,
+                    type='secondary',
+                    disabled=i["price"] > st.session_state["userdata"]["gp"],
+                    on_click=on_purchase,
+                    kwargs={"price": i['price'], "effect": i["effect"]})
+
+def on_promocode():
+
+    code = hui.safeget("promocode", str)
+    userdata = hui.safeget("userdata", dict)
+    if code is None or userdata is None:
+        return 
 
     code = code.strip().replace(" ", "")  # Remove all spaces
 
@@ -54,6 +75,15 @@ def on_promocode(code: str, userdata: dict):
     elif stat == "hp":
         st.toast("**{0}** ¡Has conseguido {1} tiritas!".format(code, value), icon="🩹")
 
+@st.fragment
+def promocode_widget():
+    with st.container(border=True):
+        st.subheader(":admission_tickets: Código promocional")
+        st.markdown("¿Tienes un código promocional? Utilízalo aquí...")
+        st.text_input(label="Código promocional", label_visibility="collapsed", key="promocode")
+
+        st.button(label="**Activar**", use_container_width=True, type="secondary", on_click=on_promocode)
+
 def on_purchase(price: int, effect: str):
     stat, value = effect.split(sep="+", maxsplit=1)
 
@@ -68,7 +98,7 @@ def on_purchase(price: int, effect: str):
         session.execute(sqlalchemy.text('UPDATE users SET gp= :g, hp= :h WHERE name= :u ;'),
                                         params={'g': st.session_state["userdata"]["gp"],
                                                 'h': st.session_state["userdata"]["hp"],
-                                                'u': st.session_state["username"]})
+                                                'u': st.session_state["userdata"]["name"]})
         session.commit()
 
     if stat == "hp":
@@ -87,26 +117,10 @@ st.title('Tienda')
 
 for section in data.keys():
     st.header(section, anchor=False)
-
-    items = data[section]
-
-    for i in items:
-        with st.container(border=True):
-            st.subheader(i['name'], anchor=False)
-            st.markdown(i['description'])
-            st.button(label='**Comprar** :coin: {0} gp'.format(i['price']),
-                      use_container_width=True,
-                      type='secondary',
-                      disabled=i["price"] > st.session_state["userdata"]["gp"],
-                      on_click=on_purchase,
-                      kwargs={"price": i['price'], "effect": i["effect"]})
+    
+    for item in data[section]:
+        item_widget(item)
 
 # Add the promo code section
 st.header("Códigos promocionales", anchor=False)
-
-with st.container(border=True):
-    st.subheader(":admission_tickets: Código promocional")
-    st.markdown("¿Tienes un código promocional? Utilízalo aquí...")
-    code = st.text_input(label="Código promocional", label_visibility="collapsed")
-    st.button(label="**Activar**", use_container_width=True, type="secondary", 
-              on_click=on_promocode, kwargs={"code": code, "userdata": st.session_state["userdata"]})
+promocode_widget()
