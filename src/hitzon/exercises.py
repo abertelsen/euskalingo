@@ -7,7 +7,7 @@ import streamlit_antd_components as sac
 
 import hitzon.utils as utils
 
-
+@st.fragment
 def blankfill(text: str, target: str):
 
     # st.info(text)
@@ -41,10 +41,9 @@ def blankfill(text: str, target: str):
     if len(t[1].strip()) > 0:
         st.subheader("... " + t[1])
 
-    answer = answer.strip()  # Remove trailing and ending whitespaces.
+    st.session_state["exercise"]["answer"] = answer.strip()  # Remove trailing and ending whitespaces.
 
-    return answer
-
+@st.fragment
 def choices(text: str, target: list, variant: str):
     if 'choices' not in st.session_state['exercise'].keys() or st.session_state.exercise['choices'] is None:
         st.session_state['exercise']['choices'] = list(target)  # Ensure copy, not reference
@@ -57,13 +56,12 @@ def choices(text: str, target: list, variant: str):
     else:
         st.header('¿Qué significa «{0}»?'.format(text), anchor=False, help=helptext)
 
-    answer = sac.segmented(items=st.session_state['exercise']['choices'], index=None,
-            label='',
-            align='center', direction='vertical', use_container_width=True,
-            color='lightsalmon', bg_color="white")
-    
-    return answer
+    st.session_state["exercise"]["answer"] = sac.segmented(items=st.session_state['exercise']['choices'], index=None,
+                                                           label='',
+                                                           align='center', direction='vertical', use_container_width=True,
+                                                           color='lightsalmon', bg_color="white")
 
+@st.fragment
 def matching(words_left, words_right):
 
     if 'finished' not in st.session_state:
@@ -138,6 +136,7 @@ def matching(words_left, words_right):
     if all(st.session_state.matching_state['disabled'][0]) and all(st.session_state.matching_state['disabled'][1]):
         st.session_state.finished = True
 
+@st.fragment
 def translation(text: str, target: str):
 
     # TODO Implement variants with audio only.
@@ -162,7 +161,5 @@ def translation(text: str, target: str):
                             align='start', radius='md', variant='outline', multiple=True,
                             color='lightsalmon')
     # Other color #9ab9bf
-    answer = ' '.join(answer_list)
-    st.subheader(answer, anchor=False)
-
-    return answer
+    st.session_state["exercise"]["answer"] = " ".join(answer_list)
+    st.subheader(st.session_state["exercise"]["answer"], anchor=False)

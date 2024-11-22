@@ -71,8 +71,8 @@ def create_lesson(unit: dict, n: int=12, types=None, index=None, xp=12, gp=3):
 
     return lesson 
 
-def on_exercise_check(answer=None):
-    st.session_state['exercise']['answer'] = answer
+def on_exercise_check():
+    # st.session_state['exercise']['answer'] = answer
     st.session_state['exercise']['state'] = 'checked'
 
 def on_exercise_next():
@@ -232,17 +232,17 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
 
         # Render the exercise
         if exercise['type'] == 'blankfill': 
-            answer = exercises.blankfill(text=exercise['text'], target=exercise["target"])
+            exercises.blankfill(text=exercise['text'], target=exercise["target"])
 
         elif exercise['type'] == 'choices': 
-            answer = exercises.choices(text=exercise['text'], target=exercise['target'], variant=exercise['variant'])
+            exercises.choices(text=exercise['text'], target=exercise['target'], variant=exercise['variant'])
 
         # TODO Add matches exercises.                
         # elif exercise['type'] == 'matching':
-        #     answer = exercises.matching(words_left=exercise['text'], words_right=exercise['target'])
+        #     exercises.matching(words_left=exercise['text'], words_right=exercise['target'])
 
         elif exercise['type'] == 'translation':
-            answer = exercises.translation(text=exercise['text'], target=exercise['target'])
+            exercises.translation(text=exercise['text'], target=exercise['target'])
 
         with bottom():
             if st.session_state['exercise']['state'] == 'checked':
@@ -300,7 +300,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
             else:
                 st.button(label='Comprobar', use_container_width=True, type='primary',
                 disabled = st.session_state['exercise']['state'] == 'checked', 
-                on_click=on_exercise_check, kwargs={'answer': answer})
+                on_click=on_exercise_check)
 
     st.stop()
 
