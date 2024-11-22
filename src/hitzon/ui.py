@@ -10,28 +10,47 @@ import sqlalchemy
 
 import hitzon.email as hemail
 
+def safeget(key, type):
+    """
+    Safely get objects from st.session_state.
+
+    If key is a string:
+    1. Checks that 'key' is present on st.session_state.keys()
+    2. Checks that st.session_state[key] is an instance of 'type'.
+    
+    If so, returns st.session_state[key] or None otherwise.
+
+    If key is a list or tuple
+    1. Checks that st.session_state[key[0]][key[1]]...[key[n-2]] are all dictionaries
+    2. For every k=0..n-2 st.session_state[key[0]]...[key[k]] checks that key[k+1] is present on the dictionary's keys.
+    3. For the last dictionary, checks that the last key is present and its object is an instance of 'type'
+    4. If all holds, returns the last object, or None otherwise.
+
+    """
+     
+    if isinstance(key, list) or isinstance(key, tuple):
+        d = st.session_state
+        for k in range(0, len(key) - 1):
+            if (key[k] in d) and (isinstance(d[key[k]], dict)):
+                d = d[key[k]]
+            else:
+                return None 
+       
+        if (key[-1] in d) and (isinstance(d[key[-1]], type)):
+            return d[key[-1]]
+        else:
+            return None 
+        
+    elif isinstance(key, str):      
+        if key in st.session_state and isinstance(st.session_state[key], type):
+            return st.session_state[key]
+        else:
+            return None
+    else:
+        return None
+
 def notify(body, icon=None):
     st.session_state["notification"] = {"body": body, "icon": icon}
-
-@st.dialog("Reportar error")
-def on_feedback(userdata: dict, attachment=None):
-
-    conn = st.connection(name="turso", type="sql", ttl=30)
-
-    options = conn.query("SELECT id, spa FROM feedback_options", index_col="id", ttl=1)
-    feedback_option = st.radio(label="Motivo", options=options.index[::-1], format_func=lambda x: options.loc[x, "spa"])
-    feedback_text = st.text_area(label="Comentarios")
-
-    if st.button(label="Enviar", use_container_width=True, type="primary"):
-        with conn.session as session:
-            session.execute(sqlalchemy.text('INSERT INTO feedback (datetime, user_id, option_id, comment, attachment) VALUES (DATETIME(), :u, :o, :c, :a);'),
-                            params={"u": userdata["id"], "o": feedback_option, "c": feedback_text, "a": json.dumps(attachment)})
-            session.commit()
-
-        st.rerun()
-
-    if st.button(label="Cancelar", use_container_width=True, type="secondary"):
-        st.rerun()
 
 
 # CALLBACKS ===================================================================
@@ -77,8 +96,12 @@ def on_changepasswd(username: str, old_passwd: str, new_passwd: str, rep_passwd:
 
     else: return False
 
-def on_delete(name):
-    # TODO Should we ask for the password for this?
+def on_delete():
+    name = None
+    if "userdata" in st.session_state:
+        if isinstance(st.session_state["userdata"], dict) and "name" in st.session_state["userdata"].keys():
+            name = st.session_state["userdata"]["name"] if st.session_state["userdata"]["name"] is not None else None 
+    if not isinstance(name, str): return False 
 
     # Logout first, delete later...
     on_logout()
@@ -91,6 +114,26 @@ def on_delete(name):
     
     # Normally, this line should not be reached (unless "with conn.session..." fails)
     return False 
+
+@st.dialog("Reportar error")
+def on_feedback(userdata: dict, attachment=None):
+
+    conn = st.connection(name="turso", type="sql", ttl=30)
+
+    options = conn.query("SELECT id, spa FROM feedback_options", index_col="id", ttl=1)
+    feedback_option = st.radio(label="Motivo", options=options.index[::-1], format_func=lambda x: options.loc[x, "spa"])
+    feedback_text = st.text_area(label="Comentarios")
+
+    if st.button(label="Enviar", use_container_width=True, type="primary"):
+        with conn.session as session:
+            session.execute(sqlalchemy.text('INSERT INTO feedback (datetime, user_id, option_id, comment, attachment) VALUES (DATETIME(), :u, :o, :c, :a);'),
+                            params={"u": userdata["id"], "o": feedback_option, "c": feedback_text, "a": json.dumps(attachment)})
+            session.commit()
+
+        st.rerun()
+
+    if st.button(label="Cancelar", use_container_width=True, type="secondary"):
+        st.rerun()
 
 def on_forgotten(email):
     conn = st.connection(name="turso", type="sql", ttl=1)
@@ -166,24 +209,29 @@ def on_register(name, email, password):
 
 # UI ==========================================================================
 
+@st.fragment
 def deletion_widget(userdata: dict):
     st.button("Haz clic aquí para borrar al usuario", type="primary", use_container_width=True,
-              on_click=on_delete, kwargs={"name": userdata["name"]})
+              on_click=on_delete)
 
+@st.fragment
 def login_widget():
     username = st.text_input(label="Nombre de usuario")
     password = st.text_input(label="Contraseña", type="password")
     st.button(label="Entrar", use_container_width=True, type="primary",
               on_click=on_login, kwargs={"username": username, "password": password})
 
+@st.fragment
 def logout_button():
     st.button(label="Logout", on_click=on_logout, use_container_width=True, type="secondary")
 
+@st.fragment
 def changeemail_widget(userdata: dict):
     new_email = st.text_input(label="Nuevo correo electrónico")
     st.button(label="Cambiar correo electrónico", use_container_width=True, type="primary",
               on_click=on_changeemail, kwargs={"username": userdata["name"], "new_email": new_email})
 
+@st.fragment
 def chagepassword_widget(userdata: dict):
     old_passwd = st.text_input(label="Contraseña actual", type="password")
     new_passwd = st.text_input(label="Contraseña nueva", type="password")
@@ -191,6 +239,7 @@ def chagepassword_widget(userdata: dict):
     st.button(label="Cambiar contraseña", use_container_width=True, type="primary",
               on_click=on_changepasswd, kwargs={"username": userdata["name"], "old_passwd": old_passwd, "new_passwd": new_passwd, "rep_passwd": rep_passwd})
 
+@st.fragment
 def forgotten_widget(userdata: dict):
     fgt_email = st.text_input(label="Correo electrónico", key="fgt_email")
 
@@ -198,6 +247,7 @@ def forgotten_widget(userdata: dict):
                      disabled = fgt_email is not None,
                      on_click=on_forgotten, kwargs={"email": fgt_email})
 
+@st.fragment
 def registration_widget():
     reg_username = st.text_input(label="Nombre de usuario", key="reg_username")
     reg_email = st.text_input(label="Correo electrónico", key="reg_email")
@@ -206,8 +256,8 @@ def registration_widget():
     return st.button(label="Registrarse", use_container_width=True, type="primary",
                      on_click=on_register, kwargs={"name": reg_username, "email": reg_email, "password": reg_password})
 
-# def lost_username():
-#     pass
+
+# OTHER FUNCTIONS =============================================================
 
 def request_userdata(username):
     conn = st.connection(name="turso", type="sql", ttl=1)
