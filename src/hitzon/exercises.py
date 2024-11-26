@@ -71,7 +71,11 @@ def exercise_widget(exercise: dict):
     #     matching(words_left=exercise["text"], words_right=exercise["target"])
 
     elif exercise["type"] == "translation":
-        translation(text=exercise["text"], target=exercise["target"])
+
+        if ("distractors" not in exercise) or (exercise["distractors"] is None) or (not isinstance(exercise["distractors"], list)):
+            exercise["distractors"] = []
+
+        translation(text=exercise["text"], target=exercise["target"], distractors=exercise["distractors"])
 
     if st.session_state["exercise"]["state"] == "checked":
 
@@ -263,12 +267,12 @@ def matching(words_left, words_right):
     if all(st.session_state.matching_state["disabled"][0]) and all(st.session_state.matching_state["disabled"][1]):
         st.session_state.finished = True
 
-def translation(text: str, target: str):
+def translation(text: str, target: str, distractors=[]):
 
     # TODO Implement variants with audio only.
 
     if hui.safeget(["exercise", "choices"], list) is None:
-        st.session_state["exercise"]["choices"] = utils.to_list(target)
+        st.session_state["exercise"]["choices"] = utils.to_list(target) + distractors
         random.shuffle(st.session_state["exercise"]["choices"])  # Works in place, no return.
 
     st.header("Traduce esta oración:", anchor=False)

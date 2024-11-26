@@ -81,12 +81,18 @@ def create_lesson(unit: dict, n: int=12, types=None, index=None, xp=12, gp=3):
         elif ex['type'] == 'translation':
             keyphrase = random.choice(unit['keyphrases'])
             ex['variant'] = random.choice(('to_target', 'to_source'))
+            
+            n_distractors = random.randint(2, 4)
+            distractors = random.sample(unit['keywords'], n_distractors)  # Fixed number of distractors
+            
             if ex['variant'] == 'to_target':
                 ex['text'] = utils.to_canon(keyphrase['spa'])
                 ex['target'] = keyphrase['eus']
+                ex["distractors"] = [x["eus"] for x in distractors]
             else:
                 ex['text'] = utils.to_canon(keyphrase['eus'])
                 ex['target'] = keyphrase['spa']
+                ex["distractors"] = [x["spa"] for x in distractors]
 
     return lesson 
 
