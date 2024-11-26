@@ -126,7 +126,7 @@ def on_delete():
 def on_feedback():
 
     userdata = safeget("userdata", dict)
-    attachment = safeget("fbk_attachment", dict)
+    attachment = safeget("exercise", dict)
     if userdata is None or attachment is None: return False 
 
     conn = st.connection(name="turso", type="sql", ttl=30)

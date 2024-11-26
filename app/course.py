@@ -10,12 +10,31 @@ from sqlalchemy import text as text
 import pandas as pd
 import streamlit as st
 import streamlit_antd_components as sac
-from streamlit_extras.bottom_container import bottom
 
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
 import hitzon.exercises as exercises 
 import hitzon.ui as hui
 import hitzon.utils as utils
+
+def on_attempt_cancel():
+    st.session_state['lesson']['state'] = 'cancelled'
+    del st.session_state["exercise"]
+
+def on_attempt_finish():
+    conn = st.connection(name='turso', type='sql', ttl=30)
+
+    rec = conn.query('SELECT xp, gp FROM users WHERE name = :u LIMIT 1',
+                     params={'u': st.session_state["userdata"]["name"]}, ttl=0)
+    userdata = rec.iloc[0].to_dict()
+
+    with conn.session as session:
+        session.execute(sqlalchemy.text("UPDATE users SET xp = :x, gp = :g WHERE name = :u"),
+                        params={'x': userdata['xp'] + st.session_state['lesson']['attempt']['xp'],
+                                'g': userdata['gp'] + st.session_state['lesson']['attempt']['gp'],
+                                'u': st.session_state["userdata"]["name"]})
+        session.commit()
+
+    st.session_state['lesson']['state'] = 'finished'
 
 def begin_lesson(unit, subunit, lesson, xp=12, gp=3):
     su = st.session_state['course']['units'][unit]['subunits'][subunit]
@@ -70,64 +89,6 @@ def create_lesson(unit: dict, n: int=12, types=None, index=None, xp=12, gp=3):
                 ex['target'] = keyphrase['spa']
 
     return lesson 
-
-def on_exercise_check():
-    # st.session_state['exercise']['answer'] = answer
-    st.session_state['exercise']['state'] = 'checked'
-
-def on_exercise_next():
-    st.session_state['exercise']['answer'] = None
-    st.session_state['exercise']['choices'] = None
-    st.session_state['exercise']['state'] = 'finished'
-
-def on_attempt_cancel():
-    st.session_state['lesson']['state'] = 'cancelled'
-    del st.session_state["exercise"]
-
-def on_attempt_finish():
-    conn = st.connection(name='turso', type='sql', ttl=30)
-
-    rec = conn.query('SELECT xp, gp FROM users WHERE name = :u LIMIT 1',
-                     params={'u': st.session_state["userdata"]["name"]}, ttl=0)
-    userdata = rec.iloc[0].to_dict()
-
-    with conn.session as session:
-        session.execute(text('UPDATE users SET xp = :x, gp = :g WHERE name = :u'),
-                        params={'x': userdata['xp'] + st.session_state['lesson']['attempt']['xp'],
-                                'g': userdata['gp'] + st.session_state['lesson']['attempt']['gp'],
-                                'u': st.session_state["userdata"]["name"]})
-        session.commit()
-
-    st.session_state['lesson']['state'] = 'finished'
-
-@st.dialog("¡No tienes tiritas!")
-def on_zero_hp():
-    st.markdown('''
-¡No te quedan tiritas! No puedes hacer lecciones hasta que consigas más.
-''')
-    
-    bandaids_price = 500
-    if st.button(label=":adhesive_bandage: Comprar tiritas (:coin: {0})".format(bandaids_price),
-                 use_container_width=True,
-                 type="primary",
-                 disabled=st.session_state["userdata"]["gp"] < bandaids_price):
-        st.session_state["userdata"]["gp"] = max(st.session_state["userdata"]["gp"] - bandaids_price, 0)
-        st.session_state["userdata"]["hp"] = 5
-
-        conn = st.connection(name="turso", type="sql", ttl=30)
-        with conn.session as session:
-            session.execute(text('UPDATE users SET hp = :h, gp = :g WHERE name = :u'),
-                        params={'h': st.session_state["userdata"]['hp'],
-                                'g': st.session_state["userdata"]['gp'],
-                                'u': st.session_state["userdata"]["name"]})
-            session.commit()
-
-        st.rerun()
-
-    if st.button(label="Cancelar", use_container_width=True, type="secondary"):
-        on_attempt_cancel()
-        st.rerun()
-
 
 # LESSON
 
@@ -229,78 +190,7 @@ elif 'state' in st.session_state['lesson'].keys() and st.session_state['lesson']
 
         # GUI
         exercise = st.session_state['lesson']['exercises'][st.session_state['lesson']['attempt']['exercise_index']]
-
-        # Render the exercise
-        if exercise['type'] == 'blankfill': 
-            exercises.blankfill(text=exercise['text'], target=exercise["target"])
-
-        elif exercise['type'] == 'choices': 
-            exercises.choices(text=exercise['text'], target=exercise['target'], variant=exercise['variant'])
-
-        # TODO Add matches exercises.                
-        # elif exercise['type'] == 'matching':
-        #     exercises.matching(words_left=exercise['text'], words_right=exercise['target'])
-
-        elif exercise['type'] == 'translation':
-            exercises.translation(text=exercise['text'], target=exercise['target'])
-
-        with bottom():
-            if st.session_state['exercise']['state'] == 'checked':
-
-                if isinstance(exercise['target'], list):
-                    target = exercise['target'][0]
-                elif isinstance(exercise['target'], str):
-                    target = exercise['target']
-
-                try:
-                    st.session_state['exercise']['result'] = utils.match(text=st.session_state['exercise']['answer'], target=target)
-                except AttributeError:
-                    st.session_state['exercise']['result'] = False
-
-                if st.session_state['exercise']['result']:
-                    st.success("""**¡Correcto!**  
-                               {0}""".format(utils.to_canon(target)))
-                else:
-                    st.error('''
-                            **¡Incorrecto!**  
-                            {0}'''.format(utils.to_canon(target)))
-                    
-                    st.session_state["userdata"]["hp"] = max(st.session_state["userdata"]["hp"] - 1, 0)  # Do not go < 0
-                    if (st.session_state["userdata"]["nextbandaids"] is None) and (st.session_state["userdata"]["hp"] < 5):
-                        st.session_state["userdata"]["nextbandaids"] = str(datetime.datetime.now() + datetime.timedelta(hours=8))
-
-                    conn = st.connection(name="turso", type="sql", ttl=1)
-                    with conn.session as session:
-                        session.execute(sqlalchemy.text("UPDATE users SET hp={0}, nextbandaids='{1}' WHERE name='{2}' ;"
-                                                        .format(st.session_state["userdata"]["hp"],
-                                                                st.session_state["userdata"]["nextbandaids"] if st.session_state["userdata"]["nextbandaids"] is not None else "NULL",
-                                                                st.session_state["userdata"]["name"])))
-                        session.commit()
-
-                    # TODO React if the user looses all his band-aids
-                    if st.session_state["userdata"]["hp"] <= 0:
-                        on_zero_hp()
-
-                cols = st.columns(3, vertical_alignment='bottom')
-
-                with cols[0]:
-                    st.button(label="Reportar error...", use_container_width=True, type="secondary", on_click=hui.on_feedback, 
-                              kwargs={"userdata": st.session_state["userdata"], "attachment": st.session_state["exercise"]})
-                    
-                    # TODO Notify user that his feedback has been sent.
-                    # TODO Include additional information in the attachment: question's text and index are missing.
-                
-                with cols[1]:
-                    st.empty()
-
-                with cols[2]:
-                    st.button(label='Siguiente...', use_container_width=True, type='primary', on_click=on_exercise_next,
-                              disabled=st.session_state["userdata"]["hp"] <= 0)
-
-            else:
-                st.button(label='Comprobar', use_container_width=True, type='primary',
-                disabled = st.session_state['exercise']['state'] == 'checked', 
-                on_click=on_exercise_check)
+        exercises.exercise_widget(exercise)
 
     st.stop()
 
