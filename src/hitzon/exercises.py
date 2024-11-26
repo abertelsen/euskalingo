@@ -49,7 +49,7 @@ def on_zero_hp():
         st.rerun()
 
     if st.button(label="Cancelar", use_container_width=True, type="secondary"):
-        on_attempt_cancel()
+        # on_attempt_cancel()
         st.rerun()
 
 
@@ -109,7 +109,7 @@ def exercise_widget(exercise: dict):
                     st.session_state["userdata"]["name"])))
                 session.commit()
 
-            # TODO React if the user looses all his band-aids
+            # React if the user loses all his band-aids.
             if st.session_state["userdata"]["hp"] <= 0:
                 on_zero_hp()
 
@@ -118,7 +118,6 @@ def exercise_widget(exercise: dict):
         with cols[0]:
             st.button(label="Reportar error...", use_container_width=True, type="secondary", on_click=hui.on_feedback)
 
-        # TODO Notify user that his feedback has been sent.
         # TODO Include additional information in the attachment: question"s text and index are missing.
 
         with cols[1]:

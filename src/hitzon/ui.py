@@ -141,6 +141,8 @@ def on_feedback():
                             params={"u": userdata["id"], "o": feedback_option, "c": feedback_text, "a": json.dumps(attachment)})
             session.commit()
 
+            notify(body="Tu reporte ha sido enviado.", icon="📧")
+
         st.rerun()
 
     if st.button(label="Cancelar", use_container_width=True, type="secondary"):
