@@ -58,7 +58,7 @@ def notify(body, icon=None):
 def on_changeemail():
 
     username = safeget(["userdata", "name"], str)
-    new_email = safeget("uem_email", str)
+    new_email = safeget("uem_email", str).strip()
     if username is None or new_email is None: return False 
 
     conn = st.connection(name="turso", type="sql", ttl=1)
@@ -75,9 +75,9 @@ def on_changeemail():
 def on_changepasswd():
 
     username = safeget(["userdata", "name"], str)
-    old_passwd = safeget("upw_old_password", str)
-    new_passwd = safeget("upw_new_password", str)
-    rep_passwd = safeget("upw_rep_password", str)
+    old_passwd = safeget("upw_old_password", str).strip()
+    new_passwd = safeget("upw_new_password", str).strip()
+    rep_passwd = safeget("upw_rep_password", str).strip()
 
     # TODO Should all tokens be removed after a password change?
 
@@ -147,7 +147,7 @@ def on_feedback():
         st.rerun()
 
 def on_forgotten():
-    email = safeget("fgt_email", str)
+    email = safeget("fgt_email", str).strip()
     if email is None: return False
 
     conn = st.connection(name="turso", type="sql", ttl=1)
@@ -162,8 +162,8 @@ def on_forgotten():
 
 def on_login():
 
-    username = safeget("lgn_username", str)
-    password = safeget("lgn_password", str)
+    username = safeget("lgn_username", str).strip()
+    password = safeget("lgn_password", str).strip()
     if username is None or password is None: return False 
 
     b1 = password.encode("utf-8")
@@ -207,9 +207,9 @@ def on_logout():
 
 def on_register():
 
-    username = safeget("reg_username", str)
-    email = safeget("reg_email", str)
-    password = safeget("reg_password", str)
+    username = safeget("reg_username", str).strip()
+    email = safeget("reg_email", str).strip()
+    password = safeget("reg_password", str).strip()
 
     b0 = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
@@ -246,7 +246,9 @@ def login_widget(scope="fragment"):
     st.text_input(label="Nombre de usuario", key="lgn_username")
     st.text_input(label="Contraseña", type="password", key="lgn_password")
     
-    if st.button(label="Entrar", use_container_width=True, type="primary", on_click=on_login):
+    if st.button(label="Entrar", use_container_width=True, type="primary", 
+                 disabled=any([len(st.session_state[x])==0 for x in ["lgn_username", "lgn_password"]]),
+                 on_click=on_login):
         st.rerun(scope=scope)
 
     # st.info(st.session_state["lgn_username"])
@@ -261,7 +263,9 @@ def logout_button(scope="fragment"):
 def changeemail_widget(scope="fragment"):
     st.text_input(label="Nuevo correo electrónico", key="uem_email")
     
-    if st.button(label="Cambiar correo electrónico", use_container_width=True, type="primary", on_click=on_changeemail):
+    if st.button(label="Cambiar correo electrónico", use_container_width=True, type="primary", 
+                 disabled=len(st.session_state["uem_email"])==0,
+                 on_click=on_changeemail):
         st.rerun(scope=scope)
 
 @st.fragment
@@ -270,14 +274,17 @@ def chagepassword_widget(scope="fragment"):
     st.text_input(label="Contraseña nueva", type="password", key="upw_new_password")
     st.text_input(label="Repite la contraseña nueva", type="password", key="upw_rep_password")
     
-    if st.button(label="Cambiar contraseña", use_container_width=True, type="primary", on_click=on_changepasswd):
+    if st.button(label="Cambiar contraseña", use_container_width=True, type="primary", 
+                 disabled=any([len(st.session_state[x])==0 for x in ["upw_old_password", "upw_new_password", "upw_rep_password"]]),
+                 on_click=on_changepasswd):
         st.rerun(scope=scope)
 
 @st.fragment
 def forgotten_widget(scope="fragment"):
-    fgt_email = st.text_input(label="Correo electrónico", key="fgt_email")
+    st.text_input(label="Correo electrónico", key="fgt_email")
 
-    if st.button(label="Enviar", use_container_width=True, type="primary", disabled = fgt_email is not None, on_click=on_forgotten):
+    if st.button(label="Enviar", use_container_width=True, type="primary", 
+                 disabled=len(st.session_state["fgt_email"])==0, on_click=on_forgotten):
         st.rerun(scope=scope)
 
 @st.fragment
@@ -286,7 +293,9 @@ def registration_widget(scope="fragment"):
     st.text_input(label="Correo electrónico", key="reg_email")
     st.text_input(label="Contraseña", type="password", key="reg_password")
     
-    if st.button(label="Registrarse", use_container_width=True, type="primary", key="reg_button", on_click=on_register):
+    if st.button(label="Registrarse", use_container_width=True, type="primary", key="reg_button", 
+                 disabled=any([len(st.session_state[x])==0 for x in ["reg_username", "reg_email", "reg_password"]]),
+                 on_click=on_register):
         st.rerun(scope=scope)
 
 

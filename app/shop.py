@@ -22,7 +22,7 @@ def item_widget(i: dict):
 
 def on_promocode():
 
-    code = hui.safeget("promocode", str)
+    code = hui.safeget("promocode", str).strip()
     userdata = hui.safeget("userdata", dict)
     if code is None or userdata is None:
         return 
@@ -82,7 +82,9 @@ def promocode_widget():
         st.markdown("¿Tienes un código promocional? Utilízalo aquí...")
         st.text_input(label="Código promocional", label_visibility="collapsed", key="promocode")
 
-        st.button(label="**Activar**", use_container_width=True, type="secondary", on_click=on_promocode)
+        st.button(label="**Activar**", use_container_width=True, type="secondary", 
+                  disabled=len(st.session_state["promocode"])==0,
+                  on_click=on_promocode)
 
 def on_purchase(price: int, effect: str):
     stat, value = effect.split(sep="+", maxsplit=1)
