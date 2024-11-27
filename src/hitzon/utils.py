@@ -1,5 +1,8 @@
 import streamlit as st
 
+def _preprocess(text: str) -> str:
+    return text.strip().translate(str.maketrans("", "", "\/*\"|¿?¡!.,;'"))
+
 def create_helptext(text: str, target: str):
     return '''
 **{0}**  
@@ -14,8 +17,8 @@ def match(text: str, target: str):
 
     # TODO Should interrogation marks be removed? Commas? Periods?
 
-    split0 = target.strip().casefold().split()
-    split1 = text.strip().casefold().split()
+    split0 = _preprocess(target).casefold().split()
+    split1 = _preprocess(text).casefold().split()
 
     i1 = 0
     for t0 in split0:
@@ -69,7 +72,7 @@ def to_blankfill(target):
     out = []
     keyword = None
 
-    split0 = target.split()
+    split0 = _preprocess(target).split()
     for t0 in split0:
         if t0.startswith('('):
             t0 = t0.removeprefix('(').removesuffix(')')
@@ -91,8 +94,9 @@ def to_canon(target):
     # TODO Optional words could be printed in parenthesis, if requested.
 
     out = []
+    variants = {}
 
-    split0 = target.split()
+    split0 = _preprocess(target).split()
     for t0 in split0:
         if t0.startswith('('):
             t0 = t0.removeprefix('(').removesuffix(')')
@@ -103,6 +107,14 @@ def to_canon(target):
         elif t0.startswith('<'):
             t0 = t0.removeprefix('<').removesuffix('>')
             out.append(t0.split(sep=',')[0])
+        elif t0.startswith('{'):
+            t0 = t0.removeprefix('{').removesuffix('}')
+            if t0.find(":") >= 0:
+                k,v = t0.split(sep=":", maxsplit=1)
+                variants[k] = v 
+                out.append(v)
+            else:
+                pass
         else:
             out.append(t0)
             
@@ -114,7 +126,7 @@ def to_filename(phrase):
 def to_list(target):
     out = []
 
-    split0 = target.split()
+    split0 = _preprocess(target).split()
     for t0 in split0:
         if t0.startswith('('):
             t0 = t0.removeprefix('(').removesuffix(')')

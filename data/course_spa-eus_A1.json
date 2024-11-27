@@ -171,25 +171,33 @@
             {"eus": "zortzi", "spa": "ocho"},
             {"eus": "bederatzi", "spa": "nueve"},
             {"eus": "hamar", "spa": "diez"},
+            {"eus": "hamaika", "spa": "once"},
+            {"eus": "hamabi", "spa": "doce"},
             {"eus": "larrialdi", "spa": "emergencia"},
-            {"eus": "urte", "spa": "año"}
+            {"eus": "urte", "spa": "año"},
+            {"eus": "zebaki", "spa": "número"}
         ],
     "keyphrases":[
         {"eus": "<bederatzi>, lau, hiru", "spa": "nueve, cuatro, tres"},
-        {"eus": "Autobus geltoki <bat> dago Donostian", "spa": "Hay una estación de autobuses en San Sebastián"},
+        {"eus": "Donostian autobus geltoki <bat> dago", "spa": "Hay una estación de autobuses en San Sebastián"},
+        {"eus": "Donostian <hiru> hondartza daude", "spa": "Hay tres playas en San Sebastián"},
         {"eus": "Auzo honetan <hiru> taberna daude", "spa": "En este barrio hay tres bares"},
-        {"eus": "<Lau> urtaro daude urtean", "spa": "Hay cuatro estaciones en el año"},
+        {"eus": "<Bi> pintxo, mesedez", "spa": "Dos pinchos, por favor"},
+        {"eus": "Futbol talde batean <hamaika> jokalari daude", "spa": "Hay once jugadores en un equipo de fútbol"},
+        {"eus": "Urtean <hamabi> hilabete daude", "spa": "Hay doce meses en el año"},
+        {"eus": "Hark <bederatzi> urte dut", "spa": "(Él,Ella) tiene nueve años"},
+        {"eus": "Saskibaloi talde batean <bost> jokalari daude", "spa": "Hay cinco jugadores en un equipo de baloncesto"},
+        {"eus": "Urtean <lau> urtaro daude", "spa": "Hay cuatro estaciones en el año"},
         {"eus": "<Lau> puntu kardinal daude", "spa": "Hay cuatro puntos cardinales"},
-        {"eus": "<Bost> hatz daude eskuan", "spa": "Hay cinco dedos en la mano"},
-        {"eus": "<Sei> arrautza daude kutxan", "spa": "Hay seis huevos en la caja"},
-        {"eus": "<Zazpi> egun dira astean", "spa": "Hay siete días en la semana"},
-        {"eus": "Ona da <zortzi> ordu lo egitea", "spa": "Es bueno dormir ocho horas"}
+        {"eus": "Eskuan <bost> hatz daude", "spa": "Hay cinco dedos en la mano"},
+        {"eus": "Kutxan <sei> arrautza daude", "spa": "Hay seis huevos en la caja"},
+        {"eus": "Astean <zazpi> egun dira", "spa": "Hay siete días en la semana"},
+        {"eus": "<Zortzi> ordu lo egitea ona da", "spa": "Es bueno dormir ocho horas"}
     ],
     "subunits": [
-        {"subunit_title": "Introducción", "lessons": 2},
-        {"subunit_title": "Parte 2", "lessons": 2},
-        
-        {"subunit_title": "Parte 3", "lessons": 2},
+        {"subunit_title": "Parte 1", "lessons": 3},
+        {"subunit_title": "Parte 2", "lessons": 3},
+        {"subunit_title": "Parte 3", "lessons": 3},
         {"subunit_title": "Prueba", "lessons": 1}
     ]},
 
@@ -198,18 +206,22 @@
         {"eus": "ordu", "spa": "hora"},
         {"eus": "erdiak", "spa": "media"},
         {"eus": "lauren", "spa": "cuarto"},
-        {"eus": "orain", "spa": "ahora"}
+        {"eus": "orain", "spa": "ahora"},
+        {"eus": "bihar", "spa": "mañana"},
+        {"eus": "gaur", "spa": "hoy"}
     ],
     "keyphrases":[
-        {"eus": "Orain bostak hamar gutxi dira", "spa": "Ahora son las cinco menos diez"},
-        {"eus": "Ordu biak dira", "spa": "Son las dos en punto"},
-        {"eus": "Zazpi eta erdiak dira", "spa": "Son las siete y media"}
+        {"eus": "Orain <bostak> hamar gutxi dira", "spa": "Ahora son las cinco menos diez"},
+        {"eus": "Ordu <bata> da", "spa": "Son las una en punto"},
+        {"eus": "Ordu <biak> dira", "spa": "Son las dos en punto"},
+        {"eus": "<Hirurak> eta hogei dira", "spa": "Son las tres y veinte"},
+        {"eus": "<Laruak> eta hamar dira", "spa": "Son las cuatro y diez"},
+        {"eus": "Zazpi eta <erdiak> dira", "spa": "Son las siete y media"}
     ],
     "subunits": [
-    {"subunit_title": "Introducción", "lessons": 2},
-    {"subunit_title": "Parte 2", "lessons": 2},
-    
-    {"subunit_title": "Parte 3", "lessons": 2},
+    {"subunit_title": "Parte 1", "lessons": 3},
+    {"subunit_title": "Parte 2", "lessons": 3},
+    {"subunit_title": "Parte 3", "lessons": 3},
     {"subunit_title": "Prueba", "lessons": 1}
     ]},
 
@@ -225,6 +237,16 @@
         {"eus": "amona", "spa": "abuela"},
         {"eus": "senar", "spa": "esposo"},
         {"eus": "osaba", "spa": "tío"}
+    ],
+    "keyphrases":[
+        {"eus": "Nire <aita> eta nire ama han daude", "spa": "Mi padre y mi madre están allí"},
+        {"eus": "Nire <gurasoak> ez daude hemen", "spa": "Mis padres no están aquí"}
+    ],
+    "subunits": [
+        {"subunit_title": "Parte 1", "lessons": 3},
+        {"subunit_title": "Parte 2", "lessons": 3},
+        {"subunit_title": "Parte 3", "lessons": 3},
+        {"subunit_title": "Prueba", "lessons": 1}
     ]
     },
 
@@ -280,7 +302,7 @@
         {"eus": "gurea", "spa": "nuestro"}
     ],
     "keyphrases":[
-        {"eus": "Nire arrebarekin bizi naiz", "spa": "Vivo con mi hermana"}
+        {"eus": "<Nire> arrebarekin bizi naiz", "spa": "Vivo con mi hermana"}
     ],
     "subunits": [
         {"subunit_title": "Introducción", "lessons": 2},
@@ -303,11 +325,11 @@
             {"eus": "(Hark) egiten du", "spa": "(Él,ella) [lo,la] hace"},
             {"eus": "(Guk) egiten dugu", "spa": "(Nosotros,Nosotras) [lo,la] hacemos"},
             {"eus": "(Zuek) egiten duzue", "spa": "(Vosotros,Vosotras) [lo,la] hacéis"},
-            {"eus": "(Haiek) egiten dute", "spa": "(Ellos,Ellan) [lo,la] hacen"},
+            {"eus": "(Haiek) egiten dute", "spa": "(Ellos,Ellas) [lo,la] hacen"},
             {"eus": "(Nik) euskara ikasi dut", "spa": "(Yo) he estudiado euskera"},
             {"eus": "(Hura) futbolean jokatzen du", "spa": "(Él,ella) juega (al) fútbol"},
             {"eus": "(Nik) beti zortzi orduz lan <egiten> dut", "spa": "(Yo) siempre trabajo ocho horas"},
-            {"eus": "(Hark) futbolean <jokatzen> du, ez saskibaloian", "spa": "(Él/Ella) juega al fútbol, no al baloncesto"},
+            {"eus": "(Hark) futbolean <jokatzen> du, ez saskibaloian", "spa": "(Él,Ella) juega al fútbol, no al baloncesto"},
             {"eus": "Guk hemen <jokatzen> dugu eta zuek hor jokatzen duzue", "spa": "Nosotros jugamos aquí y vosotros jugáis ahí"},
             {"eus": "(Haiek) hotelean lo egiten dute orain", "spa": "Ellos duermen ahora en el hotel"},
             {"eus": "(Haiek) hotelean lo egiten ari dira orain", "spa": "Ellos están durmiendo ahora en el hotel"},
